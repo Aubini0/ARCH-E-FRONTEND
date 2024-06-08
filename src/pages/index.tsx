@@ -15,7 +15,7 @@ import {
 } from "@/components/ui/sheet";
 import { Skeleton } from "@/components/ui/skeleton";
 import { cn } from "@/lib/utils";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Lottie from "lottie-react";
 import pulseAnimation from "@/assets/lotties/loading-1.json";
 import { Button } from "@/components/ui/button";
@@ -45,6 +45,7 @@ import ProfileForm from "@/components/pages/Home/ProfileForm";
 import SourceCard from "@/components/pages/Home/SourceCard";
 
 export default function Home() {
+  const ref = useRef<any>(null);
   const [loading, setLoading] = useState(true);
   const [sheetOpen, setSheetOpen] = useState(false);
   const [micToggled, setMicToggled] = useState(false);
@@ -60,6 +61,14 @@ export default function Home() {
       clearTimeout(timeout);
     };
   }, []);
+
+  useEffect(() => {
+    if (!micToggled) {
+      ref?.current?.goToAndStop(0);
+    } else {
+      ref?.current?.goToAndPlay(0);
+    }
+  }, [micToggled]);
 
   const list = [
     {
@@ -105,7 +114,7 @@ export default function Home() {
   ];
 
   return (
-    <main className="bg-black h-screen">
+    <main className="bg-black h-screen w-screen overflow-hidden">
       <nav className="fixed top-3 md:top-8 py-3 w-full px-8 md:px-12">
         <div className="flex items-center gap-3 justify-end">
           <DropdownMenu>
@@ -148,6 +157,7 @@ export default function Home() {
       <div className="container flex-col max-w-full lg:max-w-[800px] flex items-center h-full w-full py-10 justify-center">
         <div className="w-full gap-3 relative h-full flex flex-col items-center justify-center">
           <Lottie
+            lottieRef={ref}
             animationData={pulseAnimation}
             className="w-[150px] h-[150px] md:mt-24 mt-26"
           />
@@ -222,10 +232,10 @@ export default function Home() {
               <CarouselItem
                 onClick={() => setSheetOpen(true)}
                 key={-1}
-                className="md:basis-1/2 lg:basis-1/4 select-none"
+                className="basis-[40%] md:basis-1/2 lg:basis-1/4 select-none"
               >
                 <div className="w-full h-full bg-transparent border-2 border-white text-white rounded-xl p-2 flex items-center justify-center">
-                  <h5 className="text-lg font-medium">View +2 more</h5>
+                  <h5 className="text-xs font-medium">View +2 more</h5>
                 </div>
               </CarouselItem>
             )}
