@@ -114,7 +114,7 @@ export default function Home() {
   ];
 
   return (
-    <main className="bg-black h-screen w-screen overflow-hidden">
+    <main className="bg-black font-onest h-screen w-screen overflow-hidden">
       <nav className="fixed top-3 md:top-8 py-3 w-full px-8 md:px-12">
         <div className="flex items-center gap-3 justify-end">
           <DropdownMenu>
