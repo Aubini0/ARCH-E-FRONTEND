@@ -28,10 +28,8 @@ const config = {
         secondary: "hsl(var(--secondary))",
         destructive: "hsl(var(--destructive))",
         muted: "hsl(var(--muted))",
-        background: {
-          DEFAULT: "hsl(var(--background))",
-          dark: "hsl(var(--dark-background))",
-        },
+        background: "hsl(var(--background))",
+        "dark-background": "hsl(var(--dark-background))",
         foreground: "hsl(var(--foreground))",
       },
       borderRadius: {

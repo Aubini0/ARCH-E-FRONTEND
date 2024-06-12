@@ -3,7 +3,7 @@ import React from "react";
 
 const SourceCard = () => {
   return (
-    <div className="w-full h-full bg-[#3F3F46]  text-white rounded-xl p-2">
+    <div className="w-full h-full bg-background  text-white rounded-xl p-2">
       <p className="leading-5 two-line-ellipsis text-xs md:text-sm">
         Lorem ipsum dolor sit amet consectetur adipisicing
       </p>

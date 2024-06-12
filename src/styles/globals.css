@@ -6,10 +6,10 @@
   :root {
     --primary: 240 5.26% 26.08%;
 
-    --secondary: 240 4% 16%;
+    --secondary: 240 4% 16%; /* 800 */
 
-    --background: 240 5% 26%;
-    --dark-background: 240 6% 10%;
+    --background: 240 5% 26%; /* 700 */
+    --dark-background: 240 6% 10%; /* 900 */
     --foreground: 0 0% 98%;
 
     --muted: 210 40% 96.1%;
@@ -27,11 +27,11 @@
   .dark {
     --primary: 240 5.26% 26.08%;
 
-    --secondary: 240 4% 16%;
+    --secondary: 240 4% 16%; /* 800 */
 
-    --background: 240 5% 26%;
+    --background: 240 5% 26%; /* 700 */
+    --dark-background: 240 6% 10%; /* 900 */
     --foreground: 0 0% 98%;
-    --dark-background: 240 6% 10%;
 
     --muted: 210 40% 96.1%;
 
@@ -51,7 +51,7 @@
     @apply border-border;
   }
   body {
-    @apply bg-background-dark text-foreground;
+    @apply bg-dark-background text-foreground;
   }
 }
 
