@@ -6,9 +6,10 @@
   :root {
     --primary: 240 5.26% 26.08%;
 
-    --secondary: 240 3.7% 15.88%;
+    --secondary: 240 4% 16%;
 
-    --background: 240 10% 3.9%;
+    --background: 240 5% 26%;
+    --dark-background: 240 6% 10%;
     --foreground: 0 0% 98%;
 
     --muted: 210 40% 96.1%;
@@ -24,12 +25,13 @@
   }
 
   .dark {
-    --primary: 0 0% 100%;
+    --primary: 240 5.26% 26.08%;
 
-    --secondary: 210 40% 96.1%;
+    --secondary: 240 4% 16%;
 
-    --background: 240 10% 3.9%;
+    --background: 240 5% 26%;
     --foreground: 0 0% 98%;
+    --dark-background: 240 6% 10%;
 
     --muted: 210 40% 96.1%;
 
@@ -49,7 +51,7 @@
     @apply border-border;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background-dark text-foreground;
   }
 }
 
@@ -59,4 +61,12 @@
   -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0 30px #212939 inset !important;
+  -webkit-text-fill-color: #ffffff;
 }
