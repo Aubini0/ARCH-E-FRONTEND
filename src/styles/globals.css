@@ -70,3 +70,9 @@ input:-webkit-autofill:active {
   -webkit-box-shadow: 0 0 0 30px #212939 inset !important;
   -webkit-text-fill-color: #ffffff;
 }
+
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}

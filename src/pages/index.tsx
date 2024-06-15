@@ -4,7 +4,6 @@ import {
   CarouselContent,
   CarouselItem,
 } from "@/components/ui/carousel";
-import { Avatar, AvatarGroup } from "@nextui-org/react";
 import {
   Sheet,
   SheetContent,
@@ -20,20 +19,7 @@ import { Button } from "@/components/ui/button";
 import { IoMdMic, IoMdMicOff } from "react-icons/io";
 import { MdClosedCaption, MdClosedCaptionDisabled } from "react-icons/md";
 import Image from "next/image";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuGroup,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { CreditCard, LogOut, Settings, User } from "lucide-react";
-import { Dialog, DialogContent } from "@/components/ui/dialog";
-import AuthForm from "@/components/pages/Auth";
 import SourceCard from "@/components/pages/Home/SourceCard";
-import { useRouter } from "next/router";
 import useDeviceIndicator from "@/hooks/useDeviceIndicator";
 import {
   Drawer,
@@ -41,6 +27,7 @@ import {
   DrawerHeader,
   DrawerTitle,
 } from "@/components/ui/drawer";
+import MainLayout from "@/components/layouts/MainLayout";
 
 export default function Home() {
   const ref = useRef<any>(null);
@@ -68,49 +55,8 @@ export default function Home() {
     }
   }, [micToggled]);
 
-  const [authDialogOpen, setAuthDialogOpen] = useState(false);
-
   return (
-    <main className="font-onest h-screen w-screen overflow-hidden">
-      <nav className="z-10 py-3 mt-6 w-full px-6 md:px-12">
-        <div className="flex items-center gap-3 justify-between">
-          <div className="bg-secondary py-2 px-2 rounded-xl">
-            <h3 className="font-bold text-white text-xs md:text-2xl">ARCH-E</h3>
-          </div>
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Avatar
-                isBordered
-                className="ring-1 w-7 h-7 md:w-8 md:h-8 ring-offset-1 cursor-pointer"
-                radius="sm"
-                src="https://i.pravatar.cc/150?u=a04258a2462d826712d"
-              />
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="w-56 mt-3 text-white">
-              <DropdownMenuLabel>My Account</DropdownMenuLabel>
-              <DropdownMenuSeparator />
-              <DropdownMenuGroup>
-                <DropdownMenuItem onClick={() => setAuthDialogOpen(true)}>
-                  <User className="mr-2 h-4 w-4" />
-                  <span>Profile</span>
-                </DropdownMenuItem>
-                <DropdownMenuItem>
-                  <Settings className="mr-2 h-4 w-4" />
-                  <span>Settings</span>
-                </DropdownMenuItem>
-                <DropdownMenuItem>
-                  <LogOut className="mr-2 h-4 w-4" />
-                  <span>Log out</span>
-                </DropdownMenuItem>
-                <DropdownMenuItem>
-                  <LogOut className="mr-2 h-4 w-4" />
-                  <span>Upgrade</span>
-                </DropdownMenuItem>
-              </DropdownMenuGroup>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        </div>
-      </nav>
+    <MainLayout className="font-onest h-screen w-screen overflow-hidden">
       <div className="container flex-col max-w-full lg:max-w-[800px] flex items-center h-full w-full py-5 md:py-10">
         <div className="w-full gap-3 relative flex flex-col items-center -z-1">
           <Lottie
@@ -373,11 +319,6 @@ export default function Home() {
           </DrawerContent>
         </Drawer>
       )}
-      <Dialog open={authDialogOpen} onOpenChange={setAuthDialogOpen}>
-        <DialogContent className="!p-0 !border-none w-fit">
-          <AuthForm />
-        </DialogContent>
-      </Dialog>
-    </main>
+    </MainLayout>
   );
 }
