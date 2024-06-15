@@ -35,7 +35,6 @@ const formSchema = z.object({
       message:
         "Password should contain at least one uppercase, one lowercase, on special character and one number",
     }),
-  age: z.number({ required_error: "Age is required" }).min(0),
 });
 
 type FormType = z.infer<typeof formSchema>;
@@ -138,22 +137,6 @@ const SignUp: FC<ISignUp> = ({ handleGoToLogin, onSignUp }) => {
                   error={fieldState.error}
                   label="Email"
                   id="email"
-                />
-              )}
-            />
-          </div>
-          <div className="space-y-1">
-            <Controller
-              control={control}
-              name="age"
-              render={({ field, fieldState }) => (
-                <Input
-                  {...field}
-                  error={fieldState.error}
-                  onChange={(e) => field.onChange(+e.target.value)}
-                  label="Age"
-                  id="age"
-                  type="number"
                 />
               )}
             />
