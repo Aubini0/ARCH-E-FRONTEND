@@ -1,6 +1,6 @@
 const Keys = {
-  API_BASE_URL: "http://23.23.167.51/api",
-  SOCKET_BASE_URL: "http://23.23.167.51",
+  API_BASE_URL: "http://44.210.53.60/api",
+  SOCKET_BASE_URL: "http://44.210.53.60",
 };
 
 export default Keys;
