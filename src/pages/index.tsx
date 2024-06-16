@@ -178,7 +178,7 @@ export default function Home() {
               onChange={(e) => setSearchValue(e.target.value)}
               onSubmit={handleSubmit}
               placeholders={[]}
-              className="duration-300"
+              className="duration-300 -z-1"
             />
           </div>
         </div>
