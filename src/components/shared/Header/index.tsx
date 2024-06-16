@@ -22,7 +22,10 @@ const Header = () => {
   return (
     <nav id="header" className="z-10 py-6 w-full px-6 md:px-12">
       <div className="flex items-center gap-3 justify-between">
-        <div className="bg-secondary py-2 px-2 rounded-xl">
+        <div
+          onClick={() => window.location.reload()}
+          className="bg-secondary cursor-pointer py-2 px-2 rounded-xl"
+        >
           <h3 className="font-bold text-white text-xs md:text-2xl">ARCH-E</h3>
         </div>
         {auth && (
