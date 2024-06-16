@@ -13,7 +13,7 @@ import { IoSearch } from "react-icons/io5";
 interface IPlaceholdersAndVanishInput {
   placeholders: string[];
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  onSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
+  onSubmit: (value: string) => void;
   className?: HTMLAttributes<HTMLDivElement>["className"];
 }
 
@@ -166,7 +166,7 @@ const PlaceholdersAndVanishInput: FC<IPlaceholdersAndVanishInput> = ({
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     vanishAndSubmit();
-    onSubmit && onSubmit(e);
+    onSubmit && onSubmit(value);
   };
   return (
     <form
@@ -201,9 +201,10 @@ const PlaceholdersAndVanishInput: FC<IPlaceholdersAndVanishInput> = ({
       />
 
       <button
+        onClick={() => onSubmit(value)}
         disabled={!value}
         type="submit"
-        className="absolute right-2 top-1/2 z-50 -translate-y-1/2 h-8 w-8 rounded-full disabled:bg-gray-500 bg-black dark:bg-zinc-900 dark:disabled:bg-zinc-800 transition duration-200 flex items-center justify-center bg-background"
+        className="absolute right-2 top-1/2 z-50 -translate-y-1/2 h-8 w-8 rounded-full disabled:bg-gray-500 bg-black dark:bg-zinc-900 dark:disabled:bg-zinc-800 cursor-pointer transition duration-200 flex items-center justify-center bg-background"
       >
         <IoSearch />
       </button>

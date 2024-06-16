@@ -24,7 +24,8 @@ import {
 import MainLayout from "@/components/layouts/MainLayout";
 import PlaceholdersAndVanishInput from "@/components/ui/PlaceHolderAndVanishInput";
 import { cn } from "@/lib/utils";
-import { getHeaderHeight } from "@/components/shared/Header";
+import { ScrollShadow } from "@nextui-org/react";
+import { motion } from "framer-motion";
 
 export default function Home() {
   const [loading, setLoading] = useState(true);
@@ -47,67 +48,98 @@ export default function Home() {
     <MainLayout className="font-onest h-screen w-screen overflow-hidden">
       <div
         className={cn(
-          "container flex-col max-w-full lg:max-w-[800px] flex items-center justify-center w-full py-5 md:py-10"
+          "container flex-col max-w-full lg:max-w-[800px] flex items-center justify-end w-full py-5 md:py-10"
         )}
         style={{
           height: `calc(100vh - 96px)`,
         }}
       >
         <div
-          className="flex items-center relative justify-center w-full gap-8"
+          className="flex flex-col items-center relative justify-center w-full gap-8"
           style={{ marginTop: `-96px` }}
         >
+          {submitted && (
+            <div className="flex flex-col items-center duration-300">
+              <ScrollShadow hideScrollBar className="h-[200px]">
+                <p>
+                  Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                  Blanditiis, debitis iure, excepturi quae, culpa quisquam unde
+                  quo ducimus dolor consequuntur reprehenderit deleniti sequi
+                  perspiciatis adipisci. Error magni laboriosam eveniet amet
+                  eligendi neque iure tempore veritatis quidem, est unde ea quam
+                  ratione nostrum quas at libero, fuga adipisci, provident
+                  laudantium repudiandae. Incidunt laboriosam temporibus quos
+                  aliquid blanditiis ad laborum eligendi, aut, quisquam
+                  reprehenderit sapiente unde deserunt molestias dignissimos,
+                  ipsum tempora quo aliquam nulla odio soluta sunt ratione?
+                  Voluptas a molestias accusamus temporibus officiis, ex eos
+                  sunt reiciendis illo aperiam rerum exercitationem culpa
+                  cupiditate voluptate, placeat reprehenderit consectetur,
+                  quisquam corporis nulla dolore iusto. Eaque, enim ipsa.
+                  Doloribus iure, sed repellendus, qui ipsum nemo sapiente error
+                  itaque quia eum iste, recusandae nam aperiam? Tenetur beatae
+                  quam est ex nemo maxime voluptate accusamus, commodi incidunt
+                  sit molestiae ipsum perferendis ut suscipit quae officiis
+                  deleniti rerum. Error quod tenetur ipsam aliquam unde eius!
+                  Debitis error laudantium vitae? Esse ipsa labore hic adipisci
+                  iure nam cum cumque non nemo quidem laudantium reprehenderit,
+                  maxime cupiditate eos excepturi officiis placeat quos commodi
+                  natus consequuntur mollitia a nihil illo. Dicta itaque,
+                  perferendis totam exercitationem molestiae voluptatum ex
+                  distinctio sapiente voluptas placeat dolorem velit tenetur
+                  reprehenderit. Quibusdam praesentium veniam illo!
+                </p>
+              </ScrollShadow>
+              <div
+                onClick={() => setSheetOpen(true)}
+                className="rounded-full bg-secondary my-5 w-fit flex items-center gap-1 h-[56px] px-12 select-none cursor-pointer hover:bg-white/40 duration-300"
+              >
+                <div className=" flex items-center gap-3 space-x-[-25px]">
+                  <div className="border-2 w-8 h-8 rounded-full border-white relative">
+                    <Image
+                      src={"https://i.pravatar.cc/150?u=a042581f4e29026024d"}
+                      alt="avatar"
+                      fill
+                      className="rounded-full"
+                    />
+                  </div>
+                  <div className="border-2 w-8 h-8 rounded-full border-white relative">
+                    <Image
+                      src={"https://i.pravatar.cc/150?u=a042581f4e29026024d"}
+                      alt="avatar"
+                      fill
+                      className="rounded-full"
+                    />
+                  </div>
+                  <div className="border-2 w-8 h-8 rounded-full border-white relative">
+                    <Image
+                      src={"https://i.pravatar.cc/150?u=a042581f4e29026024d"}
+                      alt="avatar"
+                      fill
+                      className="rounded-full"
+                    />
+                  </div>
+                  <div className="border-2 w-8 h-8 rounded-full border-white relative">
+                    <Image
+                      src={"https://i.pravatar.cc/150?u=a042581f4e29026024d"}
+                      alt="avatar"
+                      fill
+                      className="rounded-full"
+                    />
+                  </div>
+                </div>
+                <p className="text-small text-foreground font-medium ms-2">
+                  +10 sources
+                </p>
+              </div>
+            </div>
+          )}
           <PlaceholdersAndVanishInput
             onChange={(e) => setSearchValue(e.target.value)}
             onSubmit={() => setSubmitted(true)}
             placeholders={[]}
+            className="duration-300"
           />
-          {submitted ? (
-            <div
-              onClick={() => setSheetOpen(true)}
-              className="rounded-full absolute top-[30px] bg-secondary mt-16 mb-5 w-fit flex items-center gap-1 h-[56px] px-12 select-none cursor-pointer hover:bg-white/40 duration-300"
-            >
-              <div className=" flex items-center gap-3 space-x-[-25px]">
-                <div className="border-2 w-8 h-8 rounded-full border-white relative">
-                  <Image
-                    src={"https://i.pravatar.cc/150?u=a042581f4e29026024d"}
-                    alt="avatar"
-                    fill
-                    className="rounded-full"
-                  />
-                </div>
-                <div className="border-2 w-8 h-8 rounded-full border-white relative">
-                  <Image
-                    src={"https://i.pravatar.cc/150?u=a042581f4e29026024d"}
-                    alt="avatar"
-                    fill
-                    className="rounded-full"
-                  />
-                </div>
-                <div className="border-2 w-8 h-8 rounded-full border-white relative">
-                  <Image
-                    src={"https://i.pravatar.cc/150?u=a042581f4e29026024d"}
-                    alt="avatar"
-                    fill
-                    className="rounded-full"
-                  />
-                </div>
-                <div className="border-2 w-8 h-8 rounded-full border-white relative">
-                  <Image
-                    src={"https://i.pravatar.cc/150?u=a042581f4e29026024d"}
-                    alt="avatar"
-                    fill
-                    className="rounded-full"
-                  />
-                </div>
-              </div>
-              <p className="text-small text-foreground font-medium ms-2">
-                +10 sources
-              </p>
-            </div>
-          ) : (
-            <div className="w-full absolute top-[30px] h-[56px]"></div>
-          )}
         </div>
       </div>
       {!isPhone && (
