@@ -1,6 +1,6 @@
 const Keys = {
-  API_BASE_URL: "http://44.210.53.60/api",
-  SOCKET_BASE_URL: "http://44.210.53.60",
+  API_BASE_URL: process.env.API_BASE_URL || "https://api.arche.social/api",
+  SOCKET_BASE_URL: process.env.SOCKET_BASE_URL || "https://api.arche.social",
 };
 
 export default Keys;
