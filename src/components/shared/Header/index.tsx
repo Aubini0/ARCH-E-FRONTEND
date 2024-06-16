@@ -20,7 +20,7 @@ const Header = () => {
   const dispatch = useAppDispatch();
   const { auth, user, loading } = useAppSelector((state) => state.auth);
   return (
-    <nav className="z-10 py-3 mt-6 w-full px-6 md:px-12">
+    <nav id="header" className="z-10 py-6 w-full px-6 md:px-12">
       <div className="flex items-center gap-3 justify-between">
         <div className="bg-secondary py-2 px-2 rounded-xl">
           <h3 className="font-bold text-white text-xs md:text-2xl">ARCH-E</h3>
@@ -74,6 +74,12 @@ const Header = () => {
       </div>
     </nav>
   );
+};
+
+export const getHeaderHeight = () => {
+  if (typeof window !== "undefined") {
+    document.getElementById("header")?.clientHeight || 0;
+  } else return 0;
 };
 
 export default Header;
