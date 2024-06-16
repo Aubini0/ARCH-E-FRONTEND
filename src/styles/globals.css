@@ -76,3 +76,17 @@ input[type="number"]::-webkit-outer-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }
+.prompt-sentence {
+  display: inline;
+}
+
+.prompt-sentence .sentence-number {
+  width: 20px;
+  height: 20px;
+  font-size: 10px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  @apply bg-secondary text-white;
+}

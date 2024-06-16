@@ -26,43 +26,71 @@ import PlaceholdersAndVanishInput from "@/components/ui/PlaceHolderAndVanishInpu
 import { cn } from "@/lib/utils";
 import { ScrollShadow } from "@nextui-org/react";
 import { motion } from "framer-motion";
+import { MultiStepLoader } from "@/components/ui/MultiStepLoader";
+import { numberSentences } from "@/types/common";
 
 export default function Home() {
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [sheetOpen, setSheetOpen] = useState(false);
   const { isPhone } = useDeviceIndicator();
   const [submitted, setSubmitted] = useState(false);
   const [searchValue, setSearchValue] = useState("");
 
-  useEffect(() => {
-    let timeout = setTimeout(() => {
+  const handleSubmit = () => {
+    setLoading(true);
+    setTimeout(() => {
       setLoading(false);
-    }, 2000);
+      setSubmitted(true);
+    }, 5000);
+  };
 
-    return () => {
-      clearTimeout(timeout);
-    };
-  }, []);
+  const loadingStates = [
+    {
+      text: "Buying a condo",
+    },
+    {
+      text: "Travelling in a flight",
+    },
+    {
+      text: "He makes soap",
+    },
+    {
+      text: "Start a fight",
+    },
+    {
+      text: "We like it",
+    },
+  ];
 
   return (
     <MainLayout className="font-onest h-screen w-screen overflow-hidden">
       <div
         className={cn(
-          "container flex-col max-w-full lg:max-w-[800px] flex items-center justify-end w-full py-5 md:py-10"
+          "container flex-col max-w-full lg:max-w-[800px] flex items-center w-full py-5 md:py-10 justify-center"
         )}
         style={{
           height: `calc(100vh - 96px)`,
         }}
       >
-        <div
-          className="flex flex-col items-center relative justify-center w-full gap-8"
-          style={{ marginTop: `-96px` }}
-        >
+        {loading && (
+          <MultiStepLoader
+            duration={1000}
+            loading={loading}
+            loadingStates={loadingStates}
+          />
+        )}
+        <div className="flex flex-col items-center relative justify-center w-full mt-[-96px] h-full">
           {submitted && (
-            <div className="flex flex-col items-center duration-300">
-              <ScrollShadow hideScrollBar className="h-[200px]">
-                <p>
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit.
+            <motion.div
+              initial={{ height: 0 }}
+              animate={{ height: "auto" }}
+              className="flex flex-col items-center duration-300"
+            >
+              <ScrollShadow hideScrollBar className="h-[200px] md:w-4/5">
+                <p
+                  dangerouslySetInnerHTML={{
+                    __html:
+                      numberSentences(`Lorem ipsum dolor sit amet consectetur adipisicing elit.
                   Blanditiis, debitis iure, excepturi quae, culpa quisquam unde
                   quo ducimus dolor consequuntur reprehenderit deleniti sequi
                   perspiciatis adipisci. Error magni laboriosam eveniet amet
@@ -87,12 +115,25 @@ export default function Home() {
                   natus consequuntur mollitia a nihil illo. Dicta itaque,
                   perferendis totam exercitationem molestiae voluptatum ex
                   distinctio sapiente voluptas placeat dolorem velit tenetur
-                  reprehenderit. Quibusdam praesentium veniam illo!
-                </p>
+                  reprehenderit. Quibusdam praesentium veniam illo!`),
+                  }}
+                  className="prompt-sentence"
+                ></p>
               </ScrollShadow>
+            </motion.div>
+          )}
+          <div
+            className={cn(
+              "absolute duration-300 w-full flex flex-col items-center justify-center",
+              submitted
+                ? `bottom-0 md:bottom-[-60px]`
+                : "inset-0 flex flex-col items-center justify-center"
+            )}
+          >
+            {submitted && (
               <div
                 onClick={() => setSheetOpen(true)}
-                className="rounded-full bg-secondary my-5 w-fit flex items-center gap-1 h-[56px] px-12 select-none cursor-pointer hover:bg-white/40 duration-300"
+                className="rounded-full bg-secondary mb-10 mt-10 w-fit flex items-center gap-1 h-[43px] px-12 select-none cursor-pointer hover:bg-white/40 duration-300"
               >
                 <div className=" flex items-center gap-3 space-x-[-25px]">
                   <div className="border-2 w-8 h-8 rounded-full border-white relative">
@@ -132,14 +173,14 @@ export default function Home() {
                   +10 sources
                 </p>
               </div>
-            </div>
-          )}
-          <PlaceholdersAndVanishInput
-            onChange={(e) => setSearchValue(e.target.value)}
-            onSubmit={() => setSubmitted(true)}
-            placeholders={[]}
-            className="duration-300"
-          />
+            )}
+            <PlaceholdersAndVanishInput
+              onChange={(e) => setSearchValue(e.target.value)}
+              onSubmit={handleSubmit}
+              placeholders={[]}
+              className="duration-300"
+            />
+          </div>
         </div>
       </div>
       {!isPhone && (
