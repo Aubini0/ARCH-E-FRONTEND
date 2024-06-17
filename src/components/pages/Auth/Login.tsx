@@ -3,7 +3,6 @@ import {
   Card,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
@@ -21,6 +20,7 @@ import { setAuth } from "@/redux/auth/authSlice";
 import { useQueryClient } from "react-query";
 import { toast } from "react-hot-toast";
 import { setSignInModal } from "@/redux/modals/modalsSlice";
+import { useToast } from "@/components/ui/use-toast";
 
 interface ILogin {
   handleGoToSignUp?: () => void;
@@ -37,7 +37,8 @@ const formSchema = z.object({
 
 type FormType = z.infer<typeof formSchema>;
 
-const Login: FC<ILogin> = ({ handleGoToSignUp, onLogin }) => {
+const Login: FC<ILogin> = ({ onLogin }) => {
+  const { toast } = useToast();
   const queryClient = useQueryClient();
   const [passwordVisible, setPasswordVisible] = useState(false);
 
@@ -65,10 +66,17 @@ const Login: FC<ILogin> = ({ handleGoToSignUp, onLogin }) => {
           );
           onLogin && onLogin();
           queryClient.resetQueries();
+
+          toast({
+            title: "Logged in successfully",
+          });
         }
       },
       onError: (error) => {
-        toast.error(error.response?.data.error || "Something went wrong");
+        toast({
+          variant: "destructive",
+          title: error.response?.data.error || "Something went wrong",
+        });
       },
     });
   };
