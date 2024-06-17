@@ -21,6 +21,7 @@ import { useQueryClient } from "react-query";
 import { toast } from "react-hot-toast";
 import { setSignInModal } from "@/redux/modals/modalsSlice";
 import { useToast } from "@/components/ui/use-toast";
+import { ToastAction } from "@/components/ui/toast";
 
 interface ILogin {
   handleGoToSignUp?: () => void;
@@ -43,7 +44,7 @@ const Login: FC<ILogin> = ({ onLogin }) => {
   const [passwordVisible, setPasswordVisible] = useState(false);
 
   const dispatch = useAppDispatch();
-  const { control, handleSubmit, reset } = useForm<FormType>({
+  const { control, handleSubmit, reset, getValues } = useForm<FormType>({
     resolver: zodResolver(formSchema),
   });
 
@@ -66,16 +67,24 @@ const Login: FC<ILogin> = ({ onLogin }) => {
           );
           onLogin && onLogin();
           queryClient.resetQueries();
-
-          toast({
-            title: "Logged in successfully",
-          });
         }
       },
       onError: (error) => {
         toast({
-          variant: "destructive",
           title: error.response?.data.error || "Something went wrong",
+          description: `${
+            error.response?.data.error || "Something went wrong"
+          }. Unable to sign up`,
+          action: (
+            <ToastAction
+              onClick={() => onSubmit(getValues())}
+              className="bg-red-500 border-red-500 hover:bg-red-500"
+              altText="Try Again"
+            >
+              Try Again
+            </ToastAction>
+          ),
+          itemID: "sign-in",
         });
       },
     });

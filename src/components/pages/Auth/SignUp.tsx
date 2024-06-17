@@ -8,6 +8,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
+import { ToastAction } from "@/components/ui/toast";
 import { useToast } from "@/components/ui/use-toast";
 import { emailRegex, passwordRegex } from "@/constants/regex";
 import { useSignUp } from "@/hooks/api/auth";
@@ -43,7 +44,7 @@ const SignUp: FC<ISignUp> = ({ handleGoToLogin, onSignUp }) => {
   const { toast } = useToast();
   const dispatch = useAppDispatch();
   const [passwordVisible, setPasswordVisible] = useState(false);
-  const { control, handleSubmit, reset } = useForm<FormType>({
+  const { control, handleSubmit, reset, getValues } = useForm<FormType>({
     resolver: zodResolver(formSchema),
   });
 
@@ -90,15 +91,19 @@ const SignUp: FC<ISignUp> = ({ handleGoToLogin, onSignUp }) => {
               );
               onSignUp && onSignUp();
               // handleGoToLogin && handleGoToLogin();
-              toast({
-                title: "Signed up successfully",
-              });
             }
           },
           onError: (error) => {
             toast({
-              variant: "destructive",
               title: error.response?.data.error || "Something went wrong",
+              description: `${
+                error.response?.data.error || "Something went wrong"
+              }. Unable to sign up`,
+              action: (
+                <ToastAction className="bg-red-500" altText="Try Again">
+                  Try Again
+                </ToastAction>
+              ),
             });
           },
         }
@@ -106,8 +111,20 @@ const SignUp: FC<ISignUp> = ({ handleGoToLogin, onSignUp }) => {
     } catch (error) {
       if (error instanceof GeolocationPositionError) {
         toast({
-          variant: "destructive",
-          title: error.message || "Can't fetch location",
+          title: error.message || "Something went wrong",
+          description: `${
+            error.message || "Something went wrong"
+          }. Unable to sign up`,
+          action: (
+            <ToastAction
+              onClick={() => onSubmit(getValues())}
+              className="bg-red-500"
+              altText="Try Again"
+            >
+              Try Again
+            </ToastAction>
+          ),
+          itemID: "sign-up",
         });
       }
     }
