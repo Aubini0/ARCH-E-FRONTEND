@@ -1,12 +1,13 @@
 import AuthPersist from "@/components/shared/AuthPersist";
 import Modals from "@/components/shared/Modals";
+import { Toaster } from "@/components/ui/toaster";
 import { onest } from "@/fonts/google";
 import { cn } from "@/lib/utils";
 import { store } from "@/store";
 import "@/styles/globals.css";
 import { NextUIProvider } from "@nextui-org/react";
 import type { AppProps } from "next/app";
-import { Toaster } from "react-hot-toast";
+import { Toaster as ReactHotToastToaster } from "react-hot-toast";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { Provider } from "react-redux";
 
@@ -22,6 +23,7 @@ export default function App({ Component, pageProps }: AppProps) {
               <Component {...pageProps} />
             </div>
             <Modals />
+            <ReactHotToastToaster />
             <Toaster />
           </NextUIProvider>
         </AuthPersist>

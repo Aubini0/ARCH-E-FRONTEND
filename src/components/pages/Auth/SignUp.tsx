@@ -8,6 +8,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
+import { useToast } from "@/components/ui/use-toast";
 import { emailRegex, passwordRegex } from "@/constants/regex";
 import { useSignUp } from "@/hooks/api/auth";
 import { setAuth } from "@/redux/auth/authSlice";
@@ -16,7 +17,6 @@ import { useAppDispatch } from "@/store/hooks";
 import { zodResolver } from "@hookform/resolvers/zod";
 import React, { FC, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
-import { toast } from "react-hot-toast";
 import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
 import { z } from "zod";
@@ -40,6 +40,7 @@ const formSchema = z.object({
 type FormType = z.infer<typeof formSchema>;
 
 const SignUp: FC<ISignUp> = ({ handleGoToLogin, onSignUp }) => {
+  const { toast } = useToast();
   const dispatch = useAppDispatch();
   const [passwordVisible, setPasswordVisible] = useState(false);
   const { control, handleSubmit, reset } = useForm<FormType>({
@@ -89,16 +90,25 @@ const SignUp: FC<ISignUp> = ({ handleGoToLogin, onSignUp }) => {
               );
               onSignUp && onSignUp();
               // handleGoToLogin && handleGoToLogin();
+              toast({
+                title: "Signed up successfully",
+              });
             }
           },
           onError: (error) => {
-            toast.error(error.response?.data.error || "Something went wrong");
+            toast({
+              variant: "destructive",
+              title: error.response?.data.error || "Something went wrong",
+            });
           },
         }
       );
     } catch (error) {
       if (error instanceof GeolocationPositionError) {
-        toast.error(error.message || "Can't fetch location");
+        toast({
+          variant: "destructive",
+          title: error.message || "Can't fetch location",
+        });
       }
     }
   };
