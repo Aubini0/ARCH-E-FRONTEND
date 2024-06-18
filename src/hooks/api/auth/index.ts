@@ -16,7 +16,7 @@ export const useSignUp = (
   const mutation = useMutation<any, AxiosError<APIError>, any>({
     ...props,
     mutationFn: async (payload) => {
-      const response = await http.post("/v2/auth/signup", payload);
+      const response = await http.post("/auth/signup", payload);
       return response.data;
     },
   });
@@ -30,7 +30,7 @@ export const useSignIn = (
   const mutation = useMutation<any, AxiosError<APIError>, any>({
     ...props,
     mutationFn: async (payload) => {
-      const response = await http.post("/v2/auth/login", payload);
+      const response = await http.post("/auth/login", payload);
       return response.data;
     },
   });
@@ -87,7 +87,7 @@ export const useVerifyAccess = (
   return useQuery({
     ...queryOptions,
     queryFn: async () => {
-      const response = await http.get(`/v2/auth/verify-access`);
+      const response = await http.get(`/auth/verify-access`);
       return response.data;
     },
   });

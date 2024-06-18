@@ -11,10 +11,12 @@ import {
   SheetTitle,
 } from "@/components/ui/sheet";
 import { Skeleton } from "@/components/ui/skeleton";
-import { useState, useEffect, useMemo } from "react";
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import SourceCard from "@/components/pages/Home/SourceCard";
 import useDeviceIndicator from "@/hooks/useDeviceIndicator";
+import userImg from "@/assets/images/user.png";
+import logoImg from "@/assets/images/logo.png";
 import {
   Drawer,
   DrawerContent,
@@ -24,24 +26,33 @@ import {
 import MainLayout from "@/components/layouts/MainLayout";
 import PlaceholdersAndVanishInput from "@/components/ui/PlaceHolderAndVanishInput";
 import { cn } from "@/lib/utils";
-import { ScrollShadow } from "@nextui-org/react";
-import { motion } from "framer-motion";
+import { Avatar, ScrollShadow } from "@nextui-org/react";
 import { MultiStepLoader } from "@/components/ui/MultiStepLoader";
-import { numberSentences } from "@/types/common";
+import { IBotSearchResponseStream } from "@/types/common";
+import { nanoid } from "@reduxjs/toolkit";
+import { useAppSelector } from "@/store/hooks";
+import MarkDown from "react-markdown";
+import Keys from "@/config/keys";
+
+interface IQuery {
+  id: string;
+  query: string;
+  response: string;
+}
 
 export default function Home() {
   const [loading, setLoading] = useState(false);
   const [sheetOpen, setSheetOpen] = useState(false);
   const { isPhone } = useDeviceIndicator();
-  const [submitted, setSubmitted] = useState(false);
   const [searchValue, setSearchValue] = useState("");
+  const [queries, setQueries] = useState<IQuery[]>([]);
+  const scrollAreaRef = useRef<HTMLDivElement>(null);
+
+  const { user, auth } = useAppSelector((state) => state.auth);
 
   const handleSubmit = () => {
-    setLoading(true);
-    setTimeout(() => {
-      setLoading(false);
-      setSubmitted(true);
-    }, 5000);
+    console.log("submitting");
+    fetchBot();
   };
 
   const loadingStates = [
@@ -62,11 +73,84 @@ export default function Home() {
     },
   ];
 
+  const fetchBot = async () => {
+    if (!searchValue) return;
+
+    const id = nanoid();
+
+    setQueries((prev) => [...prev, { id, query: searchValue, response: "" }]);
+
+    try {
+      const response = await fetch(`${Keys.API_BASE_URL}/bots/search`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          query: searchValue,
+        }),
+      });
+
+      const reader = response.body!.getReader();
+      const decoder = new TextDecoder();
+      let buffer = "";
+      let accumulatedResponse = "";
+
+      while (true) {
+        console.log("while true");
+        const { done, value } = await reader.read();
+        if (done) break;
+
+        const decodedValue = decoder.decode(value, { stream: true });
+        buffer += decodedValue;
+
+        let boundary;
+        while ((boundary = buffer.indexOf("}{")) !== -1) {
+          const chunk = buffer.slice(0, boundary + 1);
+          buffer = buffer.slice(boundary + 1);
+
+          try {
+            const jsonObject: IBotSearchResponseStream = JSON.parse(chunk);
+
+            if (jsonObject.event_type === "on_llm_stream") {
+              const newData = jsonObject.data;
+
+              accumulatedResponse += newData;
+            }
+          } catch (error) {
+            console.error("Error parsing JSON:", error);
+          }
+        }
+
+        if (accumulatedResponse) {
+          setQueries((prevQueries) => {
+            const _queries = [...prevQueries];
+            const currentQueryIndex = _queries.findIndex((q) => q.id === id);
+
+            if (currentQueryIndex !== -1) {
+              _queries[currentQueryIndex].response = accumulatedResponse;
+            }
+
+            return _queries;
+          });
+        }
+      }
+    } catch (error) {
+      console.error("Error fetching stream:", error);
+    }
+  };
+
+  useEffect(() => {
+    if (scrollAreaRef.current) {
+      scrollAreaRef.current.scrollTop = scrollAreaRef.current.scrollHeight;
+    }
+  }, [queries]);
+
   return (
     <MainLayout className="font-onest h-screen w-screen overflow-hidden">
       <div
         className={cn(
-          "container flex-col max-w-full lg:max-w-[800px] flex items-center w-full py-5 md:py-10 justify-center"
+          "container flex-col max-w-full lg:max-w-[800px] flex items-center w-full justify-center"
         )}
         style={{
           height: `calc(100vh - 96px)`,
@@ -79,61 +163,64 @@ export default function Home() {
             loadingStates={loadingStates}
           />
         )}
-        <div className="flex flex-col items-center relative justify-center w-full mt-[-96px] h-full">
-          {submitted && (
-            <motion.div
-              initial={{ height: 0 }}
-              animate={{ height: "auto" }}
-              className="flex flex-col items-center duration-300"
+        {queries.length > 0 && (
+          <div className="flex w-full h-[85%] duration-300 flex-col items-center">
+            <ScrollShadow
+              ref={scrollAreaRef}
+              hideScrollBar
+              className="h-[60%] flex-1 divide-y divide-secondary w-full"
             >
-              <ScrollShadow hideScrollBar className="h-[200px] md:w-4/5">
-                <p
-                  dangerouslySetInnerHTML={{
-                    __html:
-                      numberSentences(`Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                  Blanditiis, debitis iure, excepturi quae, culpa quisquam unde
-                  quo ducimus dolor consequuntur reprehenderit deleniti sequi
-                  perspiciatis adipisci. Error magni laboriosam eveniet amet
-                  eligendi neque iure tempore veritatis quidem, est unde ea quam
-                  ratione nostrum quas at libero, fuga adipisci, provident
-                  laudantium repudiandae. Incidunt laboriosam temporibus quos
-                  aliquid blanditiis ad laborum eligendi, aut, quisquam
-                  reprehenderit sapiente unde deserunt molestias dignissimos,
-                  ipsum tempora quo aliquam nulla odio soluta sunt ratione?
-                  Voluptas a molestias accusamus temporibus officiis, ex eos
-                  sunt reiciendis illo aperiam rerum exercitationem culpa
-                  cupiditate voluptate, placeat reprehenderit consectetur,
-                  quisquam corporis nulla dolore iusto. Eaque, enim ipsa.
-                  Doloribus iure, sed repellendus, qui ipsum nemo sapiente error
-                  itaque quia eum iste, recusandae nam aperiam? Tenetur beatae
-                  quam est ex nemo maxime voluptate accusamus, commodi incidunt
-                  sit molestiae ipsum perferendis ut suscipit quae officiis
-                  deleniti rerum. Error quod tenetur ipsam aliquam unde eius!
-                  Debitis error laudantium vitae? Esse ipsa labore hic adipisci
-                  iure nam cum cumque non nemo quidem laudantium reprehenderit,
-                  maxime cupiditate eos excepturi officiis placeat quos commodi
-                  natus consequuntur mollitia a nihil illo. Dicta itaque,
-                  perferendis totam exercitationem molestiae voluptatum ex
-                  distinctio sapiente voluptas placeat dolorem velit tenetur
-                  reprehenderit. Quibusdam praesentium veniam illo!`),
-                  }}
-                  className="prompt-sentence"
-                ></p>
-              </ScrollShadow>
-            </motion.div>
-          )}
-          <div
-            className={cn(
-              "absolute duration-300 w-full flex flex-col items-center justify-center",
-              submitted
-                ? `bottom-0 md:bottom-[-60px]`
-                : "inset-0 flex flex-col items-center justify-center"
-            )}
-          >
-            {submitted && (
+              {queries.map((q) => (
+                <div key={q.id} className="w-full">
+                  <div className="flex flex-col items-start w-full">
+                    <div className="w-full gap-3 flex items-start py-3">
+                      {auth && (
+                        <Avatar
+                          isBordered
+                          className="ring-1 w-7 h-7 md:w-8 md:h-8 ring-offset-1 cursor-pointer"
+                          radius="sm"
+                          name={user?.full_name?.[0]}
+                          src={user?.profilePic}
+                        />
+                      )}
+                      {!auth && (
+                        <Image
+                          src={userImg.src}
+                          alt="user"
+                          height={32}
+                          width={32}
+                          className="object-contain"
+                        />
+                      )}
+                      <div className="space-y-1 flex-1">
+                        <h5 className="font-bold text-white">You</h5>
+                        <p>{q.query}</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="flex flex-col items-start w-full">
+                    <div className="w-full gap-3 flex items-start py-3">
+                      <Image
+                        src={logoImg.src}
+                        alt="user"
+                        height={32}
+                        width={32}
+                        quality={100}
+                        className="object-contain"
+                      />
+                      <div className="space-y-1 flex-1">
+                        <h5 className="font-bold text-white">ARCH-E</h5>
+                        <MarkDown className={"mkdown"}>{q.response}</MarkDown>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </ScrollShadow>
+            {queries.length > 0 && (
               <div
                 onClick={() => setSheetOpen(true)}
-                className="rounded-full bg-secondary mb-10 mt-10 w-fit flex items-center gap-1 h-[43px] px-12 select-none cursor-pointer hover:bg-white/40 duration-300"
+                className="rounded-full h-[42px] bg-secondary my-3 w-fit flex items-center gap-1 px-12 select-none cursor-pointer hover:bg-white/40 duration-300"
               >
                 <div className=" flex items-center gap-3 space-x-[-25px]">
                   <div className="border-2 w-8 h-8 rounded-full border-white relative">
@@ -174,13 +261,16 @@ export default function Home() {
                 </p>
               </div>
             )}
-            <PlaceholdersAndVanishInput
-              onChange={(e) => setSearchValue(e.target.value)}
-              onSubmit={handleSubmit}
-              placeholders={[]}
-              className="duration-300 -z-1"
-            />
           </div>
+        )}
+        {queries.length === 0 && <div className="flex-1 w-full h-full"></div>}
+        <div className="py-5 flex items-center justify-center w-full">
+          <PlaceholdersAndVanishInput
+            onChange={(e) => setSearchValue(e.target.value)}
+            onSubmit={handleSubmit}
+            placeholders={[]}
+            className="duration-300 -z-1"
+          />
         </div>
       </div>
       {!isPhone && (
