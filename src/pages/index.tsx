@@ -10,13 +10,13 @@ import {
   SheetHeader,
   SheetTitle,
 } from "@/components/ui/sheet";
-import { Skeleton } from "@/components/ui/skeleton";
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import SourceCard from "@/components/pages/Home/SourceCard";
 import useDeviceIndicator from "@/hooks/useDeviceIndicator";
 import { MdOutlineLibraryBooks } from "react-icons/md";
 import logoImg from "@/assets/images/logo.png";
+import logoAnimated from "@/assets/images/logo-animated.gif";
 import {
   Drawer,
   DrawerContent,
@@ -27,7 +27,6 @@ import MainLayout from "@/components/layouts/MainLayout";
 import PlaceholdersAndVanishInput from "@/components/ui/PlaceHolderAndVanishInput";
 import { cn } from "@/lib/utils";
 import { ScrollShadow } from "@nextui-org/react";
-import { MultiStepLoader } from "@/components/ui/MultiStepLoader";
 import { IBotSearchResponseStream } from "@/types/common";
 import { nanoid } from "@reduxjs/toolkit";
 import { useAppSelector } from "@/store/hooks";
@@ -274,11 +273,11 @@ export default function Home() {
                         quality={100}
                         className="object-contain"
                       />
-                      <h5 className="font-medium text-lg text-white">ARCH-E</h5>
+                      <h5 className="font-medium text-lg text-white">ARCHE</h5>
                     </div>
                     <MarkDown className={"mkdown"}>{q.response}</MarkDown>
                   </div>
-                  {queries.length === i + 1 && q.completed && (
+                  {/* {queries.length === i + 1 && q.completed && (
                     <div className="w-full h-auto border-t-2 border-secondary mt-3 pt-5">
                       <h5 className="text-xl font-medium font-white">
                         Related Questions
@@ -351,7 +350,7 @@ export default function Home() {
                         </div>
                       </div>
                     </div>
-                  )}
+                  )} */}
                 </div>
               ))}
             </ScrollShadow>
@@ -366,9 +365,19 @@ export default function Home() {
           )}
         >
           {queries.length === 0 && (
-            <h2 className="text-[28px] md:text-[44px] font-medium text-center mb-[38vh] md:mb-12">
-              Bad questions don&apos;t exist.
-            </h2>
+            <div className="container w-full">
+              <div className="w-[100px] relative h-[100px] mx-auto mb-5">
+                <Image
+                  fill
+                  src={logoAnimated}
+                  alt="Animated logo"
+                  className="object-contain"
+                />
+              </div>
+              <h2 className="text-[28px] md:text-[32px] font-medium text-center mb-[25vh] md:mb-12">
+                Bad questions don&apos;t exist.
+              </h2>
+            </div>
           )}
           <div className="container lg:px-0 lg:max-w-[800px] max-w-full w-full">
             <PlaceholdersAndVanishInput
