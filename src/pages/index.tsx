@@ -345,7 +345,7 @@ export default function Home() {
                         quality={100}
                         className="object-contain"
                       />
-                      <h5 className="font-medium text-lg text-white">ARCHE</h5>
+                      <h5 className="font-medium text-lg text-white">ARCH-E</h5>
                     </div>
                     <MarkDown className={"mkdown"}>{q.response}</MarkDown>
                     {q.completed && (
