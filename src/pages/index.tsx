@@ -223,10 +223,14 @@ export default function Home() {
                     minHeight: q.completed ? "unset" : "calc(100vh - 96px)",
                   }}
                 >
-                  <div className="flex flex-col bg-secondary p-5 rounded-xl items-start w-full">
-                    {!isPhone &&
-                    mode === "edit" &&
-                    editingQuery?.id === q.id ? (
+                  {!isPhone && mode === "edit" && editingQuery?.id === q.id ? (
+                    <form
+                      onSubmit={(e) => {
+                        e.preventDefault();
+                        fetchBot(editingQuery.updatedQuery);
+                      }}
+                      className="flex flex-col bg-secondary p-5 rounded-xl items-start w-full"
+                    >
                       <div className="w-full h-full">
                         <Input
                           onChange={(e) =>
@@ -240,6 +244,7 @@ export default function Home() {
                         />
                         <div className="flex items-center justify-end gap-3">
                           <Button
+                            type="button"
                             onClick={() => {
                               setMode("add");
                               setEditingQuery(null);
@@ -249,16 +254,19 @@ export default function Home() {
                             Cancel
                           </Button>
                           <Button
+                            type="submit"
                             onClick={() => fetchBot(editingQuery.updatedQuery)}
                           >
                             Save
                           </Button>
                         </div>
                       </div>
-                    ) : (
+                    </form>
+                  ) : (
+                    <div className="flex flex-col bg-secondary p-5 rounded-xl items-start w-full">
                       <h5 className="text-[30px] font-medium">{q.query}</h5>
-                    )}
-                  </div>
+                    </div>
+                  )}
                   {/* <Carousel
                     opts={{
                       align: "start",
