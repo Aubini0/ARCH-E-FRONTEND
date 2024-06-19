@@ -26,7 +26,7 @@ const Header = () => {
           onClick={() => window.location.reload()}
           className="bg-secondary cursor-pointer py-2 px-2 rounded-xl"
         >
-          <h3 className="font-bold text-white text-xs md:text-2xl">ARCH-E</h3>
+          <h3 className="font-bold text-white text-xs md:text-2xl">ARCHE</h3>
         </div>
         {auth && (
           <DropdownMenu>
