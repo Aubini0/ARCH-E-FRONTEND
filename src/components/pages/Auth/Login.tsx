@@ -142,7 +142,7 @@ const Login: FC<ILogin> = ({ onLogin }) => {
               }}
             />
           </div>
-          <div className="flex flex-col gap-3">
+          <div className="flex flex-col !mt-8 gap-3">
             <Button type="submit" isLoading={isLoading} className="w-full">
               Login
             </Button>
