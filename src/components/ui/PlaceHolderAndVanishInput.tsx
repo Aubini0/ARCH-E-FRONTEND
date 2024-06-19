@@ -16,6 +16,9 @@ interface IPlaceholdersAndVanishInput {
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onSubmit: (value: string) => void;
   className?: HTMLAttributes<HTMLDivElement>["className"];
+  focused?: boolean;
+  value?: string;
+  onBlur?: () => void;
 }
 
 const PlaceholdersAndVanishInput: FC<IPlaceholdersAndVanishInput> = ({
@@ -23,11 +26,14 @@ const PlaceholdersAndVanishInput: FC<IPlaceholdersAndVanishInput> = ({
   onChange,
   onSubmit,
   className,
+  focused = false,
+  value,
+  onBlur,
 }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const newDataRef = useRef<any[]>([]);
   const inputRef = useRef<HTMLInputElement>(null);
-  const [value, setValue] = useState("");
+  const [inputValue, setInputValue] = useState("");
   const [animating, setAnimating] = useState(false);
 
   const draw = useCallback(() => {
@@ -45,7 +51,7 @@ const PlaceholdersAndVanishInput: FC<IPlaceholdersAndVanishInput> = ({
     const fontSize = parseFloat(computedStyles.getPropertyValue("font-size"));
     ctx.font = `${fontSize * 2}px ${computedStyles.fontFamily}`;
     ctx.fillStyle = "#FFF";
-    ctx.fillText(value, 16, 40);
+    ctx.fillText(inputValue, 16, 40);
 
     const imageData = ctx.getImageData(0, 0, 800, 800);
     const pixelData = imageData.data;
@@ -80,11 +86,17 @@ const PlaceholdersAndVanishInput: FC<IPlaceholdersAndVanishInput> = ({
       r: 1,
       color: `rgba(${color[0]}, ${color[1]}, ${color[2]}, ${color[3]})`,
     }));
-  }, [value]);
+  }, [inputValue]);
 
   useEffect(() => {
     draw();
-  }, [value, draw]);
+  }, [inputValue, draw]);
+
+  useEffect(() => {
+    if (value !== undefined) {
+      setInputValue(value);
+    }
+  }, [value]);
 
   const animate = (start: number) => {
     const animateFrame = (pos: number = 0) => {
@@ -123,7 +135,7 @@ const PlaceholdersAndVanishInput: FC<IPlaceholdersAndVanishInput> = ({
         if (newDataRef.current.length > 0) {
           animateFrame(pos - 8);
         } else {
-          setValue("");
+          setInputValue("");
           setAnimating(false);
         }
       });
@@ -154,14 +166,21 @@ const PlaceholdersAndVanishInput: FC<IPlaceholdersAndVanishInput> = ({
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     vanishAndSubmit();
-    onSubmit && onSubmit(value);
+    onSubmit && onSubmit(inputValue);
   };
+
+  useEffect(() => {
+    if (focused) {
+      inputRef?.current?.focus();
+    }
+  }, [focused]);
+
   return (
     <form
       className={cn(
         "w-full relative mx-auto bg-secondary dark:bg-zinc-800 h-12 rounded-full overflow-hidden shadow-[0px_2px_3px_-1px_rgba(0,0,0,0.1),_0px_1px_0px_0px_rgba(25,28,33,0.02),_0px_0px_0px_1px_rgba(25,28,33,0.08)] transition duration-200",
         className,
-        value && "bg-secondary"
+        inputValue && "bg-secondary"
       )}
       onSubmit={handleSubmit}
     >
@@ -175,14 +194,15 @@ const PlaceholdersAndVanishInput: FC<IPlaceholdersAndVanishInput> = ({
       <input
         onChange={(e) => {
           if (!animating) {
-            setValue(e.target.value);
+            setInputValue(e.target.value);
             onChange && onChange(e);
           }
         }}
         onKeyDown={handleKeyDown}
         ref={inputRef}
-        value={value}
+        value={inputValue}
         type="text"
+        onBlur={onBlur}
         className={cn(
           "w-full relative text-sm sm:text-base z-50 border-none dark:text-white bg-transparent text-white h-full rounded-full focus:outline-none focus:ring-0 pl-4 sm:pl-10 pr-20",
           animating && "text-transparent dark:text-transparent"
@@ -190,7 +210,8 @@ const PlaceholdersAndVanishInput: FC<IPlaceholdersAndVanishInput> = ({
       />
 
       <button
-        disabled={!value}
+        disabled={!inputValue}
+        onMouseDown={(e) => e.preventDefault()}
         type="submit"
         className="absolute right-2 top-1/2 z-50 -translate-y-1/2 h-8 w-8 rounded-full disabled:bg-gray-500 bg-black dark:bg-zinc-900 dark:disabled:bg-zinc-800 cursor-pointer transition duration-200 flex items-center justify-center bg-background"
       >
@@ -199,7 +220,7 @@ const PlaceholdersAndVanishInput: FC<IPlaceholdersAndVanishInput> = ({
 
       <div className="absolute inset-0 flex items-center rounded-full pointer-events-none">
         <AnimatePresence mode="wait">
-          {!value && placeholder && (
+          {!inputValue && placeholder && (
             <TextGenerateEffect
               className="text-sm text-zinc-400 pl-4 md:pl-10"
               words={placeholder}
