@@ -191,7 +191,7 @@ const SignUp: FC<ISignUp> = ({ handleGoToLogin, onSignUp }) => {
               )}
             />
           </div>
-          <div className="flex-col flex gap-3">
+          <div className="flex-col flex gap-3 !mt-8">
             <Button isLoading={isLoading} className="w-full">
               Sign Up
             </Button>

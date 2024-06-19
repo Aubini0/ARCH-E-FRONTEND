@@ -1,9 +1,14 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { useState } from "react";
+import { FC, useState } from "react";
 import Login from "./Login";
 import SignUp from "./SignUp";
+import { cn } from "@/lib/utils";
 
-export default function AuthForm() {
+interface IAuthForm {
+  isDrawer?: boolean;
+}
+
+const AuthForm: FC<IAuthForm> = ({ isDrawer = false }) => {
   const tabs = [
     {
       name: "Login",
@@ -23,7 +28,10 @@ export default function AuthForm() {
     <Tabs
       value={tab}
       defaultValue={tab}
-      className="lg:w-[450px] font-onest border-2 border-secondary px-3 pt-6 pb-0 rounded-[30px] w-full"
+      className={cn(
+        "md:w-[450px] font-onest px-3 pt-6 pb-0 rounded-[30px] w-full",
+        !isDrawer && "border-2 border-secondary"
+      )}
     >
       <TabsList className="grid w-full grid-cols-2">
         {tabs.map((tab, i) => (
@@ -45,4 +53,6 @@ export default function AuthForm() {
       })}
     </Tabs>
   );
-}
+};
+
+export default AuthForm;

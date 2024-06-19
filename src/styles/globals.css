@@ -90,3 +90,43 @@ input[type="number"]::-webkit-outer-spin-button {
   border-radius: 50%;
   @apply bg-secondary text-white;
 }
+
+.mkdown a {
+  text-decoration: underline;
+  font-weight: 600;
+}
+
+.mkdown {
+  line-height: 28px;
+}
+
+.mkdown ul {
+  list-style: disc;
+  padding-left: 20px;
+}
+
+.mkdown ul::marker {
+  color: white;
+}
+
+.mkdown ol {
+  list-style: decimal;
+  padding-left: 20px;
+}
+
+.mkdown ol::marker {
+  color: white;
+}
+
+.mkdown pre {
+  border: 1px solid white;
+  padding: 10px;
+  margin: 10px 0;
+  border-radius: 10px;
+}
+
+@media only screen and (max-width: 768px) {
+  .mkdown {
+    font-size: 14px;
+  }
+}

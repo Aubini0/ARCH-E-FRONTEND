@@ -9,33 +9,21 @@ import {
 } from "react";
 import { cn } from "@/lib/utils";
 import { IoSearch } from "react-icons/io5";
+import { TextGenerateEffect } from "./TextGenerateEffect";
 
 interface IPlaceholdersAndVanishInput {
-  placeholders: string[];
+  placeholder?: string;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onSubmit: (value: string) => void;
   className?: HTMLAttributes<HTMLDivElement>["className"];
 }
 
 const PlaceholdersAndVanishInput: FC<IPlaceholdersAndVanishInput> = ({
-  placeholders,
+  placeholder,
   onChange,
   onSubmit,
   className,
 }) => {
-  const [currentPlaceholder, setCurrentPlaceholder] = useState(0);
-
-  useEffect(() => {
-    let interval: any;
-    const startAnimation = () => {
-      interval = setInterval(() => {
-        setCurrentPlaceholder((prev) => (prev + 1) % placeholders.length);
-      }, 1500);
-    };
-    startAnimation();
-    return () => clearInterval(interval);
-  }, [placeholders.length]);
-
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const newDataRef = useRef<any[]>([]);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -171,7 +159,7 @@ const PlaceholdersAndVanishInput: FC<IPlaceholdersAndVanishInput> = ({
   return (
     <form
       className={cn(
-        "w-full relative max-w-xl mx-auto bg-secondary dark:bg-zinc-800 h-12 rounded-full overflow-hidden shadow-[0px_2px_3px_-1px_rgba(0,0,0,0.1),_0px_1px_0px_0px_rgba(25,28,33,0.02),_0px_0px_0px_1px_rgba(25,28,33,0.08)] transition duration-200",
+        "w-full relative mx-auto bg-secondary dark:bg-zinc-800 h-12 rounded-full overflow-hidden shadow-[0px_2px_3px_-1px_rgba(0,0,0,0.1),_0px_1px_0px_0px_rgba(25,28,33,0.02),_0px_0px_0px_1px_rgba(25,28,33,0.08)] transition duration-200",
         className,
         value && "bg-secondary"
       )}
@@ -202,7 +190,6 @@ const PlaceholdersAndVanishInput: FC<IPlaceholdersAndVanishInput> = ({
       />
 
       <button
-        onClick={() => onSubmit(value)}
         disabled={!value}
         type="submit"
         className="absolute right-2 top-1/2 z-50 -translate-y-1/2 h-8 w-8 rounded-full disabled:bg-gray-500 bg-black dark:bg-zinc-900 dark:disabled:bg-zinc-800 cursor-pointer transition duration-200 flex items-center justify-center bg-background"
@@ -212,29 +199,11 @@ const PlaceholdersAndVanishInput: FC<IPlaceholdersAndVanishInput> = ({
 
       <div className="absolute inset-0 flex items-center rounded-full pointer-events-none">
         <AnimatePresence mode="wait">
-          {!value && (
-            <motion.p
-              initial={{
-                y: 5,
-                opacity: 0,
-              }}
-              key={`current-placeholder-${currentPlaceholder}`}
-              animate={{
-                y: 0,
-                opacity: 1,
-              }}
-              exit={{
-                y: -15,
-                opacity: 0,
-              }}
-              transition={{
-                duration: 0.3,
-                ease: "linear",
-              }}
-              className="dark:text-zinc-500 text-sm sm:text-base font-normal text-neutral-500 pl-4 sm:pl-12 text-left w-[calc(100%-2rem)] truncate"
-            >
-              {placeholders[currentPlaceholder]}
-            </motion.p>
+          {!value && placeholder && (
+            <TextGenerateEffect
+              className="text-sm text-zinc-400 pl-4 md:pl-10"
+              words={placeholder}
+            />
           )}
         </AnimatePresence>
       </div>

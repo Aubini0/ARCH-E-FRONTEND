@@ -11,10 +11,12 @@ import {
   SheetTitle,
 } from "@/components/ui/sheet";
 import { Skeleton } from "@/components/ui/skeleton";
-import { useState, useEffect, useMemo } from "react";
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import SourceCard from "@/components/pages/Home/SourceCard";
 import useDeviceIndicator from "@/hooks/useDeviceIndicator";
+import { MdOutlineLibraryBooks } from "react-icons/md";
+import logoImg from "@/assets/images/logo.png";
 import {
   Drawer,
   DrawerContent,
@@ -25,159 +27,356 @@ import MainLayout from "@/components/layouts/MainLayout";
 import PlaceholdersAndVanishInput from "@/components/ui/PlaceHolderAndVanishInput";
 import { cn } from "@/lib/utils";
 import { ScrollShadow } from "@nextui-org/react";
-import { motion } from "framer-motion";
 import { MultiStepLoader } from "@/components/ui/MultiStepLoader";
-import { numberSentences } from "@/types/common";
+import { IBotSearchResponseStream } from "@/types/common";
+import { nanoid } from "@reduxjs/toolkit";
+import { useAppSelector } from "@/store/hooks";
+import MarkDown from "react-markdown";
+import Keys from "@/config/keys";
+import { FaRegQuestionCircle } from "react-icons/fa";
+import SourceCardViewMore from "@/components/pages/Home/SourceCardViewMore";
+
+interface IQuery {
+  id: string;
+  query: string;
+  response: string;
+  completed: boolean;
+}
 
 export default function Home() {
-  const [loading, setLoading] = useState(false);
   const [sheetOpen, setSheetOpen] = useState(false);
   const { isPhone } = useDeviceIndicator();
-  const [submitted, setSubmitted] = useState(false);
-  const [searchValue, setSearchValue] = useState("");
+  const [_, setSearchValue] = useState("");
+  const [queries, setQueries] = useState<IQuery[]>([]);
+  const scrollAreaRef = useRef<HTMLDivElement>(null);
 
-  const handleSubmit = () => {
-    setLoading(true);
-    setTimeout(() => {
-      setLoading(false);
-      setSubmitted(true);
-    }, 5000);
+  const { auth } = useAppSelector((state) => state.auth);
+
+  const handleSubmit = (query: string) => {
+    fetchBot(query);
   };
 
-  const loadingStates = [
-    {
-      text: "Buying a condo",
-    },
-    {
-      text: "Travelling in a flight",
-    },
-    {
-      text: "He makes soap",
-    },
-    {
-      text: "Start a fight",
-    },
-    {
-      text: "We like it",
-    },
-  ];
+  useEffect(() => {
+    setQueries([]);
+  }, [auth]);
+
+  const fetchBot = async (query: string) => {
+    if (!query) return;
+
+    const id = nanoid();
+
+    setQueries((prev) => [
+      ...prev,
+      { id, query: query, response: "", completed: false },
+    ]);
+
+    try {
+      const response = await fetch(`${Keys.API_BASE_URL}/bots/search`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          query: query,
+        }),
+      });
+
+      const reader = response.body!.getReader();
+      const decoder = new TextDecoder();
+      let buffer = "";
+      let accumulatedResponse = "";
+
+      while (true) {
+        console.log("while true");
+        const { done, value } = await reader.read();
+        if (done) {
+          setQueries((prevQueries) => {
+            const _queries = [...prevQueries];
+            const currentQueryIndex = _queries.findIndex((q) => q.id === id);
+
+            if (currentQueryIndex !== -1) {
+              _queries[currentQueryIndex].completed = true;
+            }
+
+            return _queries;
+          });
+          break;
+        }
+
+        const decodedValue = decoder.decode(value, { stream: true });
+        buffer += decodedValue;
+
+        let boundary;
+        while ((boundary = buffer.indexOf("}{")) !== -1) {
+          const chunk = buffer.slice(0, boundary + 1);
+          buffer = buffer.slice(boundary + 1);
+
+          try {
+            const jsonObject: IBotSearchResponseStream = JSON.parse(chunk);
+
+            if (jsonObject.event_type === "on_llm_stream") {
+              const newData = jsonObject.data;
+
+              accumulatedResponse += newData;
+            }
+          } catch (error) {
+            console.error("Error parsing JSON:", error);
+          }
+        }
+
+        if (accumulatedResponse) {
+          setQueries((prevQueries) => {
+            const _queries = [...prevQueries];
+            const currentQueryIndex = _queries.findIndex((q) => q.id === id);
+
+            if (currentQueryIndex !== -1) {
+              _queries[currentQueryIndex].response = accumulatedResponse;
+            }
+
+            return _queries;
+          });
+        }
+      }
+    } catch (error) {
+      console.error("Error fetching stream:", error);
+    }
+  };
+
+  useEffect(() => {
+    if (scrollAreaRef.current) {
+      scrollAreaRef.current.scrollTop = scrollAreaRef.current.scrollHeight;
+    }
+  }, [queries]);
 
   return (
     <MainLayout className="font-onest h-screen w-screen overflow-hidden">
       <div
         className={cn(
-          "container flex-col max-w-full lg:max-w-[800px] flex items-center w-full py-5 md:py-10 justify-center"
+          "container flex-col flex items-center w-full justify-center"
         )}
         style={{
           height: `calc(100vh - 96px)`,
+          maxHeight: `calc(100vh - 96px)`,
         }}
       >
-        {loading && (
-          <MultiStepLoader
-            duration={1000}
-            loading={loading}
-            loadingStates={loadingStates}
-          />
-        )}
-        <div className="flex flex-col items-center relative justify-center w-full mt-[-96px] h-full">
-          {submitted && (
-            <motion.div
-              initial={{ height: 0 }}
-              animate={{ height: "auto" }}
-              className="flex flex-col items-center duration-300"
-            >
-              <ScrollShadow hideScrollBar className="h-[200px] md:w-4/5">
-                <p
-                  dangerouslySetInnerHTML={{
-                    __html:
-                      numberSentences(`Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                  Blanditiis, debitis iure, excepturi quae, culpa quisquam unde
-                  quo ducimus dolor consequuntur reprehenderit deleniti sequi
-                  perspiciatis adipisci. Error magni laboriosam eveniet amet
-                  eligendi neque iure tempore veritatis quidem, est unde ea quam
-                  ratione nostrum quas at libero, fuga adipisci, provident
-                  laudantium repudiandae. Incidunt laboriosam temporibus quos
-                  aliquid blanditiis ad laborum eligendi, aut, quisquam
-                  reprehenderit sapiente unde deserunt molestias dignissimos,
-                  ipsum tempora quo aliquam nulla odio soluta sunt ratione?
-                  Voluptas a molestias accusamus temporibus officiis, ex eos
-                  sunt reiciendis illo aperiam rerum exercitationem culpa
-                  cupiditate voluptate, placeat reprehenderit consectetur,
-                  quisquam corporis nulla dolore iusto. Eaque, enim ipsa.
-                  Doloribus iure, sed repellendus, qui ipsum nemo sapiente error
-                  itaque quia eum iste, recusandae nam aperiam? Tenetur beatae
-                  quam est ex nemo maxime voluptate accusamus, commodi incidunt
-                  sit molestiae ipsum perferendis ut suscipit quae officiis
-                  deleniti rerum. Error quod tenetur ipsam aliquam unde eius!
-                  Debitis error laudantium vitae? Esse ipsa labore hic adipisci
-                  iure nam cum cumque non nemo quidem laudantium reprehenderit,
-                  maxime cupiditate eos excepturi officiis placeat quos commodi
-                  natus consequuntur mollitia a nihil illo. Dicta itaque,
-                  perferendis totam exercitationem molestiae voluptatum ex
-                  distinctio sapiente voluptas placeat dolorem velit tenetur
-                  reprehenderit. Quibusdam praesentium veniam illo!`),
-                  }}
-                  className="prompt-sentence"
-                ></p>
-              </ScrollShadow>
-            </motion.div>
-          )}
+        {queries.length > 0 && (
           <div
             className={cn(
-              "absolute duration-300 w-full flex flex-col items-center justify-center",
-              submitted
-                ? `bottom-0 md:bottom-[-60px]`
-                : "inset-0 flex flex-col items-center justify-center"
+              "w-full max-h-full h-full duration-300 flex flex-col items-center"
             )}
+            style={{
+              height: `calc(100vh - 96px)`,
+            }}
           >
-            {submitted && (
-              <div
-                onClick={() => setSheetOpen(true)}
-                className="rounded-full bg-secondary mb-10 mt-10 w-fit flex items-center gap-1 h-[43px] px-12 select-none cursor-pointer hover:bg-white/40 duration-300"
-              >
-                <div className=" flex items-center gap-3 space-x-[-25px]">
-                  <div className="border-2 w-8 h-8 rounded-full border-white relative">
-                    <Image
-                      src={"https://i.pravatar.cc/150?u=a042581f4e29026024d"}
-                      alt="avatar"
-                      fill
-                      className="rounded-full"
-                    />
+            <ScrollShadow
+              ref={scrollAreaRef}
+              hideScrollBar
+              style={{
+                height: `calc(100vh - 96px)`,
+              }}
+              className="flex-1 divide-y-2 divide-secondary w-full"
+            >
+              {queries.map((q, i) => (
+                <div
+                  key={q.id}
+                  className={cn(
+                    "max-w-full lg:max-w-[800px] mx-auto w-full",
+                    i === 0 ? "pt-0 pb-5" : "pt-5 pb-5",
+                    queries.length === i + 1 ? "pb-[100px] md:pb-[120px]" : ""
+                  )}
+                >
+                  <div className="flex flex-col items-start w-full">
+                    <h5 className="text-[30px] font-medium">{q.query}</h5>
                   </div>
-                  <div className="border-2 w-8 h-8 rounded-full border-white relative">
-                    <Image
-                      src={"https://i.pravatar.cc/150?u=a042581f4e29026024d"}
-                      alt="avatar"
-                      fill
-                      className="rounded-full"
-                    />
+                  <Carousel
+                    opts={{
+                      align: "start",
+                    }}
+                    className="w-full hidden md:block h-full py-5"
+                  >
+                    <CarouselContent className="text-black">
+                      {Array.from({ length: 10 }).map((_, index) => (
+                        <CarouselItem
+                          key={index}
+                          className="md:basis-1/2 lg:basis-1/4 select-none"
+                        >
+                          <SourceCard />
+                        </CarouselItem>
+                      ))}
+                      <CarouselItem
+                        onClick={() => setSheetOpen(true)}
+                        className="md:basis-1/2 lg:basis-1/4 select-none"
+                      >
+                        <SourceCardViewMore />
+                      </CarouselItem>
+                    </CarouselContent>
+                  </Carousel>
+                  <div
+                    onClick={() => setSheetOpen(true)}
+                    className="rounded-full md:hidden h-[42px] bg-secondary my-5 flex items-center justify-between gap-8 w-full px-3 select-none cursor-pointer hover:bg-white/40 duration-300"
+                  >
+                    <div className="flex items-center gap-3">
+                      <MdOutlineLibraryBooks className="text-2xl" />
+                      <span className="text-sm md:text-base font-medium text-white">
+                        Sources
+                      </span>
+                    </div>
+                    <div className=" flex items-center gap-[3px]">
+                      <div className="border-2 w-6 h-6 rounded-full border-white relative">
+                        <Image
+                          src={
+                            "https://i.pravatar.cc/150?u=a042581f4e29026024d"
+                          }
+                          alt="avatar"
+                          fill
+                          className="rounded-full"
+                        />
+                      </div>
+                      <div className="border-2 w-6 h-6 rounded-full border-white relative">
+                        <Image
+                          src={
+                            "https://i.pravatar.cc/150?u=a042581f4e29026024d"
+                          }
+                          alt="avatar"
+                          fill
+                          className="rounded-full"
+                        />
+                      </div>
+                      <div className="border-2 w-6 h-6 rounded-full border-white relative">
+                        <Image
+                          src={
+                            "https://i.pravatar.cc/150?u=a042581f4e29026024d"
+                          }
+                          alt="avatar"
+                          fill
+                          className="rounded-full"
+                        />
+                      </div>
+                      <div className="border-2 w-6 h-6 rounded-full border-white relative">
+                        <Image
+                          src={
+                            "https://i.pravatar.cc/150?u=a042581f4e29026024d"
+                          }
+                          alt="avatar"
+                          fill
+                          className="rounded-full"
+                        />
+                      </div>
+                    </div>
                   </div>
-                  <div className="border-2 w-8 h-8 rounded-full border-white relative">
-                    <Image
-                      src={"https://i.pravatar.cc/150?u=a042581f4e29026024d"}
-                      alt="avatar"
-                      fill
-                      className="rounded-full"
-                    />
+                  <div className="flex flex-col items-start w-full">
+                    <div className="w-full gap-3 flex items-center py-3">
+                      <Image
+                        src={logoImg.src}
+                        alt="user"
+                        height={32}
+                        width={32}
+                        quality={100}
+                        className="object-contain"
+                      />
+                      <h5 className="font-medium text-lg text-white">ARCH-E</h5>
+                    </div>
+                    <MarkDown className={"mkdown"}>{q.response}</MarkDown>
                   </div>
-                  <div className="border-2 w-8 h-8 rounded-full border-white relative">
-                    <Image
-                      src={"https://i.pravatar.cc/150?u=a042581f4e29026024d"}
-                      alt="avatar"
-                      fill
-                      className="rounded-full"
-                    />
-                  </div>
+                  {queries.length === i + 1 && q.completed && (
+                    <div className="w-full h-auto border-t-2 border-secondary mt-3 pt-5">
+                      <h5 className="text-xl font-medium font-white">
+                        Related Questions
+                      </h5>
+                      <div className="divide-y-2 pt-3 divide-secondary">
+                        <div
+                          onClick={() =>
+                            handleSubmit(`Which language is better for machine learning,
+                            Python or JavaScript`)
+                          }
+                          className="flex items-center justify-between gap-3 w-full py-2 cursor-pointer"
+                        >
+                          <span className="text-sm md:text-base text-white w-[90%]">
+                            Which language is better for machine learning,
+                            Python or JavaScript
+                          </span>
+                          <FaRegQuestionCircle className="text-white text-xl" />
+                        </div>
+                        <div
+                          onClick={() =>
+                            handleSubmit(`Which language is better for machine learning,
+                            Python or JavaScript`)
+                          }
+                          className="flex items-center justify-between gap-3 w-full py-2 cursor-pointer"
+                        >
+                          <span className="text-sm md:text-base text-white w-[90%]">
+                            how does the performance of Python compare to
+                            JavaScript in web development
+                          </span>
+                          <FaRegQuestionCircle className="text-white text-xl" />
+                        </div>
+                        <div
+                          onClick={() =>
+                            handleSubmit(`Which language is better for machine learning,
+                            Python or JavaScript`)
+                          }
+                          className="flex items-center justify-between gap-3 w-full py-2 cursor-pointer"
+                        >
+                          <span className="text-sm md:text-base text-white w-[90%]">
+                            why is JavaScript considered the most popular
+                            language for web development
+                          </span>
+                          <FaRegQuestionCircle className="text-white text-xl" />
+                        </div>
+                        <div
+                          onClick={() =>
+                            handleSubmit(`Which language is better for machine learning,
+                            Python or JavaScript`)
+                          }
+                          className="flex items-center justify-between gap-3 w-full py-2 cursor-pointer"
+                        >
+                          <span className="text-sm md:text-base text-white w-[90%]">
+                            why is JavaScript considered the most popular
+                            language for web development
+                          </span>
+                          <FaRegQuestionCircle className="text-white text-xl" />
+                        </div>
+                        <div
+                          onClick={() =>
+                            handleSubmit(`Which language is better for machine learning,
+                            Python or JavaScript`)
+                          }
+                          className="flex items-center justify-between gap-3 w-full py-2 cursor-pointer"
+                        >
+                          <span className="text-sm md:text-base text-white w-[90%]">
+                            how does C++ remain relevant in 2024 despite the
+                            rise of newer languages
+                          </span>
+                          <FaRegQuestionCircle className="text-white text-xl" />
+                        </div>
+                      </div>
+                    </div>
+                  )}
                 </div>
-                <p className="text-small text-foreground font-medium ms-2">
-                  +10 sources
-                </p>
-              </div>
-            )}
+              ))}
+            </ScrollShadow>
+          </div>
+        )}
+        <div
+          className={cn(
+            "flex items-center w-full justify-center flex-col py-10 mx-auto",
+            queries.length > 0
+              ? "fixed bottom-0 left-0"
+              : "fixed bottom-0 md:bottom-auto"
+          )}
+        >
+          {queries.length === 0 && (
+            <h2 className="text-[28px] md:text-[44px] font-medium text-center mb-[38vh] md:mb-12">
+              Bad questions don&apos;t exist.
+            </h2>
+          )}
+          <div className="container lg:px-0 lg:max-w-[800px] max-w-full w-full">
             <PlaceholdersAndVanishInput
               onChange={(e) => setSearchValue(e.target.value)}
               onSubmit={handleSubmit}
-              placeholders={[]}
+              placeholder={
+                queries.length === 0 ? "What do you want to know?" : undefined
+              }
               className="duration-300 -z-1"
             />
           </div>
@@ -198,30 +397,14 @@ export default function Home() {
                 className="w-full py-5 md:py-10 h-full"
               >
                 <CarouselContent className="text-black">
-                  {loading &&
-                    Array.from({ length: 5 }).map((_, index) => (
-                      <CarouselItem
-                        key={index}
-                        className="md:basis-1/2 lg:basis-1/4 select-none"
-                      >
-                        <div className="flex flex-col space-y-3">
-                          <Skeleton className="h-[80px] w-[200px] rounded-xl" />
-                          <div className="space-y-2">
-                            <Skeleton className="h-4 w-[200px]" />
-                            <Skeleton className="h-4 w-[100px]" />
-                          </div>
-                        </div>
-                      </CarouselItem>
-                    ))}
-                  {!loading &&
-                    Array.from({ length: 10 }).map((_, index) => (
-                      <CarouselItem
-                        key={index}
-                        className="md:basis-1/2 lg:basis-1/4 select-none"
-                      >
-                        <SourceCard />
-                      </CarouselItem>
-                    ))}
+                  {Array.from({ length: 10 }).map((_, index) => (
+                    <CarouselItem
+                      key={index}
+                      className="md:basis-1/2 lg:basis-1/4 select-none"
+                    >
+                      <SourceCard />
+                    </CarouselItem>
+                  ))}
                 </CarouselContent>
               </Carousel>
             </div>
@@ -243,30 +426,14 @@ export default function Home() {
                 className="w-full px-5 py-5 md:py-10 h-full"
               >
                 <CarouselContent className="text-black">
-                  {loading &&
-                    Array.from({ length: 5 }).map((_, index) => (
-                      <CarouselItem
-                        key={index}
-                        className="md:basis-1/2 lg:basis-1/4 select-none"
-                      >
-                        <div className="flex flex-col space-y-3">
-                          <Skeleton className="h-[80px] w-[200px] rounded-xl" />
-                          <div className="space-y-2">
-                            <Skeleton className="h-4 w-[200px]" />
-                            <Skeleton className="h-4 w-[100px]" />
-                          </div>
-                        </div>
-                      </CarouselItem>
-                    ))}
-                  {!loading &&
-                    Array.from({ length: 10 }).map((_, index) => (
-                      <CarouselItem
-                        key={index}
-                        className="md:basis-1/2 lg:basis-1/4 select-none"
-                      >
-                        <SourceCard />
-                      </CarouselItem>
-                    ))}
+                  {Array.from({ length: 10 }).map((_, index) => (
+                    <CarouselItem
+                      key={index}
+                      className="md:basis-1/2 lg:basis-1/4 select-none"
+                    >
+                      <SourceCard />
+                    </CarouselItem>
+                  ))}
                 </CarouselContent>
               </Carousel>
             </div>

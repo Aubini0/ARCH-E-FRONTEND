@@ -28,3 +28,16 @@ export const queryToString = (
   }
   return "";
 };
+
+export function numberSentences(text: string) {
+  const sentences = text
+    .split(".")
+    .filter((sentence) => sentence.trim().length > 0);
+
+  const numberedSentences = sentences.map((sentence, index) => {
+    const sentenceNumber = index + 1;
+    return `<span class="sentence-number">${sentenceNumber}</span> <span>${sentence.trim()}</span><span>.</span><br /><br />`;
+  });
+
+  return numberedSentences.join(" ");
+}
