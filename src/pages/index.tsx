@@ -178,6 +178,7 @@ export default function Home() {
             >
               {queries.map((q, i) => (
                 <div
+                  key={q.id}
                   className={cn(
                     "max-w-full lg:max-w-[800px] mx-auto w-full",
                     i === 0 ? "pt-0 pb-5" : "pt-5 pb-5",
@@ -366,7 +367,7 @@ export default function Home() {
         >
           {queries.length === 0 && (
             <h2 className="text-[28px] md:text-[44px] font-medium text-center mb-[38vh] md:mb-12">
-              Bad questions don't exist.
+              Bad questions don&apos;t exist.
             </h2>
           )}
           <div className="container lg:px-0 lg:max-w-[800px] max-w-full w-full">
