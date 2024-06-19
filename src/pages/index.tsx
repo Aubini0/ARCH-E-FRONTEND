@@ -17,6 +17,7 @@ import useDeviceIndicator from "@/hooks/useDeviceIndicator";
 import { MdOutlineLibraryBooks } from "react-icons/md";
 import logoImg from "@/assets/images/logo.png";
 import logoAnimated from "@/assets/images/logo-animated.gif";
+import { motion } from "framer-motion";
 import {
   Drawer,
   DrawerContent,
@@ -32,8 +33,10 @@ import { nanoid } from "@reduxjs/toolkit";
 import { useAppSelector } from "@/store/hooks";
 import MarkDown from "react-markdown";
 import Keys from "@/config/keys";
-import { FaRegQuestionCircle } from "react-icons/fa";
-import SourceCardViewMore from "@/components/pages/Home/SourceCardViewMore";
+import { VscShare } from "react-icons/vsc";
+import { FaRegEdit } from "react-icons/fa";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 
 interface IQuery {
   id: string;
@@ -48,12 +51,12 @@ export default function Home() {
   const [_, setSearchValue] = useState("");
   const [queries, setQueries] = useState<IQuery[]>([]);
   const scrollAreaRef = useRef<HTMLDivElement>(null);
+  const [editingQuery, setEditingQuery] = useState<
+    (IQuery & { updatedQuery: string }) | null
+  >(null);
+  const [mode, setMode] = useState<"add" | "edit">("add");
 
   const { auth } = useAppSelector((state) => state.auth);
-
-  const handleSubmit = (query: string) => {
-    fetchBot(query);
-  };
 
   useEffect(() => {
     setQueries([]);
@@ -62,12 +65,35 @@ export default function Home() {
   const fetchBot = async (query: string) => {
     if (!query) return;
 
-    const id = nanoid();
+    const id = mode === "add" ? nanoid() : editingQuery!.id;
 
-    setQueries((prev) => [
-      ...prev,
-      { id, query: query, response: "", completed: false },
-    ]);
+    if (mode === "add") {
+      setQueries((prev) => [
+        ...prev,
+        { id, query: query, response: "", completed: false },
+      ]);
+    } else {
+      setQueries((prevQueries) => {
+        const _queries = [...prevQueries];
+        const currentQueryIndex = _queries.findIndex((q) => q.id === id);
+
+        if (currentQueryIndex !== -1) {
+          _queries[currentQueryIndex].completed = false;
+          _queries[currentQueryIndex].query = query;
+          _queries[currentQueryIndex].response = "";
+        }
+
+        return _queries;
+      });
+
+      const queryElement = document.getElementById(id);
+      if (queryElement) {
+        queryElement.scrollIntoView({ behavior: "smooth" });
+      }
+
+      setEditingQuery(null);
+      setMode("add");
+    }
 
     try {
       const response = await fetch(`${Keys.API_BASE_URL}/bots/search`, {
@@ -143,9 +169,15 @@ export default function Home() {
 
   useEffect(() => {
     if (scrollAreaRef.current) {
-      scrollAreaRef.current.scrollTop = scrollAreaRef.current.scrollHeight;
+      const latestQuery = queries[queries.length - 1];
+      if (latestQuery) {
+        const queryElement = document.getElementById(latestQuery.id);
+        if (queryElement) {
+          queryElement.scrollIntoView({ behavior: "smooth" });
+        }
+      }
     }
-  }, [queries]);
+  }, [queries.length]);
 
   return (
     <MainLayout className="font-onest h-screen w-screen overflow-hidden">
@@ -176,18 +208,58 @@ export default function Home() {
               className="flex-1 divide-y-2 divide-secondary w-full"
             >
               {queries.map((q, i) => (
-                <div
+                <motion.div
                   key={q.id}
+                  id={q.id}
                   className={cn(
-                    "max-w-full lg:max-w-[800px] mx-auto w-full",
+                    "max-w-full lg:max-w-[800px] duration-300 mx-auto w-full",
                     i === 0 ? "pt-0 pb-5" : "pt-5 pb-5",
                     queries.length === i + 1 ? "pb-[100px] md:pb-[120px]" : ""
                   )}
+                  initial={{
+                    minHeight: "calc(100vh - 96px)",
+                  }}
+                  animate={{
+                    minHeight: q.completed ? "unset" : "calc(100vh - 96px)",
+                  }}
                 >
-                  <div className="flex flex-col items-start w-full">
-                    <h5 className="text-[30px] font-medium">{q.query}</h5>
+                  <div className="flex flex-col bg-secondary p-5 rounded-xl items-start w-full">
+                    {!isPhone &&
+                    mode === "edit" &&
+                    editingQuery?.id === q.id ? (
+                      <div className="w-full h-full">
+                        <Input
+                          onChange={(e) =>
+                            setEditingQuery((pv) => ({
+                              ...pv!,
+                              updatedQuery: e.target.value,
+                            }))
+                          }
+                          value={editingQuery?.updatedQuery}
+                          className="text-[30px] font-medium"
+                        />
+                        <div className="flex items-center justify-end gap-3">
+                          <Button
+                            onClick={() => {
+                              setMode("add");
+                              setEditingQuery(null);
+                            }}
+                            variant={"secondary"}
+                          >
+                            Cancel
+                          </Button>
+                          <Button
+                            onClick={() => fetchBot(editingQuery.updatedQuery)}
+                          >
+                            Save
+                          </Button>
+                        </div>
+                      </div>
+                    ) : (
+                      <h5 className="text-[30px] font-medium">{q.query}</h5>
+                    )}
                   </div>
-                  <Carousel
+                  {/* <Carousel
                     opts={{
                       align: "start",
                     }}
@@ -209,8 +281,8 @@ export default function Home() {
                         <SourceCardViewMore />
                       </CarouselItem>
                     </CarouselContent>
-                  </Carousel>
-                  <div
+                  </Carousel> */}
+                  {/* <div
                     onClick={() => setSheetOpen(true)}
                     className="rounded-full md:hidden h-[42px] bg-secondary my-5 flex items-center justify-between gap-8 w-full px-3 select-none cursor-pointer hover:bg-white/40 duration-300"
                   >
@@ -262,9 +334,9 @@ export default function Home() {
                         />
                       </div>
                     </div>
-                  </div>
+                  </div> */}
                   <div className="flex flex-col items-start w-full">
-                    <div className="w-full gap-3 flex items-center py-3">
+                    <div className="w-full gap-3 flex items-center pb-3 pt-8">
                       <Image
                         src={logoImg.src}
                         alt="user"
@@ -276,6 +348,24 @@ export default function Home() {
                       <h5 className="font-medium text-lg text-white">ARCHE</h5>
                     </div>
                     <MarkDown className={"mkdown"}>{q.response}</MarkDown>
+                    {q.completed && (
+                      <div className="flex items-center mt-5 gap-3 justify-center">
+                        {/* <div className="flex flex-col cursor-pointer items-center justify-center">
+                          <VscShare className="text-xl" />
+                          <span className="text-[10px]">Share</span>
+                        </div> */}
+                        <div
+                          onClick={() => {
+                            setEditingQuery({ ...q, updatedQuery: q.query });
+                            setMode("edit");
+                          }}
+                          className="flex flex-col cursor-pointer items-center justify-center"
+                        >
+                          <FaRegEdit className="text-xl" />
+                          <span className="text-[10px]">Edit</span>
+                        </div>
+                      </div>
+                    )}
                   </div>
                   {/* {queries.length === i + 1 && q.completed && (
                     <div className="w-full h-auto border-t-2 border-secondary mt-3 pt-5">
@@ -351,14 +441,14 @@ export default function Home() {
                       </div>
                     </div>
                   )} */}
-                </div>
+                </motion.div>
               ))}
             </ScrollShadow>
           </div>
         )}
         <div
           className={cn(
-            "flex items-center w-full justify-center flex-col py-10 mx-auto",
+            "flex items-center w-full justify-center flex-col md:py-10 py-5 mx-auto",
             queries.length > 0
               ? "fixed bottom-0 left-0"
               : "fixed bottom-0 md:bottom-auto"
@@ -381,11 +471,29 @@ export default function Home() {
           )}
           <div className="container lg:px-0 lg:max-w-[800px] max-w-full w-full">
             <PlaceholdersAndVanishInput
-              onChange={(e) => setSearchValue(e.target.value)}
-              onSubmit={handleSubmit}
+              onChange={(e) => {
+                setSearchValue(e.target.value);
+                if (mode === "edit" && isPhone) {
+                  setEditingQuery((pv) => ({
+                    ...pv!,
+                    updatedQuery: e.target.value,
+                  }));
+                }
+              }}
+              onSubmit={fetchBot}
+              focused={mode === "edit" && isPhone}
+              value={
+                mode === "edit" && isPhone ? editingQuery?.updatedQuery : ""
+              }
               placeholder={
                 queries.length === 0 ? "What do you want to know?" : undefined
               }
+              onBlur={() => {
+                if (mode === "edit" && isPhone) {
+                  setMode("add");
+                  setEditingQuery(null);
+                }
+              }}
               className="duration-300 -z-1"
             />
           </div>
