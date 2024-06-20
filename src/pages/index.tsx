@@ -33,10 +33,10 @@ import { nanoid } from "@reduxjs/toolkit";
 import { useAppSelector } from "@/store/hooks";
 import MarkDown from "react-markdown";
 import Keys from "@/config/keys";
-import { VscShare } from "react-icons/vsc";
-import { FaRegEdit } from "react-icons/fa";
+import { FaHeadphonesAlt, FaRegEdit } from "react-icons/fa";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import MusicCard from "@/components/shared/MusicCard";
 
 interface IQuery {
   id: string;
@@ -55,6 +55,7 @@ export default function Home() {
     (IQuery & { updatedQuery: string }) | null
   >(null);
   const [mode, setMode] = useState<"add" | "edit">("add");
+  const [isPlay, setIsPlay] = useState(false);
 
   const { auth } = useAppSelector((state) => state.auth);
 
@@ -64,6 +65,13 @@ export default function Home() {
 
   const fetchBot = async (query: string) => {
     if (!query) return;
+
+    if (query === "play") {
+      setIsPlay(true);
+      return;
+    } else {
+      setIsPlay(false);
+    }
 
     const id = mode === "add" ? nanoid() : editingQuery!.id;
 
@@ -190,7 +198,7 @@ export default function Home() {
           maxHeight: `calc(100vh - 96px)`,
         }}
       >
-        {queries.length > 0 && (
+        {queries.length > 0 && !isPlay && (
           <div
             className={cn(
               "w-full max-h-full h-full duration-300 flex flex-col items-center"
@@ -267,6 +275,7 @@ export default function Home() {
                       <h5 className="text-[30px] font-medium">{q.query}</h5>
                     </div>
                   )}
+                  <MusicCard className="mt-5 mx-auto" />
                   {/* <Carousel
                     opts={{
                       align: "start",
@@ -454,15 +463,27 @@ export default function Home() {
             </ScrollShadow>
           </div>
         )}
+        {isPlay && (
+          <div
+            className={cn(
+              "w-full max-h-full h-full duration-300 flex items-center justify-center"
+            )}
+            style={{
+              height: `calc(100vh - 96px)`,
+            }}
+          >
+            <MusicCard className="mx-auto mb-[108px]" />
+          </div>
+        )}
         <div
           className={cn(
             "flex items-center w-full justify-center flex-col md:py-10 py-5 mx-auto",
-            queries.length > 0
+            queries.length > 0 || isPlay
               ? "fixed bottom-0 left-0"
               : "fixed bottom-0 md:bottom-auto"
           )}
         >
-          {queries.length === 0 && (
+          {queries.length === 0 && !isPlay && (
             <div className="container w-full">
               <div className="w-[100px] relative h-[100px] mx-auto mb-5">
                 <Image
@@ -494,7 +515,11 @@ export default function Home() {
                 mode === "edit" && isPhone ? editingQuery?.updatedQuery : ""
               }
               placeholder={
-                queries.length === 0 ? "What do you want to know?" : undefined
+                queries.length === 0
+                  ? isPlay
+                    ? "What do you like to play?"
+                    : "What do you want to know?"
+                  : undefined
               }
               onBlur={() => {
                 if (mode === "edit" && isPhone) {
@@ -504,6 +529,9 @@ export default function Home() {
               }}
               className="duration-300 -z-1"
             />
+            {/* <div className="mx-auto w-[60px] mt-12 h-[60px] rounded-full flex items-center justify-center shadow-sm bg-secondary">
+              <FaHeadphonesAlt className="text-[30px]" />
+            </div> */}
           </div>
         </div>
       </div>
