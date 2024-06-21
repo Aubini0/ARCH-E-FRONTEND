@@ -471,7 +471,7 @@ export default function Home() {
               backdropFilter: "blur(20px)",
               WebkitBackdropFilter: "blur(20px)",
             }}
-            className="fixed w-screen h-screen flex bg-black/20 items-center justify-center max-w-full flex-col inset-0"
+            className="fixed caption-container w-screen h-screen flex bg-black/20 items-center justify-center max-w-full flex-col inset-0 overflow-hidden hide-scrollbar"
           >
             <div className="w-[200px] relative h-[200px] mx-auto">
               <Image
@@ -504,7 +504,9 @@ export default function Home() {
             </div>
 
             <button
-              onClick={() => router.push("/")}
+              onClick={() => {
+                router.replace("/");
+              }}
               className="fixed top-6 right-5 md:top-8 md:right-10 text-white z-[120] rounded-lg flex items-center justify-center text-[40px]"
             >
               <CgCloseR />
