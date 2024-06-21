@@ -55,6 +55,10 @@
   }
 }
 
+body {
+  overflow: hidden;
+}
+
 .two-line-ellipsis {
   display: -webkit-box;
   -webkit-line-clamp: 2;

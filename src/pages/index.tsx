@@ -484,7 +484,7 @@ export default function Home() {
             <div className="text-lg md:mt-0 mt-8 font-medium text-center">
               Captions will be here. Subtitles
             </div>
-            <div className="flex items-center justify-center mt-5 fixed bottom-[50px] w-full max-w-[250px]">
+            <div className="flex items-center justify-center mt-5 fixed bottom-[60px] w-full max-w-[250px]">
               <div
                 onClick={() => {
                   setVoicePlaying((pv) => !pv);
@@ -525,30 +525,30 @@ export default function Home() {
             <MusicCard className="mx-auto mb-[108px]" />
           </div>
         )}
-        <div
-          className={cn(
-            "flex items-center w-full justify-center flex-col md:py-10 py-5 mx-auto",
-            queries.length > 0 || isPlay || isCaption
-              ? "fixed bottom-0 left-0"
-              : "fixed bottom-0 md:bottom-auto"
-          )}
-        >
-          {queries.length === 0 && !isPlay && !isCaption && (
-            <div className="container w-full">
-              <div className="w-[100px] relative h-[100px] mx-auto mb-5">
-                <Image
-                  fill
-                  src={logoAnimated}
-                  alt="Animated logo"
-                  className="object-contain"
-                />
+        {!isCaption && (
+          <div
+            className={cn(
+              "flex items-center w-full justify-center flex-col md:py-10 py-5 mx-auto",
+              queries.length > 0 || isPlay || isCaption
+                ? "fixed bottom-0 left-0"
+                : "fixed bottom-0 md:bottom-auto"
+            )}
+          >
+            {queries.length === 0 && !isPlay && !isCaption && (
+              <div className="container w-full">
+                <div className="w-[100px] relative h-[100px] mx-auto mb-5">
+                  <Image
+                    fill
+                    src={logoAnimated}
+                    alt="Animated logo"
+                    className="object-contain"
+                  />
+                </div>
+                <h2 className="text-[28px] md:text-[32px] font-medium text-center mb-[25vh] md:mb-12">
+                  Bad questions don&apos;t exist.
+                </h2>
               </div>
-              <h2 className="text-[28px] md:text-[32px] font-medium text-center mb-[25vh] md:mb-12">
-                Bad questions don&apos;t exist.
-              </h2>
-            </div>
-          )}
-          {!isCaption && (
+            )}
             <div className="container lg:px-0 lg:max-w-[800px] max-w-full w-full">
               <PlaceholdersAndVanishInput
                 onChange={(e) => {
@@ -586,8 +586,8 @@ export default function Home() {
               <FaHeadphonesAlt className="text-[30px]" />
             </div> */}
             </div>
-          )}
-        </div>
+          </div>
+        )}
       </div>
       {!isPhone && (
         <Sheet open={sheetOpen} onOpenChange={setSheetOpen}>
