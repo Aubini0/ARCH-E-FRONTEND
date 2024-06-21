@@ -14,7 +14,7 @@ import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import SourceCard from "@/components/pages/Home/SourceCard";
 import useDeviceIndicator from "@/hooks/useDeviceIndicator";
-import { MdOutlineLibraryBooks } from "react-icons/md";
+import { IoIosRadioButtonOn } from "react-icons/io";
 import logoImg from "@/assets/images/logo.png";
 import logoAnimated from "@/assets/images/logo-animated.gif";
 import { motion } from "framer-motion";
@@ -33,10 +33,14 @@ import { nanoid } from "@reduxjs/toolkit";
 import { useAppSelector } from "@/store/hooks";
 import MarkDown from "react-markdown";
 import Keys from "@/config/keys";
-import { FaHeadphonesAlt, FaRegEdit } from "react-icons/fa";
+import { FaMicrophone, FaRegEdit } from "react-icons/fa";
+import { CgCloseR } from "react-icons/cg";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import MusicCard from "@/components/shared/MusicCard";
+import Lottie from "lottie-react";
+import voiceAnimation from "@/assets/lotties/voice-animation.json";
+import useLongPress from "@/hooks/useLongPress";
 
 interface IQuery {
   id: string;
@@ -56,6 +60,11 @@ export default function Home() {
   >(null);
   const [mode, setMode] = useState<"add" | "edit">("add");
   const [isPlay, setIsPlay] = useState(false);
+  const [isCaption, setIsCaption] = useState(false);
+  const [voicePlaying, setVoicePlaying] = useState(false);
+
+  const { onMouseDown, onMouseLeave, onMouseUp, onTouchEnd, onTouchStart } =
+    useLongPress();
 
   const { auth } = useAppSelector((state) => state.auth);
 
@@ -65,13 +74,6 @@ export default function Home() {
 
   const fetchBot = async (query: string) => {
     if (!query) return;
-
-    if (query === "play") {
-      setIsPlay(true);
-      return;
-    } else {
-      setIsPlay(false);
-    }
 
     const id = mode === "add" ? nanoid() : editingQuery!.id;
 
@@ -187,6 +189,8 @@ export default function Home() {
     }
   }, [queries.length]);
 
+  console.log(isCaption);
+
   return (
     <MainLayout className="font-onest h-screen w-screen overflow-hidden">
       <div
@@ -198,7 +202,7 @@ export default function Home() {
           maxHeight: `calc(100vh - 96px)`,
         }}
       >
-        {queries.length > 0 && !isPlay && (
+        {queries.length > 0 && !isPlay && !isCaption && (
           <div
             className={cn(
               "w-full max-h-full h-full duration-300 flex flex-col items-center"
@@ -275,7 +279,6 @@ export default function Home() {
                       <h5 className="text-[30px] font-medium">{q.query}</h5>
                     </div>
                   )}
-                  <MusicCard className="mt-5 mx-auto" />
                   {/* <Carousel
                     opts={{
                       align: "start",
@@ -463,6 +466,46 @@ export default function Home() {
             </ScrollShadow>
           </div>
         )}
+        {isCaption && (
+          <div className="fixed w-screen h-screen flex bg-black/20 backdrop-blur-lg items-center justify-center max-w-full flex-col inset-0">
+            <div className="w-[200px] relative h-[200px] mx-auto mb-5">
+              <Image
+                fill
+                src={logoAnimated}
+                alt="Animated logo"
+                className="object-contain"
+              />
+            </div>
+            <div className="text-lg md:mt-0 mt-5 font-medium text-center">
+              Captions will be here. Subtitles
+            </div>
+            <div className="flex items-center justify-center mt-5 fixed bottom-[80px] w-full max-w-[250px]">
+              <div
+                onClick={() => {
+                  setVoicePlaying((pv) => !pv);
+                }}
+                className="w-fit h-fit relative"
+              >
+                <IoIosRadioButtonOn className="text-[100px]" />
+                {voicePlaying && (
+                  <div className="flex items-center justify-center inset-0 absolute pointer-events-none">
+                    <Lottie
+                      animationData={voiceAnimation}
+                      className="w-[40px] h-[40px] object-cover"
+                    />
+                  </div>
+                )}
+              </div>
+            </div>
+
+            <button
+              onClick={() => setIsCaption(false)}
+              className="fixed top-6 right-5 md:top-8 md:right-10 text-white z-[120] rounded-lg flex items-center justify-center text-[40px]"
+            >
+              <CgCloseR />
+            </button>
+          </div>
+        )}
         {isPlay && (
           <div
             className={cn(
@@ -478,12 +521,12 @@ export default function Home() {
         <div
           className={cn(
             "flex items-center w-full justify-center flex-col md:py-10 py-5 mx-auto",
-            queries.length > 0 || isPlay
+            queries.length > 0 || isPlay || isCaption
               ? "fixed bottom-0 left-0"
               : "fixed bottom-0 md:bottom-auto"
           )}
         >
-          {queries.length === 0 && !isPlay && (
+          {queries.length === 0 && !isPlay && !isCaption && (
             <div className="container w-full">
               <div className="w-[100px] relative h-[100px] mx-auto mb-5">
                 <Image
@@ -498,41 +541,45 @@ export default function Home() {
               </h2>
             </div>
           )}
-          <div className="container lg:px-0 lg:max-w-[800px] max-w-full w-full">
-            <PlaceholdersAndVanishInput
-              onChange={(e) => {
-                setSearchValue(e.target.value);
-                if (mode === "edit" && isPhone) {
-                  setEditingQuery((pv) => ({
-                    ...pv!,
-                    updatedQuery: e.target.value,
-                  }));
+          {!isCaption && (
+            <div className="container lg:px-0 lg:max-w-[800px] max-w-full w-full">
+              <PlaceholdersAndVanishInput
+                onChange={(e) => {
+                  setSearchValue(e.target.value);
+                  if (mode === "edit" && isPhone) {
+                    setEditingQuery((pv) => ({
+                      ...pv!,
+                      updatedQuery: e.target.value,
+                    }));
+                  }
+                }}
+                onSubmit={fetchBot}
+                focused={mode === "edit" && isPhone}
+                value={
+                  mode === "edit" && isPhone ? editingQuery?.updatedQuery : ""
                 }
-              }}
-              onSubmit={fetchBot}
-              focused={mode === "edit" && isPhone}
-              value={
-                mode === "edit" && isPhone ? editingQuery?.updatedQuery : ""
-              }
-              placeholder={
-                queries.length === 0
-                  ? isPlay
-                    ? "What do you like to play?"
-                    : "What do you want to know?"
-                  : undefined
-              }
-              onBlur={() => {
-                if (mode === "edit" && isPhone) {
-                  setMode("add");
-                  setEditingQuery(null);
+                placeholder={
+                  queries.length === 0
+                    ? isPlay
+                      ? "What do you like to play?"
+                      : "What do you want to know?"
+                    : undefined
                 }
-              }}
-              className="duration-300 -z-1"
-            />
-            {/* <div className="mx-auto w-[60px] mt-12 h-[60px] rounded-full flex items-center justify-center shadow-sm bg-secondary">
+                onBlur={() => {
+                  if (mode === "edit" && isPhone) {
+                    setMode("add");
+                    setEditingQuery(null);
+                  }
+                }}
+                onButtonClick={() => setIsCaption(true)}
+                icon={<FaMicrophone />}
+                className="duration-300 -z-1"
+              />
+              {/* <div className="mx-auto w-[60px] mt-12 h-[60px] rounded-full flex items-center justify-center shadow-sm bg-secondary">
               <FaHeadphonesAlt className="text-[30px]" />
             </div> */}
-          </div>
+            </div>
+          )}
         </div>
       </div>
       {!isPhone && (

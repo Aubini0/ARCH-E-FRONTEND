@@ -1,5 +1,5 @@
 import { AnimatePresence, motion } from "framer-motion";
-import {
+import React, {
   FC,
   HTMLAttributes,
   useCallback,
@@ -8,7 +8,6 @@ import {
   useState,
 } from "react";
 import { cn } from "@/lib/utils";
-import { IoSearch } from "react-icons/io5";
 import { TextGenerateEffect } from "./TextGenerateEffect";
 
 interface IPlaceholdersAndVanishInput {
@@ -19,6 +18,8 @@ interface IPlaceholdersAndVanishInput {
   focused?: boolean;
   value?: string;
   onBlur?: () => void;
+  icon: React.ReactNode;
+  onButtonClick?: () => void;
 }
 
 const PlaceholdersAndVanishInput: FC<IPlaceholdersAndVanishInput> = ({
@@ -29,6 +30,8 @@ const PlaceholdersAndVanishInput: FC<IPlaceholdersAndVanishInput> = ({
   focused = false,
   value,
   onBlur,
+  icon,
+  onButtonClick,
 }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const newDataRef = useRef<any[]>([]);
@@ -210,12 +213,12 @@ const PlaceholdersAndVanishInput: FC<IPlaceholdersAndVanishInput> = ({
       />
 
       <button
-        disabled={!inputValue}
         onMouseDown={(e) => e.preventDefault()}
-        type="submit"
-        className="absolute right-2 top-1/2 z-50 -translate-y-1/2 h-8 w-8 rounded-full disabled:bg-gray-500 bg-black dark:bg-zinc-900 dark:disabled:bg-zinc-800 cursor-pointer transition duration-200 flex items-center justify-center bg-background"
+        onClick={onButtonClick}
+        type="button"
+        className="absolute right-2 top-1/2 z-50 -translate-y-1/2 h-8 w-8 rounded-full cursor-pointer transition duration-200 flex items-center justify-center text-lg bg-transparent hover:bg-background"
       >
-        <IoSearch />
+        {icon}
       </button>
 
       <div className="absolute inset-0 flex items-center rounded-full pointer-events-none">
