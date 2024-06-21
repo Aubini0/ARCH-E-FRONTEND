@@ -191,7 +191,7 @@ export default function Home() {
   console.log(isCaption);
 
   return (
-    <MainLayout className="font-onest hide-scrollbar h-screen w-screen overflow-hidden">
+    <MainLayout className="font-onest hide-scrollbar max-h-screen min-h-screen h-full w-full overflow-hidden">
       <div
         className={cn(
           "container flex-col flex items-center w-full justify-center"
