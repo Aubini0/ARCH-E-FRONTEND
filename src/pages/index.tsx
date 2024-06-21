@@ -41,6 +41,7 @@ import MusicCard from "@/components/shared/MusicCard";
 import Lottie from "lottie-react";
 import voiceAnimation from "@/assets/lotties/voice-animation.json";
 import useLongPress from "@/hooks/useLongPress";
+import { useRouter } from "next/router";
 
 interface IQuery {
   id: string;
@@ -50,6 +51,7 @@ interface IQuery {
 }
 
 export default function Home() {
+  const router = useRouter();
   const [sheetOpen, setSheetOpen] = useState(false);
   const { isPhone } = useDeviceIndicator();
   const [_, setSearchValue] = useState("");
@@ -60,11 +62,8 @@ export default function Home() {
   >(null);
   const [mode, setMode] = useState<"add" | "edit">("add");
   const [isPlay, setIsPlay] = useState(false);
-  const [isCaption, setIsCaption] = useState(false);
+  const isCaption = router.query.caption === "1";
   const [voicePlaying, setVoicePlaying] = useState(false);
-
-  const { onMouseDown, onMouseLeave, onMouseUp, onTouchEnd, onTouchStart } =
-    useLongPress();
 
   const { auth } = useAppSelector((state) => state.auth);
 
@@ -467,8 +466,14 @@ export default function Home() {
           </div>
         )}
         {isCaption && (
-          <div className="fixed w-screen h-screen flex bg-black/20 backdrop-blur-lg items-center justify-center max-w-full flex-col inset-0">
-            <div className="w-[200px] relative h-[200px] mx-auto mb-5">
+          <div
+            style={{
+              backdropFilter: "blur(20px)",
+              WebkitBackdropFilter: "blur(20px)",
+            }}
+            className="fixed w-screen h-screen flex bg-black/20 items-center justify-center max-w-full flex-col inset-0"
+          >
+            <div className="w-[200px] relative h-[200px] mx-auto">
               <Image
                 fill
                 src={logoAnimated}
@@ -476,10 +481,10 @@ export default function Home() {
                 className="object-contain"
               />
             </div>
-            <div className="text-lg md:mt-0 mt-5 font-medium text-center">
+            <div className="text-lg md:mt-0 mt-8 font-medium text-center">
               Captions will be here. Subtitles
             </div>
-            <div className="flex items-center justify-center mt-5 fixed bottom-[80px] w-full max-w-[250px]">
+            <div className="flex items-center justify-center mt-5 fixed bottom-[50px] w-full max-w-[250px]">
               <div
                 onClick={() => {
                   setVoicePlaying((pv) => !pv);
@@ -499,7 +504,7 @@ export default function Home() {
             </div>
 
             <button
-              onClick={() => setIsCaption(false)}
+              onClick={() => router.push("/")}
               className="fixed top-6 right-5 md:top-8 md:right-10 text-white z-[120] rounded-lg flex items-center justify-center text-[40px]"
             >
               <CgCloseR />
@@ -571,7 +576,7 @@ export default function Home() {
                     setEditingQuery(null);
                   }
                 }}
-                onButtonClick={() => setIsCaption(true)}
+                onButtonClick={() => router.push("/?caption=1")}
                 icon={<FaMicrophone />}
                 className="duration-300 -z-1"
               />
