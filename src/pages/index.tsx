@@ -413,7 +413,10 @@ export default function Home() {
                     >
                       <CarouselContent className="text-black">
                         {Array.from({ length: 5 }).map((_, index) => (
-                          <CarouselItem className="basis-[50%] select-none h-[120px]">
+                          <CarouselItem
+                            key={index}
+                            className="basis-[50%] select-none h-[120px]"
+                          >
                             <div className="rounded-lg h-full w-full overflow-hidden duration-300">
                               <img
                                 src={`https://upload.wikimedia.org/wikipedia/en/thumb/3/30/Medabots.jpg/220px-Medabots.jpg`}
