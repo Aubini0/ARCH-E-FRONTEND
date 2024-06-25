@@ -42,6 +42,7 @@ import Lottie from "lottie-react";
 import voiceAnimation from "@/assets/lotties/voice-animation.json";
 import useLongPress from "@/hooks/useLongPress";
 import { useRouter } from "next/router";
+import { Card, CardFooter, CardHeader } from "@/components/ui/card";
 
 interface IQuery {
   id: string;
@@ -223,7 +224,7 @@ export default function Home() {
                   key={q.id}
                   id={q.id}
                   className={cn(
-                    "max-w-full lg:max-w-[800px] duration-300 mx-auto w-full",
+                    "max-w-full lg:max-w-[650px] 2xl:max-w-[800px] relative duration-300 mx-auto w-full",
                     i === 0 ? "pt-0 pb-5" : "pt-5 pb-5",
                     queries.length === i + 1 ? "pb-[100px] md:pb-[120px]" : ""
                   )}
@@ -278,6 +279,46 @@ export default function Home() {
                       <h5 className="text-[30px] font-medium">{q.query}</h5>
                     </div>
                   )}
+                  {/* <div className="absolute top-0 -right-[0px] flex items-center justify-center">
+                    <Card className="w-full h-[300px] col-span-12 sm:col-span-7">
+                      <CardHeader className="absolute z-10 top-1 flex-col items-start">
+                        <p className="text-tiny text-white/60 uppercase font-bold">
+                          Your day your way
+                        </p>
+                        <h4 className="text-white/90 font-medium text-xl">
+                          Your checklist for better sleep
+                        </h4>
+                      </CardHeader>
+                      <div className="w-full h-full relative">
+                        <Image
+                          fill
+                          alt="Relaxing app background"
+                          className="z-0 w-full h-full object-cover"
+                          src="https://nextui.org/images/card-example-5.jpeg"
+                        />
+                      </div>
+                      <CardFooter className="absolute bg-black/40 bottom-0 z-10 border-t-1 border-default-600 dark:border-default-100">
+                        <div className="flex flex-grow gap-2 items-center">
+                          <Image
+                            alt="Breathing app icon"
+                            className="rounded-full bg-black"
+                            src="https://nextui.org/images/breathing-app-icon.jpeg"
+                            width={40}
+                            height={44}
+                          />
+                          <div className="flex flex-col">
+                            <p className="text-tiny text-white/60">
+                              Breathing App
+                            </p>
+                            <p className="text-tiny text-white/60">
+                              Get a good night's sleep.
+                            </p>
+                          </div>
+                        </div>
+                        <Button size="sm">Get App</Button>
+                      </CardFooter>
+                    </Card>
+                  </div> */}
                   {/* <Carousel
                     opts={{
                       align: "start",
@@ -473,7 +514,7 @@ export default function Home() {
             }}
             className="fixed caption-container w-screen h-screen flex bg-black/20 items-center justify-center max-w-full flex-col inset-0 overflow-hidden hide-scrollbar"
           >
-            <div className="w-[200px] relative h-[200px] mx-auto">
+            <div className="w-[150px] relative h-[150px] mx-auto">
               <Image
                 fill
                 src={logoAnimated}
@@ -481,25 +522,15 @@ export default function Home() {
                 className="object-contain"
               />
             </div>
-            <div className="text-lg md:mt-0 mt-8 font-medium text-center">
+            <div className="text-lg md:mt-8 mt-14 font-medium text-center">
               Captions will be here. Subtitles
             </div>
             <div className="flex items-center justify-center mt-5 fixed bottom-[60px] w-full max-w-[250px]">
-              <div
-                onClick={() => {
-                  setVoicePlaying((pv) => !pv);
-                }}
-                className="w-fit h-fit relative"
-              >
-                <IoIosRadioButtonOn className="text-[100px]" />
-                {voicePlaying && (
-                  <div className="flex items-center justify-center inset-0 absolute pointer-events-none">
-                    <Lottie
-                      animationData={voiceAnimation}
-                      className="w-[40px] h-[40px] object-cover"
-                    />
-                  </div>
-                )}
+              <div className="flex items-center justify-center pointer-events-none">
+                <Lottie
+                  animationData={voiceAnimation}
+                  className="w-[300px] h-[150px] object-cover"
+                />
               </div>
             </div>
 
