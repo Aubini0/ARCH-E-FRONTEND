@@ -14,7 +14,6 @@ import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import SourceCard from "@/components/pages/Home/SourceCard";
 import useDeviceIndicator from "@/hooks/useDeviceIndicator";
-import { IoIosRadioButtonOn } from "react-icons/io";
 import logoImg from "@/assets/images/logo.png";
 import logoAnimated from "@/assets/images/logo-animated.gif";
 import { motion } from "framer-motion";
@@ -34,6 +33,7 @@ import { useAppSelector } from "@/store/hooks";
 import MarkDown from "react-markdown";
 import Keys from "@/config/keys";
 import { FaMicrophone, FaRegEdit } from "react-icons/fa";
+import { FaRegCirclePlay } from "react-icons/fa6";
 import { CgCloseR } from "react-icons/cg";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -61,6 +61,7 @@ export default function Home() {
   const [editingQuery, setEditingQuery] = useState<
     (IQuery & { updatedQuery: string }) | null
   >(null);
+  const [imageViewerOpen, setImageViewerOpen] = useState(false);
   const [mode, setMode] = useState<"add" | "edit">("add");
   const [isPlay, setIsPlay] = useState(false);
   const isCaption = router.query.caption === "1";
@@ -194,9 +195,7 @@ export default function Home() {
   return (
     <MainLayout className="font-onest hide-scrollbar max-h-screen min-h-screen h-full w-full overflow-hidden">
       <div
-        className={cn(
-          "container flex-col flex items-center w-full justify-center"
-        )}
+        className={cn("flex-col flex items-center w-full justify-center")}
         style={{
           height: `calc(100vh - 96px)`,
           maxHeight: `calc(100vh - 96px)`,
@@ -205,7 +204,7 @@ export default function Home() {
         {queries.length > 0 && !isPlay && !isCaption && (
           <div
             className={cn(
-              "w-full max-h-full h-full duration-300 flex flex-col items-center"
+              "container lg:px-0 lg:mx-0 lg:max-w-none w-full max-h-full h-full duration-300 flex flex-col items-center"
             )}
             style={{
               height: `calc(100vh - 96px)`,
@@ -232,7 +231,7 @@ export default function Home() {
                     minHeight: "calc(100vh - 96px)",
                   }}
                   animate={{
-                    minHeight: q.completed ? "unset" : "calc(100vh - 96px)",
+                    minHeight: isPhone ? "unset" : "calc(100vh - 96px)",
                   }}
                 >
                   {!isPhone && mode === "edit" && editingQuery?.id === q.id ? (
@@ -279,46 +278,56 @@ export default function Home() {
                       <h5 className="text-[30px] font-medium">{q.query}</h5>
                     </div>
                   )}
-                  {/* <div className="absolute top-0 -right-[0px] flex items-center justify-center">
-                    <Card className="w-full h-[300px] col-span-12 sm:col-span-7">
-                      <CardHeader className="absolute z-10 top-1 flex-col items-start">
-                        <p className="text-tiny text-white/60 uppercase font-bold">
-                          Your day your way
-                        </p>
-                        <h4 className="text-white/90 font-medium text-xl">
-                          Your checklist for better sleep
-                        </h4>
-                      </CardHeader>
-                      <div className="w-full h-full relative">
-                        <Image
-                          fill
-                          alt="Relaxing app background"
-                          className="z-0 w-full h-full object-cover"
-                          src="https://nextui.org/images/card-example-5.jpeg"
+                  <div className="absolute hidden lg:block top-0 2xl:-right-[330px] lg:-right-[300px] lg:w-[270px] pb-5 2xl:w-[310px] h-full">
+                    <div
+                      // style={{ position: "-webkit-sticky" }}
+                      className="sticky top-[10px] grid grid-cols-2 gap-5"
+                    >
+                      <div className="col-span-2 rounded-lg overflow-hidden duration-300 h-[230px]">
+                        <img
+                          src={`https://upload.wikimedia.org/wikipedia/en/thumb/3/30/Medabots.jpg/220px-Medabots.jpg`}
+                          alt="image"
+                          className="w-full h-full object-cover"
                         />
                       </div>
-                      <CardFooter className="absolute bg-black/40 bottom-0 z-10 border-t-1 border-default-600 dark:border-default-100">
-                        <div className="flex flex-grow gap-2 items-center">
-                          <Image
-                            alt="Breathing app icon"
-                            className="rounded-full bg-black"
-                            src="https://nextui.org/images/breathing-app-icon.jpeg"
-                            width={40}
-                            height={44}
-                          />
-                          <div className="flex flex-col">
-                            <p className="text-tiny text-white/60">
-                              Breathing App
-                            </p>
-                            <p className="text-tiny text-white/60">
-                              Get a good night's sleep.
-                            </p>
-                          </div>
+                      <div className="col-span-1 rounded-lg aspect-[16/10] overflow-hidden duration-300">
+                        <img
+                          src={`https://upload.wikimedia.org/wikipedia/en/thumb/3/30/Medabots.jpg/220px-Medabots.jpg`}
+                          alt="image"
+                          className="w-full h-full object-cover"
+                        />
+                      </div>
+                      <div className="col-span-1 rounded-lg aspect-[16/10] overflow-hidden duration-300">
+                        <img
+                          src={`https://upload.wikimedia.org/wikipedia/en/thumb/3/30/Medabots.jpg/220px-Medabots.jpg`}
+                          alt="image"
+                          className="w-full h-full object-cover"
+                        />
+                      </div>
+                      <div className="col-span-1 rounded-lg aspect-[16/10] overflow-hidden duration-300">
+                        <img
+                          src={`https://upload.wikimedia.org/wikipedia/en/thumb/3/30/Medabots.jpg/220px-Medabots.jpg`}
+                          alt="image"
+                          className="w-full h-full object-cover"
+                        />
+                      </div>
+                      <div
+                        onClick={() => setImageViewerOpen(true)}
+                        className="rounded-lg col-span-1 aspect-[16/10] overflow-hidden duration-300 bg-secondary flex flex-col items-center justify-center cursor-pointer"
+                      >
+                        <img
+                          src={`https://upload.wikimedia.org/wikipedia/en/thumb/3/30/Medabots.jpg/220px-Medabots.jpg`}
+                          alt="image"
+                          className="w-full h-[60px] rounded-xl object-cover"
+                        />
+                        <div className="flex items-center justify-center h-[30px]">
+                          <p className="text-sm font-medium text-white">
+                            + View more
+                          </p>
                         </div>
-                        <Button size="sm">Get App</Button>
-                      </CardFooter>
-                    </Card>
-                  </div> */}
+                      </div>
+                    </div>
+                  </div>
                   {/* <Carousel
                     opts={{
                       align: "start",
@@ -396,6 +405,40 @@ export default function Home() {
                     </div>
                   </div> */}
                   <div className="flex flex-col items-start w-full">
+                    <Carousel
+                      opts={{
+                        align: "start",
+                      }}
+                      className="w-full md:hidden block mt-5"
+                    >
+                      <CarouselContent className="text-black">
+                        {Array.from({ length: 5 }).map((_, index) => (
+                          <CarouselItem className="basis-[50%] select-none h-[120px]">
+                            <div className="rounded-lg h-full w-full overflow-hidden duration-300">
+                              <img
+                                src={`https://upload.wikimedia.org/wikipedia/en/thumb/3/30/Medabots.jpg/220px-Medabots.jpg`}
+                                alt="image"
+                                className="w-full h-full object-cover"
+                              />
+                            </div>
+                          </CarouselItem>
+                        ))}
+                        <CarouselItem className="basis-[50%] select-none h-[120px]">
+                          <div className="rounded-lg h-full w-full overflow-hidden duration-300 bg-secondary flex flex-col items-center justify-center">
+                            <img
+                              src={`https://upload.wikimedia.org/wikipedia/en/thumb/3/30/Medabots.jpg/220px-Medabots.jpg`}
+                              alt="image"
+                              className="w-full h-[90px] rounded-xl object-cover"
+                            />
+                            <div className="flex items-center justify-center h-[30px]">
+                              <p className="text-sm font-medium text-white">
+                                + View more
+                              </p>
+                            </div>
+                          </div>
+                        </CarouselItem>
+                      </CarouselContent>
+                    </Carousel>
                     <div className="w-full gap-3 flex items-center pb-3 pt-8">
                       <Image
                         src={logoImg.src}
@@ -544,6 +587,85 @@ export default function Home() {
             </button>
           </div>
         )}
+        {imageViewerOpen && (
+          <div
+            style={{
+              backdropFilter: "blur(20px)",
+              WebkitBackdropFilter: "blur(20px)",
+            }}
+            className="fixed w-screen h-screen flex bg-black/20 items-center justify-center max-w-full flex-col inset-0 overflow-hidden hide-scrollbar"
+          >
+            <div className="w-full border-b-2 h-[96px] flex items-center justify-between px-10">
+              <div className="flex items-center justify-start gap-3">
+                <div className="flex items-center justify-center gap-3 rounded-full">
+                  <img
+                    src="https://www.google.com/s2/favicons?sz=128&domain=tsn.ca"
+                    alt="source icon"
+                    className="w-8 h-8 rounded-full"
+                  />
+                  <span className="text-[30px]">tsn.ca</span>
+                </div>
+              </div>
+              <button
+                onClick={() => {
+                  setImageViewerOpen(false);
+                }}
+                className="text-white z-[120] rounded-lg flex items-center justify-center text-[40px]"
+              >
+                <CgCloseR />
+              </button>
+            </div>
+            <div className="px-12 w-full h-full flex items-center">
+              <div className="flex-1 h-full flex items-center justify-center">
+                <div className="w-[300px] relative h-auto overflow-hidden aspect-[9/16] rounded-lg">
+                  <img
+                    src={`https://upload.wikimedia.org/wikipedia/en/thumb/3/30/Medabots.jpg/220px-Medabots.jpg`}
+                    alt="image"
+                    className="object-cover w-full h-full"
+                  />
+                  <div className="absolute inset-0 bg-black/30">
+                    <FaRegCirclePlay className="text-white text-[80px] absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2" />
+                  </div>
+                </div>
+              </div>
+              <div className="w-[280px] h-full py-8">
+                <div
+                  className="grid grid-cols-1 gap-3 overflow-y-auto hide-scrollbar w-full"
+                  style={{ maxHeight: "calc(100vh - 130px)" }}
+                >
+                  <div className="col-span-1 rounded-lg overflow-hidden duration-300 h-[200px]">
+                    <img
+                      src={`https://upload.wikimedia.org/wikipedia/en/thumb/3/30/Medabots.jpg/220px-Medabots.jpg`}
+                      alt="image"
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                  <div className="col-span-1 rounded-lg aspect-[16/9] overflow-hidden duration-300">
+                    <img
+                      src={`https://upload.wikimedia.org/wikipedia/en/thumb/3/30/Medabots.jpg/220px-Medabots.jpg`}
+                      alt="image"
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                  <div className="col-span-1 rounded-lg aspect-[16/9] overflow-hidden duration-300">
+                    <img
+                      src={`https://upload.wikimedia.org/wikipedia/en/thumb/3/30/Medabots.jpg/220px-Medabots.jpg`}
+                      alt="image"
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                  <div className="col-span-1 rounded-lg aspect-[16/9] overflow-hidden duration-300">
+                    <img
+                      src={`https://upload.wikimedia.org/wikipedia/en/thumb/3/30/Medabots.jpg/220px-Medabots.jpg`}
+                      alt="image"
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
         {isPlay && (
           <div
             className={cn(
@@ -556,7 +678,7 @@ export default function Home() {
             <MusicCard className="mx-auto mb-[108px]" />
           </div>
         )}
-        {!isCaption && (
+        {!isCaption && !imageViewerOpen && (
           <div
             className={cn(
               "flex items-center w-full justify-center flex-col md:py-10 py-5 mx-auto",
@@ -580,7 +702,7 @@ export default function Home() {
                 </h2>
               </div>
             )}
-            <div className="container lg:px-0 lg:max-w-[800px] max-w-full w-full">
+            <div className="lg:max-w-[800px] px-8 lg:px-0 max-w-full w-full">
               <PlaceholdersAndVanishInput
                 onChange={(e) => {
                   setSearchValue(e.target.value);
