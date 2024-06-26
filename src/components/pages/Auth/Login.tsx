@@ -22,6 +22,8 @@ import { toast } from "react-hot-toast";
 import { setSignInModal } from "@/redux/modals/modalsSlice";
 import { useToast } from "@/components/ui/use-toast";
 import { ToastAction } from "@/components/ui/toast";
+import logoImage from "@/assets/images/logo.png";
+import Image from "next/image";
 
 interface ILogin {
   handleGoToSignUp?: () => void;
@@ -38,7 +40,7 @@ const formSchema = z.object({
 
 type FormType = z.infer<typeof formSchema>;
 
-const Login: FC<ILogin> = ({ onLogin }) => {
+const Login: FC<ILogin> = ({ onLogin, handleGoToSignUp }) => {
   const { toast } = useToast();
   const queryClient = useQueryClient();
   const [passwordVisible, setPasswordVisible] = useState(false);
@@ -91,16 +93,17 @@ const Login: FC<ILogin> = ({ onLogin }) => {
   };
 
   return (
-    <Card className="border-none">
-      <CardHeader>
-        <CardTitle>Login</CardTitle>
-        <CardDescription>
-          Enter your email below to log into your account.
-        </CardDescription>
+    <Card className="border-secondary w-full md:w-[400px]">
+      <CardHeader className="p-[40px] flex flex-row items-center justify-between">
+        <Image src={logoImage} alt="Logo Image" width={50} height={50} />
+        <h4 className="font-semibold !m-0 text-2xl">Sign In</h4>
       </CardHeader>
-      <CardContent onSubmit={handleSubmit(onSubmit)}>
-        <form className="space-y-2">
-          <div className="space-y-1">
+      <CardContent
+        className="pb-[40px] px-[40px]"
+        onSubmit={handleSubmit(onSubmit)}
+      >
+        <form className="space-y-4">
+          <div>
             <Controller
               control={control}
               name="email"
@@ -116,7 +119,7 @@ const Login: FC<ILogin> = ({ onLogin }) => {
               )}
             />
           </div>
-          <div className="space-y-1">
+          <div>
             <Controller
               control={control}
               name="password"
@@ -142,18 +145,34 @@ const Login: FC<ILogin> = ({ onLogin }) => {
               }}
             />
           </div>
-          <div className="flex flex-col !mt-8 gap-3">
+          <div className="flex flex-col gap-6">
             <Button type="submit" isLoading={isLoading} className="w-full">
               Login
             </Button>
+            <div className="flex items-center h-[12px] gap-3">
+              <div className="w-full h-[1px] bg-secondary flex-1"></div>
+              <div>or</div>
+              <div className="w-full h-[1px] bg-secondary flex-1"></div>
+            </div>
             <Button
               type="button"
               variant={"secondary"}
               className="w-full gap-1"
             >
               <FcGoogle className="text-lg" />
-              Login with Google
+              Continue with Google
             </Button>
+          </div>
+          <div className="w-full text-center">
+            <p className="text-gray-400 text-sm">
+              Don't have an account?{" "}
+              <button
+                onClick={() => handleGoToSignUp && handleGoToSignUp()}
+                className="underline outline-none border-none text-white font-semibold"
+              >
+                Sign Up
+              </button>
+            </p>
           </div>
         </form>
       </CardContent>

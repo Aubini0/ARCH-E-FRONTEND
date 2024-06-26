@@ -16,11 +16,13 @@ import { setAuth } from "@/redux/auth/authSlice";
 import { setSignInModal } from "@/redux/modals/modalsSlice";
 import { useAppDispatch } from "@/store/hooks";
 import { zodResolver } from "@hookform/resolvers/zod";
+import Image from "next/image";
 import React, { FC, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
 import { z } from "zod";
+import logoImage from "@/assets/images/logo.png";
 
 interface ISignUp {
   handleGoToLogin?: () => void;
@@ -131,16 +133,14 @@ const SignUp: FC<ISignUp> = ({ handleGoToLogin, onSignUp }) => {
   };
 
   return (
-    <Card className="border-none">
-      <CardHeader>
-        <CardTitle>Sign Up</CardTitle>
-        <CardDescription>
-          Enter your information to create an account
-        </CardDescription>
+    <Card className="border-secondary w-full md:w-[400px]">
+      <CardHeader className="p-[40px] flex flex-row items-center justify-between">
+        <Image src={logoImage} alt="Logo Image" width={50} height={50} />
+        <h4 className="font-semibold !m-0 text-2xl">Sign Up</h4>
       </CardHeader>
-      <CardContent>
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-2">
-          <div className="space-y-1">
+      <CardContent className="pb-[40px] px-[40px]">
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+          <div>
             <Controller
               control={control}
               name="full_name"
@@ -154,7 +154,7 @@ const SignUp: FC<ISignUp> = ({ handleGoToLogin, onSignUp }) => {
               )}
             />
           </div>
-          <div className="space-y-1">
+          <div>
             <Controller
               control={control}
               name="email"
@@ -191,14 +191,34 @@ const SignUp: FC<ISignUp> = ({ handleGoToLogin, onSignUp }) => {
               )}
             />
           </div>
-          <div className="flex-col flex gap-3 !mt-8">
-            <Button isLoading={isLoading} className="w-full">
+          <div className="flex flex-col gap-6">
+            <Button type="submit" isLoading={isLoading} className="w-full">
               Sign Up
             </Button>
-            <Button variant={"secondary"} className="w-full gap-1">
+            <div className="flex items-center h-[12px] gap-3">
+              <div className="w-full h-[1px] bg-secondary flex-1"></div>
+              <div>or</div>
+              <div className="w-full h-[1px] bg-secondary flex-1"></div>
+            </div>
+            <Button
+              type="button"
+              variant={"secondary"}
+              className="w-full gap-1"
+            >
               <FcGoogle className="text-lg" />
-              Sign Up with Google
+              Continue with Google
             </Button>
+          </div>
+          <div className="w-full text-center">
+            <p className="text-gray-400 text-sm">
+              Already have an account?{" "}
+              <button
+                onClick={() => handleGoToLogin && handleGoToLogin()}
+                className="underline outline-none border-none text-white font-semibold"
+              >
+                Sign Up
+              </button>
+            </p>
           </div>
         </form>
       </CardContent>
