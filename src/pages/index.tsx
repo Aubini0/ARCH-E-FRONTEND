@@ -278,7 +278,7 @@ export default function Home() {
                       <h5 className="text-[30px] font-medium">{q.query}</h5>
                     </div>
                   )}
-                  <div className="absolute hidden lg:block top-0 2xl:-right-[330px] lg:-right-[300px] lg:w-[270px] pb-5 2xl:w-[310px] h-full">
+                  {/* <div className="absolute hidden lg:block top-0 2xl:-right-[330px] lg:-right-[300px] lg:w-[270px] pb-5 2xl:w-[310px] h-full">
                     <div
                       // style={{ position: "-webkit-sticky" }}
                       className="sticky top-[10px] grid grid-cols-2 gap-5"
@@ -327,7 +327,7 @@ export default function Home() {
                         </div>
                       </div>
                     </div>
-                  </div>
+                  </div> */}
                   {/* <Carousel
                     opts={{
                       align: "start",
@@ -405,7 +405,7 @@ export default function Home() {
                     </div>
                   </div> */}
                   <div className="flex flex-col items-start w-full">
-                    <Carousel
+                    {/* <Carousel
                       opts={{
                         align: "start",
                       }}
@@ -441,7 +441,7 @@ export default function Home() {
                           </div>
                         </CarouselItem>
                       </CarouselContent>
-                    </Carousel>
+                    </Carousel> */}
                     <div className="w-full gap-3 flex items-center pb-3 pt-8">
                       <Image
                         src={logoImg.src}
