@@ -64,7 +64,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
         )}{" "}
         <div
           className={cn(
-            "flex w-full rounded-lg border border-secondary overflow-hidden",
+            "flex w-full rounded-lg border border-secondary !mt-2 overflow-hidden",
             { "border-red-400": error },
             { "cursor-not-allowed bg-zinc-100 opacity-70": disabled },
             // { "ring-2 ring-primary ring-offset-2": isFocused },
