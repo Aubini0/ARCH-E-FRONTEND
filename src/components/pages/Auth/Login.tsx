@@ -145,6 +145,9 @@ const Login: FC<ILogin> = ({ onLogin, handleGoToSignUp }) => {
               }}
             />
           </div>
+          <div className="text-right underline font-onest font-semibold !mt-2 text-white">
+            Forgot password?
+          </div>
           <div className="flex flex-col gap-6">
             <Button type="submit" isLoading={isLoading} className="w-full">
               Login
