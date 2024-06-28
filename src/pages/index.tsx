@@ -43,6 +43,7 @@ import voiceAnimation from "@/assets/lotties/voice-animation.json";
 import useLongPress from "@/hooks/useLongPress";
 import { useRouter } from "next/router";
 import { Card, CardFooter, CardHeader } from "@/components/ui/card";
+import { Skeleton } from "@/components/ui/skeleton";
 
 interface IQuery {
   id: string;
@@ -572,7 +573,17 @@ export default function Home() {
                       />
                       <h5 className="font-medium text-lg text-white">ARCH-E</h5>
                     </div>
-                    <MarkDown className={"mkdown"}>{q.response}</MarkDown>
+                    {q.response && (
+                      <MarkDown className={"mkdown"}>{q.response}</MarkDown>
+                    )}
+
+                    {!q.response && (
+                      <div className="space-y-2 w-full">
+                        <Skeleton className="w-full h-[30px]" />
+                        <Skeleton className="w-full h-[30px]" />
+                        <Skeleton className="w-3/4 h-[30px]" />
+                      </div>
+                    )}
                     {q.completed && (
                       <div className="flex items-center mt-5 gap-3 justify-center">
                         {/* <div className="flex flex-col cursor-pointer items-center justify-center">
