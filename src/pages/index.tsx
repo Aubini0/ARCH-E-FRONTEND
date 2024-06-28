@@ -186,10 +186,12 @@ export default function Home() {
     if (!chatSocketRef?.current) {
       return;
     }
-    if (chatSocketRef?.current?.CONNECTING) {
+
+    if (chatSocketRef.current.readyState === WebSocket.CONNECTING) {
       return;
     }
-    if (!chatSocketRef?.current?.OPEN) {
+
+    if (chatSocketRef.current.readyState !== WebSocket.OPEN) {
       return;
     }
     if (!query) return;
