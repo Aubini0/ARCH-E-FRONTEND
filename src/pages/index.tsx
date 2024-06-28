@@ -598,8 +598,9 @@ export default function Home() {
                           Related Questions
                         </h5>
                         <div className="divide-y-2 pt-3 divide-secondary">
-                          {q.recommendations.map((rec) => (
+                          {q.recommendations.map((rec, i) => (
                             <div
+                              key={i}
                               onClick={() => fetchBot(rec)}
                               className="flex items-center justify-between gap-3 w-full py-2 cursor-pointer"
                             >
