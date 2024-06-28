@@ -216,7 +216,7 @@ const SignUp: FC<ISignUp> = ({ handleGoToLogin, onSignUp }) => {
                 onClick={() => handleGoToLogin && handleGoToLogin()}
                 className="underline outline-none border-none text-white font-semibold"
               >
-                Sign Up
+                Sign In
               </button>
             </p>
           </div>

@@ -150,7 +150,7 @@ const Login: FC<ILogin> = ({ onLogin, handleGoToSignUp }) => {
           </div>
           <div className="flex flex-col gap-6">
             <Button type="submit" isLoading={isLoading} className="w-full">
-              Login
+              Sign In
             </Button>
             <div className="flex items-center h-[12px] gap-3">
               <div className="w-full h-[1px] bg-secondary flex-1"></div>
