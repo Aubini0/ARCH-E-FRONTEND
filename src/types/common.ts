@@ -37,7 +37,7 @@ export interface IDocument {
   __v: string;
 }
 
-interface IUser extends IDocument {
+export interface IUser extends IDocument {
   full_name: string;
   username: string;
   age: string;

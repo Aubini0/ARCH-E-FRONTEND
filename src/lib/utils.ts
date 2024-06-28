@@ -1,3 +1,4 @@
+import Keys from "@/config/keys";
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 
@@ -40,4 +41,11 @@ export function numberSentences(text: string) {
   });
 
   return numberedSentences.join(" ");
+}
+
+export function getWebSocketURL(path = "") {
+  const protocolPrefix = "wss:";
+  const host = Keys.SOCKET_BASE_URL; // Includes hostname and port
+
+  return protocolPrefix + "//" + host + path;
 }

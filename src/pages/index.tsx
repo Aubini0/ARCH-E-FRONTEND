@@ -10,7 +10,7 @@ import {
   SheetHeader,
   SheetTitle,
 } from "@/components/ui/sheet";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import SourceCard from "@/components/pages/Home/SourceCard";
 import useDeviceIndicator from "@/hooks/useDeviceIndicator";
@@ -25,14 +25,14 @@ import {
 } from "@/components/ui/drawer";
 import MainLayout from "@/components/layouts/MainLayout";
 import PlaceholdersAndVanishInput from "@/components/ui/PlaceHolderAndVanishInput";
-import { cn } from "@/lib/utils";
+import { cn, getWebSocketURL } from "@/lib/utils";
 import { ScrollShadow } from "@nextui-org/react";
 import { IBotSearchResponseStream } from "@/types/common";
 import { nanoid } from "@reduxjs/toolkit";
 import { useAppSelector } from "@/store/hooks";
 import MarkDown from "react-markdown";
 import Keys from "@/config/keys";
-import { FaMicrophone, FaRegEdit } from "react-icons/fa";
+import { FaMicrophone, FaRegEdit, FaRegQuestionCircle } from "react-icons/fa";
 import { FaRegCirclePlay } from "react-icons/fa6";
 import { CgCloseR } from "react-icons/cg";
 import { Input } from "@/components/ui/input";
@@ -49,6 +49,7 @@ interface IQuery {
   query: string;
   response: string;
   completed: boolean;
+  recommendations: [];
 }
 
 export default function Home() {
@@ -61,11 +62,14 @@ export default function Home() {
   const [editingQuery, setEditingQuery] = useState<
     (IQuery & { updatedQuery: string }) | null
   >(null);
+  const editingQueryRef = useRef<IQuery & { updatedQuery: string }>(null);
   const [imageViewerOpen, setImageViewerOpen] = useState(false);
   const [mode, setMode] = useState<"add" | "edit">("add");
   const [isPlay, setIsPlay] = useState(false);
   const isCaption = router.query.caption === "1";
   const [voicePlaying, setVoicePlaying] = useState(false);
+
+  const chatSocketRef = useRef<WebSocket>(null);
 
   const { auth } = useAppSelector((state) => state.auth);
 
@@ -73,15 +77,134 @@ export default function Home() {
     setQueries([]);
   }, [auth]);
 
-  const fetchBot = async (query: string) => {
-    if (!query) return;
+  // const fetchBot = async (query: string) => {
+  //   if (!query) return;
 
+  //   const id = mode === "add" ? nanoid() : editingQuery!.id;
+
+  //   if (mode === "add") {
+  //     setQueries((prev) => [
+  //       ...prev,
+  //       { id, query: query, response: "", completed: false },
+  //     ]);
+  //   } else {
+  //     setQueries((prevQueries) => {
+  //       const _queries = [...prevQueries];
+  //       const currentQueryIndex = _queries.findIndex((q) => q.id === id);
+
+  //       if (currentQueryIndex !== -1) {
+  //         _queries[currentQueryIndex].completed = false;
+  //         _queries[currentQueryIndex].query = query;
+  //         _queries[currentQueryIndex].response = "";
+  //       }
+
+  //       return _queries;
+  //     });
+
+  //     const queryElement = document.getElementById(id);
+  //     if (queryElement) {
+  //       queryElement.scrollIntoView({ behavior: "smooth" });
+  //     }
+
+  //     setEditingQuery(null);
+  //     setMode("add");
+  //   }
+
+  //   try {
+  //     const response = await fetch(`${Keys.API_BASE_URL}/bots/search`, {
+  //       method: "POST",
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //       },
+  //       body: JSON.stringify({
+  //         query: query,
+  //       }),
+  //     });
+
+  //     const reader = response.body!.getReader();
+  //     const decoder = new TextDecoder();
+  //     let buffer = "";
+  //     let accumulatedResponse = "";
+
+  //     while (true) {
+  //       console.log("while true");
+  //       const { done, value } = await reader.read();
+  //       if (done) {
+  //         setQueries((prevQueries) => {
+  //           const _queries = [...prevQueries];
+  //           const currentQueryIndex = _queries.findIndex((q) => q.id === id);
+
+  //           if (currentQueryIndex !== -1) {
+  //             _queries[currentQueryIndex].completed = true;
+  //           }
+
+  //           return _queries;
+  //         });
+  //         break;
+  //       }
+
+  //       const decodedValue = decoder.decode(value, { stream: true });
+  //       buffer += decodedValue;
+
+  //       let boundary;
+  //       while ((boundary = buffer.indexOf("}{")) !== -1) {
+  //         const chunk = buffer.slice(0, boundary + 1);
+  //         buffer = buffer.slice(boundary + 1);
+
+  //         try {
+  //           const jsonObject: IBotSearchResponseStream = JSON.parse(chunk);
+
+  //           if (jsonObject.event_type === "on_llm_stream") {
+  //             const newData = jsonObject.data;
+
+  //             accumulatedResponse += newData;
+  //           }
+  //         } catch (error) {
+  //           console.error("Error parsing JSON:", error);
+  //         }
+  //       }
+
+  //       if (accumulatedResponse) {
+  //         setQueries((prevQueries) => {
+  //           const _queries = [...prevQueries];
+  //           const currentQueryIndex = _queries.findIndex((q) => q.id === id);
+
+  //           if (currentQueryIndex !== -1) {
+  //             _queries[currentQueryIndex].response = accumulatedResponse;
+  //           }
+
+  //           return _queries;
+  //         });
+  //       }
+  //     }
+  //   } catch (error) {
+  //     console.error("Error fetching stream:", error);
+  //   }
+  // };
+
+  const fetchBot = async (query: string) => {
+    if (!chatSocketRef?.current) {
+      return;
+    }
+    if (chatSocketRef?.current?.CONNECTING) {
+      return;
+    }
+    if (!chatSocketRef?.current?.OPEN) {
+      return;
+    }
+    if (!query) return;
     const id = mode === "add" ? nanoid() : editingQuery!.id;
 
     if (mode === "add") {
       setQueries((prev) => [
         ...prev,
-        { id, query: query, response: "", completed: false },
+        {
+          id,
+          query: query,
+          response: "",
+          completed: false,
+          recommendations: [],
+        },
       ]);
     } else {
       setQueries((prevQueries) => {
@@ -92,91 +215,87 @@ export default function Home() {
           _queries[currentQueryIndex].completed = false;
           _queries[currentQueryIndex].query = query;
           _queries[currentQueryIndex].response = "";
+          _queries[currentQueryIndex].recommendations = [];
         }
 
         return _queries;
       });
 
+      setMode("add");
+
       const queryElement = document.getElementById(id);
       if (queryElement) {
         queryElement.scrollIntoView({ behavior: "smooth" });
       }
-
-      setEditingQuery(null);
-      setMode("add");
     }
 
-    try {
-      const response = await fetch(`${Keys.API_BASE_URL}/bots/search`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          query: query,
-        }),
+    chatSocketRef.current?.send(JSON.stringify({ user_msg: query }));
+  };
+
+  const onChatMessage = (event: MessageEvent<any>) => {
+    const data = JSON.parse(event.data);
+
+    if (!editingQueryRef?.current) {
+      setQueries((prevQueries) => {
+        const _queries = [...prevQueries];
+        const latestId = _queries[_queries.length - 1]?.id;
+        const currentQueryIndex = _queries.findIndex((q) => q.id === latestId);
+        console.log(_queries, latestId);
+        if (currentQueryIndex !== -1) {
+          _queries[currentQueryIndex].completed = true;
+          _queries[currentQueryIndex].response = data.response;
+          _queries[currentQueryIndex].recommendations = data.recommendations;
+        }
+
+        return _queries;
+      });
+    } else {
+      setQueries((prevQueries) => {
+        const _queries = [...prevQueries];
+        const currentQueryIndex = _queries.findIndex(
+          (q) => q.id === editingQueryRef?.current?.id
+        );
+
+        if (currentQueryIndex !== -1) {
+          _queries[currentQueryIndex].completed = true;
+          _queries[currentQueryIndex].response = data.response;
+          _queries[currentQueryIndex].recommendations = data.recommendations;
+        }
+
+        return _queries;
       });
 
-      const reader = response.body!.getReader();
-      const decoder = new TextDecoder();
-      let buffer = "";
-      let accumulatedResponse = "";
-
-      while (true) {
-        console.log("while true");
-        const { done, value } = await reader.read();
-        if (done) {
-          setQueries((prevQueries) => {
-            const _queries = [...prevQueries];
-            const currentQueryIndex = _queries.findIndex((q) => q.id === id);
-
-            if (currentQueryIndex !== -1) {
-              _queries[currentQueryIndex].completed = true;
-            }
-
-            return _queries;
-          });
-          break;
-        }
-
-        const decodedValue = decoder.decode(value, { stream: true });
-        buffer += decodedValue;
-
-        let boundary;
-        while ((boundary = buffer.indexOf("}{")) !== -1) {
-          const chunk = buffer.slice(0, boundary + 1);
-          buffer = buffer.slice(boundary + 1);
-
-          try {
-            const jsonObject: IBotSearchResponseStream = JSON.parse(chunk);
-
-            if (jsonObject.event_type === "on_llm_stream") {
-              const newData = jsonObject.data;
-
-              accumulatedResponse += newData;
-            }
-          } catch (error) {
-            console.error("Error parsing JSON:", error);
-          }
-        }
-
-        if (accumulatedResponse) {
-          setQueries((prevQueries) => {
-            const _queries = [...prevQueries];
-            const currentQueryIndex = _queries.findIndex((q) => q.id === id);
-
-            if (currentQueryIndex !== -1) {
-              _queries[currentQueryIndex].response = accumulatedResponse;
-            }
-
-            return _queries;
-          });
-        }
-      }
-    } catch (error) {
-      console.error("Error fetching stream:", error);
+      setMode("add");
+      setEditingQuery(null);
     }
   };
+
+  useEffect(() => {
+    // @ts-ignore
+    editingQueryRef.current = editingQuery;
+  }, [editingQuery]);
+
+  useEffect(() => {
+    const chat_websocketUrl = getWebSocketURL("/invoke_llm");
+
+    const chat_socket = new WebSocket(chat_websocketUrl);
+
+    // @ts-ignore
+    chatSocketRef.current = chat_socket;
+
+    chat_socket.onopen = () => {
+      console.log("Chat WebSocket connection opened");
+    };
+
+    chat_socket.onmessage = onChatMessage;
+
+    chat_socket.onclose = () => {
+      console.log("WebSocket connection closed");
+    };
+    return () => {
+      chat_socket.close();
+    };
+  }, []);
 
   useEffect(() => {
     if (scrollAreaRef.current) {
@@ -189,8 +308,6 @@ export default function Home() {
       }
     }
   }, [queries.length]);
-
-  console.log(isCaption);
 
   return (
     <MainLayout className="font-onest hide-scrollbar max-h-screen min-h-screen h-full w-full overflow-hidden">
@@ -231,7 +348,7 @@ export default function Home() {
                     minHeight: "calc(100vh - 96px)",
                   }}
                   animate={{
-                    minHeight: isPhone ? "unset" : "calc(100vh - 96px)",
+                    minHeight: q.completed ? "unset" : "calc(100vh - 96px)",
                   }}
                 >
                   {!isPhone && mode === "edit" && editingQuery?.id === q.id ? (
@@ -473,80 +590,29 @@ export default function Home() {
                       </div>
                     )}
                   </div>
-                  {/* {queries.length === i + 1 && q.completed && (
-                    <div className="w-full h-auto border-t-2 border-secondary mt-3 pt-5">
-                      <h5 className="text-xl font-medium font-white">
-                        Related Questions
-                      </h5>
-                      <div className="divide-y-2 pt-3 divide-secondary">
-                        <div
-                          onClick={() =>
-                            handleSubmit(`Which language is better for machine learning,
-                            Python or JavaScript`)
-                          }
-                          className="flex items-center justify-between gap-3 w-full py-2 cursor-pointer"
-                        >
-                          <span className="text-sm md:text-base text-white w-[90%]">
-                            Which language is better for machine learning,
-                            Python or JavaScript
-                          </span>
-                          <FaRegQuestionCircle className="text-white text-xl" />
-                        </div>
-                        <div
-                          onClick={() =>
-                            handleSubmit(`Which language is better for machine learning,
-                            Python or JavaScript`)
-                          }
-                          className="flex items-center justify-between gap-3 w-full py-2 cursor-pointer"
-                        >
-                          <span className="text-sm md:text-base text-white w-[90%]">
-                            how does the performance of Python compare to
-                            JavaScript in web development
-                          </span>
-                          <FaRegQuestionCircle className="text-white text-xl" />
-                        </div>
-                        <div
-                          onClick={() =>
-                            handleSubmit(`Which language is better for machine learning,
-                            Python or JavaScript`)
-                          }
-                          className="flex items-center justify-between gap-3 w-full py-2 cursor-pointer"
-                        >
-                          <span className="text-sm md:text-base text-white w-[90%]">
-                            why is JavaScript considered the most popular
-                            language for web development
-                          </span>
-                          <FaRegQuestionCircle className="text-white text-xl" />
-                        </div>
-                        <div
-                          onClick={() =>
-                            handleSubmit(`Which language is better for machine learning,
-                            Python or JavaScript`)
-                          }
-                          className="flex items-center justify-between gap-3 w-full py-2 cursor-pointer"
-                        >
-                          <span className="text-sm md:text-base text-white w-[90%]">
-                            why is JavaScript considered the most popular
-                            language for web development
-                          </span>
-                          <FaRegQuestionCircle className="text-white text-xl" />
-                        </div>
-                        <div
-                          onClick={() =>
-                            handleSubmit(`Which language is better for machine learning,
-                            Python or JavaScript`)
-                          }
-                          className="flex items-center justify-between gap-3 w-full py-2 cursor-pointer"
-                        >
-                          <span className="text-sm md:text-base text-white w-[90%]">
-                            how does C++ remain relevant in 2024 despite the
-                            rise of newer languages
-                          </span>
-                          <FaRegQuestionCircle className="text-white text-xl" />
+                  {queries.length === i + 1 &&
+                    q.completed &&
+                    q.recommendations.length > 0 && (
+                      <div className="w-full h-auto border-t-2 border-secondary mt-3 pt-5">
+                        <h5 className="text-xl font-medium font-white">
+                          Related Questions
+                        </h5>
+                        <div className="divide-y-2 pt-3 divide-secondary">
+                          {q.recommendations.map((rec, i) => (
+                            <div
+                              key={i}
+                              onClick={() => fetchBot(rec)}
+                              className="flex items-center justify-between gap-3 w-full py-2 cursor-pointer"
+                            >
+                              <span className="text-sm md:text-base text-white w-[90%]">
+                                {rec}
+                              </span>
+                              <FaRegQuestionCircle className="text-white text-xl" />
+                            </div>
+                          ))}
                         </div>
                       </div>
-                    </div>
-                  )} */}
+                    )}
                 </motion.div>
               ))}
             </ScrollShadow>
