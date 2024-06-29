@@ -60,3 +60,11 @@ export interface IBotSearchResponseStream {
   name: "SerpAPI" | "llm";
   data?: string;
 }
+
+export interface IQuery {
+  id: string;
+  query: string;
+  response: string;
+  completed: boolean;
+  recommendations: [];
+}
