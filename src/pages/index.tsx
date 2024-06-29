@@ -34,6 +34,7 @@ import MusicCard from "@/components/shared/MusicCard";
 import { useRouter } from "next/router";
 import { IQuery } from "@/types/common";
 import Query from "@/components/shared/Query";
+import { IoClose, IoSend } from "react-icons/io5";
 
 export default function Home() {
   const router = useRouter();
@@ -346,11 +347,22 @@ export default function Home() {
               }
             }}
           >
-            <DrawerContent className="min-h-[95vh] h-[95vh] max-h-[95vh] p-5 border-none outline-none ring-0">
+            <DrawerContent
+              swapper={false}
+              className="min-h-[95%] h-[95%] max-h-[95%] border-none outline-none ring-0 pt-0"
+            >
+              <div className="border-b-2 border-secondary flex items-center justify-center relative h-[60px] px-3">
+                <div
+                  onClick={() => setQueries([])}
+                  className="absolute right-5 top-4.5"
+                >
+                  <IoClose className="text-3xl" />
+                </div>
+              </div>
               <ScrollShadow
                 ref={scrollAreaRef}
                 hideScrollBar
-                className="flex-1 divide-y-2 divide-secondary w-full mt-3"
+                className="flex-1 divide-y-2 p-5 divide-secondary w-full"
               >
                 {queries.map((q, i) => (
                   <Query
@@ -366,38 +378,42 @@ export default function Home() {
                   />
                 ))}
               </ScrollShadow>
-              <PlaceholdersAndVanishInput
-                onChange={(e) => {
-                  setSearchValue(e.target.value);
-                  if (mode === "edit" && isPhone) {
-                    setEditingQuery((pv) => ({
-                      ...pv!,
-                      updatedQuery: e.target.value,
-                    }));
+              <div className="px-5 pb-3">
+                <PlaceholdersAndVanishInput
+                  onChange={(e) => {
+                    setSearchValue(e.target.value);
+                    if (mode === "edit" && isPhone) {
+                      setEditingQuery((pv) => ({
+                        ...pv!,
+                        updatedQuery: e.target.value,
+                      }));
+                    }
+                  }}
+                  onSubmit={(v) => {
+                    fetchBot(v);
+                    setSearchValue("");
+                  }}
+                  focused={mode === "edit" && isPhone}
+                  value={
+                    mode === "edit" && isPhone ? editingQuery?.updatedQuery : ""
                   }
-                }}
-                onSubmit={fetchBot}
-                focused={mode === "edit" && isPhone}
-                value={
-                  mode === "edit" && isPhone ? editingQuery?.updatedQuery : ""
-                }
-                placeholder={
-                  queries.length === 0
-                    ? isPlay
+                  placeholder={
+                    isPlay
                       ? "What do you like to play?"
                       : "What do you want to know?"
-                    : undefined
-                }
-                onBlur={() => {
-                  if (mode === "edit" && isPhone) {
-                    setMode("add");
-                    setEditingQuery(null);
                   }
-                }}
-                onButtonClick={() => router.push("/conversation")}
-                icon={<FaMicrophone />}
-                className="duration-300 -z-1"
-              />
+                  onBlur={() => {
+                    if (mode === "edit" && isPhone) {
+                      setMode("add");
+                      setEditingQuery(null);
+                    }
+                  }}
+                  // on button click wont work now because caption is commented out
+                  // onButtonClick={() => router.push("/conversation")}
+                  icon={<IoSend />}
+                  className="duration-300 -z-1"
+                />
+              </div>
             </DrawerContent>
           </Drawer>
         )}
@@ -528,17 +544,18 @@ export default function Home() {
                     }));
                   }
                 }}
-                onSubmit={fetchBot}
+                onSubmit={(v) => {
+                  fetchBot(v);
+                  setSearchValue("");
+                }}
                 focused={mode === "edit" && isPhone}
                 value={
                   mode === "edit" && isPhone ? editingQuery?.updatedQuery : ""
                 }
                 placeholder={
-                  queries.length === 0
-                    ? isPlay
-                      ? "What do you like to play?"
-                      : "What do you want to know?"
-                    : undefined
+                  isPlay
+                    ? "What do you like to play?"
+                    : "What do you want to know?"
                 }
                 onBlur={() => {
                   if (mode === "edit" && isPhone) {
@@ -546,8 +563,9 @@ export default function Home() {
                     setEditingQuery(null);
                   }
                 }}
-                onButtonClick={() => router.push("/conversation")}
-                icon={<FaMicrophone />}
+                // on button click wont work now because caption is commented out
+                // onButtonClick={() => router.push("/conversation")}
+                icon={<IoSend />}
                 className="duration-300 -z-1"
               />
               {/* <div className="mx-auto w-[60px] mt-12 h-[60px] rounded-full flex items-center justify-center shadow-sm bg-secondary">
