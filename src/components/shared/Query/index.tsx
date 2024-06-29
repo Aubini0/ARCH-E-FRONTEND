@@ -112,7 +112,7 @@ const Query: FC<IQueryComponent> = ({
           </div>
         </form>
       ) : (
-        <div className="flex flex-col bg-secondary p-5 rounded-xl items-start w-full">
+        <div className="flex flex-col rounded-xl items-start w-full">
           <h5 className="text-[30px] font-medium">{query.query}</h5>
         </div>
       )}

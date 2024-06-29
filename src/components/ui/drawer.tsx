@@ -34,8 +34,10 @@ DrawerOverlay.displayName = DrawerPrimitive.Overlay.displayName;
 
 const DrawerContent = React.forwardRef<
   React.ElementRef<typeof DrawerPrimitive.Content>,
-  React.ComponentPropsWithoutRef<typeof DrawerPrimitive.Content>
->(({ className, children, ...props }, ref) => (
+  React.ComponentPropsWithoutRef<typeof DrawerPrimitive.Content> & {
+    swapper?: boolean;
+  }
+>(({ className, children, swapper = true, ...props }, ref) => (
   <DrawerPortal>
     <DrawerOverlay />
     <DrawerPrimitive.Content
@@ -46,9 +48,11 @@ const DrawerContent = React.forwardRef<
       )}
       {...props}
     >
-      <div className="absolute top-0 left-0 w-full">
-        <div className="mx-auto mt-4 h-[8px] w-[100px] rounded-full bg-secondary" />
-      </div>
+      {swapper && (
+        <div className="absolute top-0 left-0 w-full">
+          <div className="mx-auto mt-4 h-[8px] w-[100px] rounded-full bg-secondary" />
+        </div>
+      )}
       {children}
     </DrawerPrimitive.Content>
   </DrawerPortal>
