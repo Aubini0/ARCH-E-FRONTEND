@@ -511,22 +511,23 @@ export default function Home() {
         {!imageViewerOpen && (
           <div
             className={cn(
-              "flex items-center w-full justify-center flex-col md:py-10 py-5 mx-auto",
+              "flex items-center duration-300 w-full justify-center flex-col md:py-10 py-5 mx-auto",
               queries.length > 0 || isPlay
                 ? "fixed bottom-0 left-0"
-                : "fixed bottom-0 md:bottom-auto"
+                : "fixed bottom-0 md:bottom-auto",
+              queries.length === 0 && !isPlay ? "mb-[48px]" : "mb-0"
             )}
           >
             {queries.length === 0 && !isPlay && (
               <div className="container w-full">
-                <div className="w-[100px] relative h-[100px] mx-auto mb-5">
+                {/* <div className="w-[100px] relative h-[100px] mx-auto mb-5">
                   <Image
                     fill
                     src={logoAnimated}
                     alt="Animated logo"
                     className="object-contain"
                   />
-                </div>
+                </div> */}
                 <h2 className="text-[28px] md:text-[32px] font-medium text-center mb-[25vh] md:mb-12">
                   Bad questions don&apos;t exist.
                 </h2>
