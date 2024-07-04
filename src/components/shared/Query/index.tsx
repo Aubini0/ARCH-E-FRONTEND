@@ -325,11 +325,11 @@ const Query: FC<IQueryComponent> = ({
       {totalQueries + 1 &&
         query.completed &&
         query.recommendations.length > 0 && (
-          <div className="w-full h-auto border-t-2 border-secondary mt-3 pt-5">
+          <div className="w-full h-auto border-t-2 border-gray-400 dark:border-secondary mt-3 pt-5">
             <h5 className="text-xl font-medium font-white">
               Related Questions
             </h5>
-            <div className="divide-y-2 pt-3 divide-secondary">
+            <div className="divide-y-2 pt-3 divide-gray-400 dark:divide-secondary">
               {query.recommendations.map((rec, i) => (
                 <div
                   key={i}

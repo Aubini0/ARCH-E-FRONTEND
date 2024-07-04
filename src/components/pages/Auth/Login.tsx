@@ -24,6 +24,7 @@ import { useToast } from "@/components/ui/use-toast";
 import { ToastAction } from "@/components/ui/toast";
 import logoImage from "@/assets/images/logo.png";
 import Image from "next/image";
+import { cn } from "@/lib/utils";
 
 interface ILogin {
   handleGoToSignUp?: () => void;
@@ -93,7 +94,7 @@ const Login: FC<ILogin> = ({ onLogin, handleGoToSignUp }) => {
   };
 
   return (
-    <Card className="border-secondary text-black dark:text-white w-full md:w-[400px]">
+    <Card className={cn("text-black dark:text-white w-full md:w-[400px] border-none")}>
       <CardHeader className="p-[40px] flex flex-row items-center justify-between">
         <Image src={logoImage} alt="Logo Image" width={50} height={50} />
         <h4 className="font-semibold !m-0 text-2xl">Sign In</h4>

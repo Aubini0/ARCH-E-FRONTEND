@@ -318,7 +318,7 @@ export default function Home() {
                   style={{
                     height: `calc(100vh - 96px)`,
                   }}
-                  className="flex-1 divide-y-2 divide-secondary w-full"
+                  className="flex-1 divide-y-2 divide-gray-400 dark:divide-secondary w-full"
                 >
                   {queries.map((q, i) => (
                     <Query
@@ -351,7 +351,7 @@ export default function Home() {
               swapper={false}
               className="min-h-[95%] h-[95%] max-h-[95%] border-none outline-none ring-0 pt-0"
             >
-              <div className="border-b-2 border-secondary flex items-center justify-center relative h-[60px] px-3">
+              <div className="border-b-2 border-gray-400 dark:border-secondary flex items-center justify-center relative h-[60px] px-3">
                 <div
                   onClick={() => setQueries([])}
                   className="absolute right-5 top-4.5"
@@ -362,7 +362,7 @@ export default function Home() {
               <ScrollShadow
                 ref={scrollAreaRef}
                 hideScrollBar
-                className="flex-1 divide-y-2 p-5 divide-secondary w-full"
+                className="flex-1 divide-y-2 p-5 divide-gray-400 dark:divide-secondary w-full"
               >
                 {queries.map((q, i) => (
                   <Query
