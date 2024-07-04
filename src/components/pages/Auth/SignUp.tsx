@@ -134,8 +134,8 @@ const SignUp: FC<ISignUp> = ({ handleGoToLogin, onSignUp }) => {
 
   return (
     <Card className="border-none text-black dark:text-white w-full md:w-[400px]">
-      <CardHeader className="p-[40px] flex flex-row items-center justify-between">
-        <Image src={logoImage} alt="Logo Image" width={50} height={50} />
+      <CardHeader className="p-[40px] flex flex-row items-center justify-center">
+        {/* <Image src={logoImage} alt="Logo Image" width={50} height={50} /> */}
         <h4 className="font-semibold !m-0 text-2xl">Sign Up</h4>
       </CardHeader>
       <CardContent className="pb-[40px] px-[40px]">

@@ -94,9 +94,13 @@ const Login: FC<ILogin> = ({ onLogin, handleGoToSignUp }) => {
   };
 
   return (
-    <Card className={cn("text-black dark:text-white w-full md:w-[400px] border-none")}>
-      <CardHeader className="p-[40px] flex flex-row items-center justify-between">
-        <Image src={logoImage} alt="Logo Image" width={50} height={50} />
+    <Card
+      className={cn(
+        "text-black dark:text-white w-full md:w-[400px] border-none"
+      )}
+    >
+      <CardHeader className="p-[40px] flex flex-row items-center justify-center">
+        {/* <Image src={logoImage} alt="Logo Image" width={50} height={50} /> */}
         <h4 className="font-semibold !m-0 text-2xl">Sign In</h4>
       </CardHeader>
       <CardContent
