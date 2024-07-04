@@ -280,14 +280,14 @@ const Query: FC<IQueryComponent> = ({
                       </CarouselContent>
                     </Carousel> */}
         <div className="w-full gap-3 flex items-center pb-3 pt-8">
-          <Image
+          {/* <Image
             src={logoImg.src}
             alt="user"
             height={32}
             width={32}
             quality={100}
             className="object-contain"
-          />
+          /> */}
           <h5 className="font-medium text-lg dark:text-white text-black">
             ARCH-E
           </h5>
