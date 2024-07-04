@@ -51,7 +51,7 @@
     @apply border-border;
   }
   body {
-    @apply bg-dark-background text-foreground;
+    @apply bg-white text-black dark:bg-dark-background dark:text-white;
   }
 }
 
@@ -67,10 +67,10 @@ body {
   text-overflow: ellipsis;
 }
 
-input:-webkit-autofill,
-input:-webkit-autofill:hover,
-input:-webkit-autofill:focus,
-input:-webkit-autofill:active {
+.dark input:-webkit-autofill,
+.dark input:-webkit-autofill:hover,
+.dark input:-webkit-autofill:focus,
+.dark input:-webkit-autofill:active {
   -webkit-box-shadow: 0 0 0 30px #212939 inset !important;
   -webkit-text-fill-color: #ffffff;
 }
