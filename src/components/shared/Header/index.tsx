@@ -11,21 +11,31 @@ import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { Avatar } from "@nextui-org/react";
 import { DropdownMenu } from "@radix-ui/react-dropdown-menu";
 import { LogOut, Settings, User } from "lucide-react";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { logout } from "@/redux/auth/authSlice";
 import { FaRegEdit } from "react-icons/fa";
+import { AiOutlineSun } from "react-icons/ai";
+import { FiMoon } from "react-icons/fi";
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { useTheme } from "next-themes";
 
 const Header = () => {
   const dispatch = useAppDispatch();
   const { auth, user, loading } = useAppSelector((state) => state.auth);
+  const { theme, setTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
   return (
     <nav id="header" className="z-10 py-6 w-full px-6 md:px-12">
       <div className="flex items-center gap-3 justify-between">
@@ -80,17 +90,27 @@ const Header = () => {
             </DropdownMenuContent>
           </DropdownMenu>
         )}
-        {!auth && !loading && (
-          <Button
-            onClick={() => dispatch(setSignInModal({ open: true }))}
-            variant={"secondary"}
-          >
-            Login
-          </Button>
-        )}
-        {!auth && loading && (
-          <Skeleton className="w-[80px] h-[30px] bg-secondary" />
-        )}
+        <div className="flex items-center gap-3">
+          {mounted && (
+            <Button
+              onClick={() =>
+                theme === "dark" ? setTheme("light") : setTheme("dark")
+              }
+              className="w-[40px] h-[40px] p-0"
+            >
+              {theme === "light" && <AiOutlineSun className="text-xl" />}
+              {theme === "dark" && <FiMoon className="text-xl" />}
+            </Button>
+          )}
+          {!auth && !loading && (
+            <Button onClick={() => dispatch(setSignInModal({ open: true }))}>
+              Login
+            </Button>
+          )}
+          {!auth && loading && (
+            <Skeleton className="w-[80px] h-[30px] bg-secondary" />
+          )}
+        </div>
       </div>
     </nav>
   );

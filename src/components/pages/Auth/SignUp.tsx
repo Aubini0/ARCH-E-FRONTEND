@@ -133,7 +133,7 @@ const SignUp: FC<ISignUp> = ({ handleGoToLogin, onSignUp }) => {
   };
 
   return (
-    <Card className="border-secondary w-full md:w-[400px]">
+    <Card className="border-secondary text-black dark:text-white w-full md:w-[400px]">
       <CardHeader className="p-[40px] flex flex-row items-center justify-between">
         <Image src={logoImage} alt="Logo Image" width={50} height={50} />
         <h4 className="font-semibold !m-0 text-2xl">Sign Up</h4>
@@ -195,26 +195,22 @@ const SignUp: FC<ISignUp> = ({ handleGoToLogin, onSignUp }) => {
             <Button type="submit" isLoading={isLoading} className="w-full">
               Sign Up
             </Button>
-            <div className="flex items-center h-[12px] gap-3">
+            <div className="flex items-center dark:text-white text-black h-[12px] gap-3">
               <div className="w-full h-[1px] bg-secondary flex-1"></div>
               <div>or</div>
               <div className="w-full h-[1px] bg-secondary flex-1"></div>
             </div>
-            <Button
-              type="button"
-              variant={"secondary"}
-              className="w-full gap-1"
-            >
+            <Button type="button" className="w-full gap-1">
               <FcGoogle className="text-lg" />
               Continue with Google
             </Button>
           </div>
           <div className="w-full text-center">
-            <p className="text-gray-400 text-sm">
+            <p className="text-gray-600 dark:text-gray-400 text-sm">
               Already have an account?{" "}
               <button
                 onClick={() => handleGoToLogin && handleGoToLogin()}
-                className="underline outline-none border-none text-white font-semibold"
+                className="underline outline-none border-none text-black dark:text-white font-semibold"
               >
                 Sign In
               </button>

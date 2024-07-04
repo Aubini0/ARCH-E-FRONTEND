@@ -98,7 +98,6 @@ const Query: FC<IQueryComponent> = ({
                   setMode("add");
                   setEditingQuery(null);
                 }}
-                variant={"secondary"}
               >
                 Cancel
               </Button>
@@ -289,7 +288,9 @@ const Query: FC<IQueryComponent> = ({
             quality={100}
             className="object-contain"
           />
-          <h5 className="font-medium text-lg text-white">ARCH-E</h5>
+          <h5 className="font-medium text-lg dark:text-white text-black">
+            ARCH-E
+          </h5>
         </div>
         {query.response && (
           <MarkDown className={"mkdown"}>{query.response}</MarkDown>
@@ -335,10 +336,10 @@ const Query: FC<IQueryComponent> = ({
                   onClick={() => fetchBot(rec)}
                   className="flex items-center justify-between gap-3 w-full py-2 cursor-pointer"
                 >
-                  <span className="text-sm md:text-base text-white w-[90%]">
+                  <span className="text-sm md:text-base text-black dark:text-white w-[90%]">
                     {rec}
                   </span>
-                  <FaRegQuestionCircle className="text-white text-xl" />
+                  <FaRegQuestionCircle className=" text-black dark:text-white text-xl" />
                 </div>
               ))}
             </div>

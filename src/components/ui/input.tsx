@@ -54,7 +54,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
         {label !== undefined && (
           <label
             className={cn(
-              "text-white font-inter text-[15px] font-medium leading-[18px]",
+              "dark:text-white text-black font-inter text-[15px] font-medium leading-[18px]",
               { "text-red-400": error },
               labelClassName
             )}
@@ -86,7 +86,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
             ref={ref}
             disabled={disabled}
             className={cn(
-              "font-inter w-full px-3 py-2 text-sm text-white placeholder:text-sm placeholder:font-normal placeholder:leading-normal placeholder:text-white/80 focus:outline-0 bg-transparent",
+              "font-inter w-full px-3 py-2 text-sm text-black dark:text-white placeholder:text-sm placeholder:font-normal placeholder:leading-normal placeholder:text-gray-400 dark:placeholder:text-white/80 focus:outline-0 bg-transparent",
               className
             )}
             {...props}

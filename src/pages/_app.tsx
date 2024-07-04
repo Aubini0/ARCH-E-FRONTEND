@@ -1,5 +1,6 @@
 import AuthPersist from "@/components/shared/AuthPersist";
 import Modals from "@/components/shared/Modals";
+import { ThemeProvider } from "@/components/shared/ThemeProvider";
 import { Toaster } from "@/components/ui/toaster";
 import { onest } from "@/fonts/google";
 import { cn } from "@/lib/utils";
@@ -25,14 +26,20 @@ export default function App({ Component, pageProps }: AppProps) {
           />
         </Head>
         <AuthPersist>
-          <NextUIProvider>
-            <div className={cn(onest.variable)}>
-              <Component {...pageProps} />
-            </div>
-            <Modals />
-            <ReactHotToastToaster />
-            <Toaster />
-          </NextUIProvider>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="dark"
+            disableTransitionOnChange
+          >
+            <NextUIProvider>
+              <div suppressHydrationWarning className={cn(onest.variable)}>
+                <Component {...pageProps} />
+              </div>
+              <Modals />
+              <ReactHotToastToaster />
+              <Toaster />
+            </NextUIProvider>
+          </ThemeProvider>
         </AuthPersist>
       </QueryClientProvider>
     </Provider>
