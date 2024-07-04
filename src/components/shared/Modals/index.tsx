@@ -29,10 +29,7 @@ const Modals = () => {
           open={signInModal}
           onOpenChange={(o) => dispatch(setSignInModal({ open: o }))}
         >
-          <DrawerContent className="h-full max-h-full rounded-none flex items-center justify-center flex-col gap-12">
-            <div className="bg-secondary cursor-pointer py-2 px-2 rounded-xl">
-              <h3 className="font-bold text-white text-3xl">ARCH-E</h3>
-            </div>
+          <DrawerContent className="h-full max-h-full rounded-none flex items-center justify-center flex-col gap-12 !bg-black">
             <AuthForm isDrawer />
           </DrawerContent>
         </Drawer>

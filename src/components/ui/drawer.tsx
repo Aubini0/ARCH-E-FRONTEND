@@ -43,14 +43,14 @@ const DrawerContent = React.forwardRef<
     <DrawerPrimitive.Content
       ref={ref}
       className={cn(
-        "fixed inset-x-0 bottom-0 z-50 mt-24 flex h-auto flex-col rounded-t-[10px] border border-secondary bg-dark-background max-h-[90%] pt-8",
+        "fixed inset-x-0 bottom-0 z-50 mt-24 flex h-auto flex-col rounded-t-[10px] border border-slate-300 dark:border-secondary dark:bg-dark-background dark:text-white bg-white text-black max-h-[90%] pt-8",
         className
       )}
       {...props}
     >
       {swapper && (
         <div className="absolute top-0 left-0 w-full">
-          <div className="mx-auto mt-4 h-[8px] w-[100px] rounded-full bg-secondary" />
+          <div className="mx-auto mt-4 h-[8px] w-[100px] rounded-full dark:bg-secondary dark:text-white bg-gray-400 text-black" />
         </div>
       )}
       {children}
