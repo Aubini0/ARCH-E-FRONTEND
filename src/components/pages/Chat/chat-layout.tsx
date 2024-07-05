@@ -12,13 +12,11 @@ import { Sidebar } from "./sidebar";
 import { Chat } from "./chat";
 
 interface ChatLayoutProps {
-  defaultLayout?: number[] | undefined;
   defaultCollapsed?: boolean;
   navCollapsedSize: number;
 }
 
 export function ChatLayout({
-  defaultLayout = [320, 480],
   defaultCollapsed = false,
   navCollapsedSize,
 }: ChatLayoutProps) {
@@ -46,16 +44,17 @@ export function ChatLayout({
   return (
     <ResizablePanelGroup
       direction="horizontal"
-      onLayout={(sizes: number[]) => {
-        document.cookie = `react-resizable-panels:layout=${JSON.stringify(
-          sizes
-        )}`;
-      }}
-      className="items-stretch border-t border-gray-200"
-      style={{ maxHeight: "calc(100vh - 96px)" }}
+      // onLayout={(sizes: number[]) => {
+      //   console.log(sizes);
+      //   document.cookie = `react-resizable-panels:layout=${JSON.stringify(
+      //     sizes
+      //   )}`;
+      // }}
+      className="items-stretch border-t-2 border-gray-200 dark:border-secondary"
+      style={{ maxHeight: "calc(100vh - 56px)" }}
     >
       <ResizablePanel
-        defaultSize={defaultLayout[0]}
+        defaultSize={20}
         collapsedSize={navCollapsedSize}
         collapsible={true}
         minSize={isMobile ? 0 : 24}
@@ -89,7 +88,7 @@ export function ChatLayout({
         />
       </ResizablePanel>
       <ResizableHandle withHandle />
-      <ResizablePanel defaultSize={defaultLayout[1]} minSize={30}>
+      <ResizablePanel defaultSize={70} minSize={30}>
         <Chat
           messages={selectedUser.messages}
           selectedUser={selectedUser}
