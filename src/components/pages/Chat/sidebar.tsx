@@ -32,7 +32,7 @@ export function Sidebar({ links, isCollapsed, isMobile }: SidebarProps) {
       className="relative group flex flex-col h-full gap-4 p-2 data-[collapsed=true]:p-2 "
     >
       {!isCollapsed && (
-        <div className="flex justify-between p-2 items-center border-b border-gray-200">
+        <div className="flex justify-between px-2 py-4 items-center border-b-2 border-gray-200 dark:border-secondary">
           <div className="flex gap-2 items-center text-2xl">
             <p className="font-medium">Chats</p>
             <span className="text-zinc-300">({links.length})</span>
@@ -43,7 +43,7 @@ export function Sidebar({ links, isCollapsed, isMobile }: SidebarProps) {
               href="#"
               className={cn(
                 buttonVariants({ variant: "ghost", size: "icon" }),
-                "h-9 w-9"
+                "h-8 w-8"
               )}
             >
               <MoreHorizontal size={20} />
@@ -53,7 +53,7 @@ export function Sidebar({ links, isCollapsed, isMobile }: SidebarProps) {
               href="#"
               className={cn(
                 buttonVariants({ variant: "ghost", size: "icon" }),
-                "h-9 w-9"
+                "h-8 w-8"
               )}
             >
               <SquarePen size={20} />
@@ -73,7 +73,7 @@ export function Sidebar({ links, isCollapsed, isMobile }: SidebarProps) {
                       buttonVariants({ variant: link.variant, size: "icon" }),
                       "h-11 w-11 md:h-16 md:w-16",
                       link.variant === "grey" &&
-                        "dark:bg-muted dark:text-muted-foreground dark:hover:bg-muted dark:hover:text-white"
+                        "dark:bg-secondary dark:text-white dark:hover:bg-background"
                     )}
                   >
                     <Avatar className="flex justify-center items-center">
@@ -103,7 +103,7 @@ export function Sidebar({ links, isCollapsed, isMobile }: SidebarProps) {
               className={cn(
                 buttonVariants({ variant: link.variant, size: "xl" }),
                 link.variant === "grey" &&
-                  "dark:bg-muted dark:text-white dark:hover:bg-muted dark:hover:text-white shrink",
+                  "dark:bg-secondary dark:text-white shrink",
                 "justify-start gap-4"
               )}
             >
@@ -117,7 +117,7 @@ export function Sidebar({ links, isCollapsed, isMobile }: SidebarProps) {
                 />
               </Avatar>
               <div className="flex flex-col max-w-28">
-                <span className="text-black">{link.name}</span>
+                <span className="text-black dark:text-white">{link.name}</span>
                 {link.messages.length > 0 && (
                   <span className="text-zinc-300 text-xs truncate ">
                     {link.messages[link.messages.length - 1].name.split(" ")[0]}

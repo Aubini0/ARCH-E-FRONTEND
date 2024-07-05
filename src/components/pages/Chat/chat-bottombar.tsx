@@ -89,7 +89,7 @@ export default function ChatBottombar({
               className={cn(
                 buttonVariants({ variant: "ghost", size: "icon" }),
                 "h-9 w-9",
-                "dark:bg-muted dark:text-muted-foreground dark:hover:bg-muted dark:hover:text-white"
+                "dark:text-white"
               )}
             >
               <PlusCircle size={20} className="text-muted-foreground" />
@@ -102,8 +102,9 @@ export default function ChatBottombar({
                   href="#"
                   className={cn(
                     buttonVariants({ variant: "ghost", size: "icon" }),
+                    buttonVariants({ variant: "ghost", size: "icon" }),
                     "h-9 w-9",
-                    "dark:bg-muted dark:text-muted-foreground dark:hover:bg-muted dark:hover:text-white"
+                    "dark:text-white"
                   )}
                 >
                   <Mic size={20} className="text-muted-foreground" />
@@ -115,7 +116,7 @@ export default function ChatBottombar({
                     className={cn(
                       buttonVariants({ variant: "ghost", size: "icon" }),
                       "h-9 w-9",
-                      "dark:bg-muted dark:text-muted-foreground dark:hover:bg-muted dark:hover:text-white"
+                      "dark:text-white"
                     )}
                   >
                     <icon.icon size={20} className="text-muted-foreground" />
@@ -128,7 +129,7 @@ export default function ChatBottombar({
                 className={cn(
                   buttonVariants({ variant: "ghost", size: "icon" }),
                   "h-9 w-9",
-                  "dark:bg-muted dark:text-muted-foreground dark:hover:bg-muted dark:hover:text-white"
+                  "dark:text-white"
                 )}
               >
                 <Mic size={20} className="text-muted-foreground" />
@@ -145,7 +146,7 @@ export default function ChatBottombar({
                 className={cn(
                   buttonVariants({ variant: "ghost", size: "icon" }),
                   "h-9 w-9",
-                  "dark:bg-muted dark:text-muted-foreground dark:hover:bg-muted dark:hover:text-white"
+                  "dark:text-white"
                 )}
               >
                 <icon.icon size={20} className="text-muted-foreground" />
@@ -181,7 +182,7 @@ export default function ChatBottombar({
             placeholder="Aa"
             className="w-full border rounded-full flex items-center !h-10 resize-none overflow-hidden"
           ></Textarea>
-          <div className="absolute right-2 bottom-0.5  ">
+          <div className="absolute right-2 bottom-1">
             <EmojiPicker
               onChange={(value) => {
                 setMessage(message + value);
@@ -199,7 +200,7 @@ export default function ChatBottombar({
             className={cn(
               buttonVariants({ variant: "ghost", size: "icon" }),
               "h-9 w-9",
-              "dark:bg-muted dark:text-muted-foreground dark:hover:bg-muted dark:hover:text-white shrink-0"
+              "dark:text-white"
             )}
             onClick={handleSend}
           >
@@ -211,7 +212,7 @@ export default function ChatBottombar({
             className={cn(
               buttonVariants({ variant: "ghost", size: "icon" }),
               "h-9 w-9",
-              "dark:bg-muted dark:text-muted-foreground dark:hover:bg-muted dark:hover:text-white shrink-0"
+              "dark:text-white"
             )}
             onClick={handleThumbsUp}
           >

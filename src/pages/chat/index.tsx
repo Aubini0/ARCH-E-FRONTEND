@@ -5,7 +5,7 @@ import React from "react";
 const Chat = () => {
   return (
     <MainLayout headerProps={{ className: "py-2" }} className="min-h-screen">
-      <ChatLayout navCollapsedSize={8} />
+      <ChatLayout navCollapsedSize={3} />
     </MainLayout>
   );
 };
