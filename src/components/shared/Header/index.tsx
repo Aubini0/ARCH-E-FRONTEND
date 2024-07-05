@@ -98,8 +98,8 @@ const Header = () => {
               }
               className="w-[40px] h-[40px] p-0"
             >
-              {theme === "light" && <AiOutlineSun className="text-xl" />}
-              {theme === "dark" && <FiMoon className="text-xl" />}
+              {theme === "light" && <FiMoon className="text-xl" />}
+              {theme === "dark" && <AiOutlineSun className="text-xl" />}
             </Button>
           )}
           {!auth && !loading && (
