@@ -11,8 +11,8 @@ import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { Avatar } from "@nextui-org/react";
 import { DropdownMenu } from "@radix-ui/react-dropdown-menu";
 import { LogOut, Settings, User } from "lucide-react";
-import React, { useEffect, useState } from "react";
-import { Button } from "@/components/ui/button";
+import React, { FC, useEffect, useState } from "react";
+import { Button, buttonVariants } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { logout } from "@/redux/auth/authSlice";
 import { FaRegEdit } from "react-icons/fa";
@@ -25,8 +25,13 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { useTheme } from "next-themes";
+import { IoChatbubbleEllipses } from "react-icons/io5";
+import Link from "next/link";
+import { cn } from "@/lib/utils";
 
-const Header = () => {
+interface IHeader extends React.HTMLAttributes<HTMLDivElement> {}
+
+const Header: FC<IHeader> = (props) => {
   const dispatch = useAppDispatch();
   const { auth, user, loading } = useAppSelector((state) => state.auth);
   const { theme, setTheme } = useTheme();
@@ -37,14 +42,18 @@ const Header = () => {
   }, []);
 
   return (
-    <nav id="header" className="z-10 py-6 w-full px-6 md:px-12">
+    <nav
+      {...props}
+      id="header"
+      className={cn("z-10 py-6 w-full px-6 md:px-12", props.className)}
+    >
       <div className="flex items-center gap-3 justify-between">
         <TooltipProvider>
           <Tooltip>
             <TooltipTrigger className="!border-none h-full">
               <div
                 onClick={() => window.location.reload()}
-                className="cursor-pointer rounded-xl h-[40px] w-[40px] flex items-center justify-center duration-100 hover:bg-secondary aspect-square"
+                className="cursor-pointer rounded-xl h-[40px] w-[40px] flex items-center justify-center duration-100 dark:hover:bg-secondary aspect-square"
               >
                 {/* <h3 className="font-bold text-white text-xs md:text-2xl">ARCH-E</h3> */}
                 <FaRegEdit className="text-2xl ml-[4px] mb-[3px]" />
@@ -91,6 +100,17 @@ const Header = () => {
           </DropdownMenu>
         )}
         <div className="flex items-center gap-3">
+          {!auth && !loading && (
+            <Link
+              href={"/chat"}
+              className={cn(
+                buttonVariants({ variant: "default" }),
+                "w-[40px] h-[40px] p-0 !bg-transparent !border-none"
+              )}
+            >
+              <IoChatbubbleEllipses className="text-xl" />
+            </Link>
+          )}
           {mounted && (
             <Button
               onClick={() =>

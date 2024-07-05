@@ -529,7 +529,7 @@ export default function Home() {
                   />
                 </div> */}
                 <h2 className="text-[28px] md:text-[32px] font-medium text-center mb-[25vh] md:mb-12">
-                  Bad questions don&apos;t exist.
+                  A place for the curious.
                 </h2>
               </div>
             )}

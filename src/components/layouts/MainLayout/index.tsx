@@ -5,12 +5,18 @@ import React, { FC, HTMLAttributes } from "react";
 interface IMainLayout extends HTMLAttributes<HTMLDivElement> {
   header?: boolean;
   children: React.ReactNode;
+  headerProps?: HTMLAttributes<HTMLDivElement>;
 }
 
-const MainLayout: FC<IMainLayout> = ({ header = true, children, ...props }) => {
+const MainLayout: FC<IMainLayout> = ({
+  header = true,
+  children,
+  headerProps,
+  ...props
+}) => {
   return (
     <main {...props} className={cn("w-full h-full", props.className)}>
-      {header && <Header />}
+      {header && <Header {...headerProps} />}
       {children}
     </main>
   );
