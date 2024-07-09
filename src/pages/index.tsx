@@ -1,43 +1,25 @@
 // import { Button } from "@/components/ui/button";
-import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-} from "@/components/ui/carousel";
-import {
-  Sheet,
-  SheetContent,
-  SheetHeader,
-  SheetTitle,
-} from "@/components/ui/sheet";
-import { useEffect, useRef, useState } from "react";
-import Image from "next/image";
-import SourceCard from "@/components/pages/Home/SourceCard";
+import { use, useEffect, useRef, useState } from "react";
 import useDeviceIndicator from "@/hooks/useDeviceIndicator";
-import logoAnimated from "@/assets/images/logo-animated.gif";
-import {
-  Drawer,
-  DrawerContent,
-  DrawerHeader,
-  DrawerTitle,
-} from "@/components/ui/drawer";
+import { Drawer, DrawerContent } from "@/components/ui/drawer";
 import MainLayout from "@/components/layouts/MainLayout";
 import PlaceholdersAndVanishInput from "@/components/ui/PlaceHolderAndVanishInput";
 import { cn, getWebSocketURL } from "@/lib/utils";
 import { ScrollShadow } from "@nextui-org/react";
 import { nanoid } from "@reduxjs/toolkit";
 import { useAppSelector } from "@/store/hooks";
-import { FaMicrophone } from "react-icons/fa";
 import { FaRegCirclePlay } from "react-icons/fa6";
 import { CgCloseR } from "react-icons/cg";
 import MusicCard from "@/components/shared/MusicCard";
-import { useRouter } from "next/router";
 import { IQuery } from "@/types/common";
 import Query from "@/components/shared/Query";
 import { IoClose, IoSend } from "react-icons/io5";
+import useLocalStorage from "@/hooks/useLocalStorage";
+import { useGetUserId } from "@/hooks/api/auth";
+import { useToast } from "@/components/ui/use-toast";
 
 export default function Home() {
-  const router = useRouter();
+  const { toast } = useToast();
   const { isPhone } = useDeviceIndicator();
   const [_, setSearchValue] = useState("");
   const [queries, setQueries] = useState<IQuery[]>([]);
@@ -49,7 +31,15 @@ export default function Home() {
   const [imageViewerOpen, setImageViewerOpen] = useState(false);
   const [mode, setMode] = useState<"add" | "edit">("add");
   const [isPlay, setIsPlay] = useState(false);
-  const [voicePlaying, setVoicePlaying] = useState(false);
+  const [disabled, setDisabled] = useState(true);
+  const [socketConnected, setSocketConnected] = useState(false);
+
+  const [userId, setUserId] = useLocalStorage<string | undefined>(
+    "user_id",
+    undefined
+  );
+
+  const { mutateAsync: getUserIdMutate } = useGetUserId();
 
   const chatSocketRef = useRef<WebSocket>(null);
 
@@ -59,121 +49,31 @@ export default function Home() {
     setQueries([]);
   }, [auth]);
 
-  // const fetchBot = async (query: string) => {
-  //   if (!query) return;
+  const handleUserId = async () => {
+    try {
+      if (userId) return;
+      const res = await getUserIdMutate();
+      setUserId(res?.data?.user_id);
+    } catch (error) {
+      // toast({
+      //   title: "Something went wrong",
+      //   description: "Something went wrong, please try again later",
+      // });
+      console.log(error);
+    }
+  };
 
-  //   const id = mode === "add" ? nanoid() : editingQuery!.id;
-
-  //   if (mode === "add") {
-  //     setQueries((prev) => [
-  //       ...prev,
-  //       { id, query: query, response: "", completed: false },
-  //     ]);
-  //   } else {
-  //     setQueries((prevQueries) => {
-  //       const _queries = [...prevQueries];
-  //       const currentQueryIndex = _queries.findIndex((q) => q.id === id);
-
-  //       if (currentQueryIndex !== -1) {
-  //         _queries[currentQueryIndex].completed = false;
-  //         _queries[currentQueryIndex].query = query;
-  //         _queries[currentQueryIndex].response = "";
-  //       }
-
-  //       return _queries;
-  //     });
-
-  //     const queryElement = document.getElementById(id);
-  //     if (queryElement) {
-  //       queryElement.scrollIntoView({ behavior: "smooth" });
-  //     }
-
-  //     setEditingQuery(null);
-  //     setMode("add");
-  //   }
-
-  //   try {
-  //     const response = await fetch(`${Keys.API_BASE_URL}/bots/search`, {
-  //       method: "POST",
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //       },
-  //       body: JSON.stringify({
-  //         query: query,
-  //       }),
-  //     });
-
-  //     const reader = response.body!.getReader();
-  //     const decoder = new TextDecoder();
-  //     let buffer = "";
-  //     let accumulatedResponse = "";
-
-  //     while (true) {
-  //       console.log("while true");
-  //       const { done, value } = await reader.read();
-  //       if (done) {
-  //         setQueries((prevQueries) => {
-  //           const _queries = [...prevQueries];
-  //           const currentQueryIndex = _queries.findIndex((q) => q.id === id);
-
-  //           if (currentQueryIndex !== -1) {
-  //             _queries[currentQueryIndex].completed = true;
-  //           }
-
-  //           return _queries;
-  //         });
-  //         break;
-  //       }
-
-  //       const decodedValue = decoder.decode(value, { stream: true });
-  //       buffer += decodedValue;
-
-  //       let boundary;
-  //       while ((boundary = buffer.indexOf("}{")) !== -1) {
-  //         const chunk = buffer.slice(0, boundary + 1);
-  //         buffer = buffer.slice(boundary + 1);
-
-  //         try {
-  //           const jsonObject: IBotSearchResponseStream = JSON.parse(chunk);
-
-  //           if (jsonObject.event_type === "on_llm_stream") {
-  //             const newData = jsonObject.data;
-
-  //             accumulatedResponse += newData;
-  //           }
-  //         } catch (error) {
-  //           console.error("Error parsing JSON:", error);
-  //         }
-  //       }
-
-  //       if (accumulatedResponse) {
-  //         setQueries((prevQueries) => {
-  //           const _queries = [...prevQueries];
-  //           const currentQueryIndex = _queries.findIndex((q) => q.id === id);
-
-  //           if (currentQueryIndex !== -1) {
-  //             _queries[currentQueryIndex].response = accumulatedResponse;
-  //           }
-
-  //           return _queries;
-  //         });
-  //       }
-  //     }
-  //   } catch (error) {
-  //     console.error("Error fetching stream:", error);
-  //   }
-  // };
+  useEffect(() => {
+    if (userId && socketConnected) {
+      setDisabled(false);
+    }
+    if (!userId) {
+      handleUserId();
+    }
+  }, [userId, socketConnected]);
 
   const fetchBot = async (query: string) => {
-    if (!chatSocketRef?.current) {
-      return;
-    }
-
-    if (chatSocketRef.current.readyState === WebSocket.CONNECTING) {
-      return;
-    }
-
-    if (chatSocketRef.current.readyState !== WebSocket.OPEN) {
+    if (disabled) {
       return;
     }
     if (!query) return;
@@ -216,41 +116,44 @@ export default function Home() {
     chatSocketRef.current?.send(JSON.stringify({ user_msg: query }));
   };
 
-  const onChatMessage = (event: MessageEvent<any>) => {
-    const data = JSON.parse(event.data);
+  const updateQueries = (data: any, editingQuery: IQuery | null) => {
+    console.log("before", data.response);
+    setQueries((prevQueries) => {
+      const updatedQueries = [...prevQueries];
 
-    if (!editingQueryRef?.current) {
-      setQueries((prevQueries) => {
-        const _queries = [...prevQueries];
-        const latestId = _queries[_queries.length - 1]?.id;
-        const currentQueryIndex = _queries.findIndex((q) => q.id === latestId);
-        if (currentQueryIndex !== -1) {
-          _queries[currentQueryIndex].completed = true;
-          _queries[currentQueryIndex].response = data.response;
-          _queries[currentQueryIndex].recommendations = data.recommendations;
-        }
-
-        return _queries;
-      });
-    } else {
-      setQueries((prevQueries) => {
-        const _queries = [...prevQueries];
-        const currentQueryIndex = _queries.findIndex(
-          (q) => q.id === editingQueryRef?.current?.id
+      let currentQueryIndex;
+      if (editingQuery) {
+        currentQueryIndex = updatedQueries.findIndex(
+          (q) => q.id === editingQuery.id
         );
+      } else {
+        const latestId = updatedQueries[updatedQueries.length - 1]?.id;
+        currentQueryIndex = updatedQueries.findIndex((q) => q.id === latestId);
+      }
 
-        if (currentQueryIndex !== -1) {
-          _queries[currentQueryIndex].completed = true;
-          _queries[currentQueryIndex].response = data.response;
-          _queries[currentQueryIndex].recommendations = data.recommendations;
+      if (currentQueryIndex !== -1) {
+        if (data.clear) {
+          updatedQueries[currentQueryIndex].completed = true;
         }
+        if (!data.clear) {
+          updatedQueries[currentQueryIndex].response += data.response;
+          updatedQueries[currentQueryIndex].recommendations =
+            data.recommendations || [];
+        }
+      }
 
-        return _queries;
-      });
+      return updatedQueries;
+    });
 
+    if (editingQuery) {
       setMode("add");
       setEditingQuery(null);
     }
+  };
+
+  const onChatMessage = (event: MessageEvent) => {
+    const data = JSON.parse(event.data);
+    updateQueries(data, editingQueryRef.current);
   };
 
   useEffect(() => {
@@ -259,26 +162,34 @@ export default function Home() {
   }, [editingQuery]);
 
   useEffect(() => {
-    const chat_websocketUrl = getWebSocketURL("/invoke_llm");
+    let chat_socket: WebSocket | undefined;
+    if (userId) {
+      const chat_websocketUrl = getWebSocketURL(`/invoke_llm/${userId}`);
 
-    const chat_socket = new WebSocket(chat_websocketUrl);
+      chat_socket = new WebSocket(chat_websocketUrl);
 
-    // @ts-ignore
-    chatSocketRef.current = chat_socket;
+      // @ts-ignore
+      chatSocketRef.current = chat_socket;
 
-    chat_socket.onopen = () => {
-      console.log("Chat WebSocket connection opened");
-    };
+      chat_socket.onopen = () => {
+        setSocketConnected(true);
+      };
 
-    chat_socket.onmessage = onChatMessage;
+      chat_socket.onmessage = onChatMessage;
 
-    chat_socket.onclose = () => {
-      console.log("WebSocket connection closed");
-    };
+      chat_socket.onclose = () => {
+        setSocketConnected(false);
+      };
+    }
     return () => {
-      chat_socket.close();
+      console.log("Cleaning up WebSocket");
+      if (chat_socket) {
+        chat_socket.onmessage = null;
+        chat_socket.onclose = null;
+        chat_socket.close();
+      }
     };
-  }, []);
+  }, [userId]);
 
   useEffect(() => {
     if (scrollAreaRef.current) {
@@ -380,7 +291,7 @@ export default function Home() {
               </ScrollShadow>
               <div className="px-5 pb-3">
                 <PlaceholdersAndVanishInput
-                  disabled={mode === "edit"}
+                  disabled={disabled || mode === "edit"}
                   onChange={(e) => {
                     setSearchValue(e.target.value);
                     // if (mode === "edit" && isPhone) {
@@ -537,7 +448,7 @@ export default function Home() {
             {/* this is for desktop */}
             <div className="lg:max-w-[800px] px-8 lg:px-0 max-w-full w-full">
               <PlaceholdersAndVanishInput
-                disabled={mode === "edit"}
+                disabled={disabled || mode === "edit"}
                 onChange={(e) => {
                   setSearchValue(e.target.value);
                   // if (mode === "edit" && isPhone) {

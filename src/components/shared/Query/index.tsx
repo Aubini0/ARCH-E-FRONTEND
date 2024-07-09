@@ -323,9 +323,9 @@ const Query: FC<IQueryComponent> = ({
           </div>
         )}
       </div>
-      {totalQueries + 1 &&
-        query.completed &&
-        query.recommendations.length > 0 && (
+      {query.completed &&
+        query.recommendations.length > 0 &&
+        totalQueries - 1 === index && (
           <div className="w-full h-auto border-t-2 border-gray-400 dark:border-secondary mt-3 pt-5">
             <h5 className="text-xl font-medium font-white">
               Related Questions
