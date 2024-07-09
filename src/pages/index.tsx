@@ -380,34 +380,35 @@ export default function Home() {
               </ScrollShadow>
               <div className="px-5 pb-3">
                 <PlaceholdersAndVanishInput
+                  disabled={mode === "edit"}
                   onChange={(e) => {
                     setSearchValue(e.target.value);
-                    if (mode === "edit" && isPhone) {
-                      setEditingQuery((pv) => ({
-                        ...pv!,
-                        updatedQuery: e.target.value,
-                      }));
-                    }
+                    // if (mode === "edit" && isPhone) {
+                    //   setEditingQuery((pv) => ({
+                    //     ...pv!,
+                    //     updatedQuery: e.target.value,
+                    //   }));
+                    // }
                   }}
                   onSubmit={(v) => {
                     fetchBot(v);
                     setSearchValue("");
                   }}
                   focused={mode === "edit" && isPhone}
-                  value={
-                    mode === "edit" && isPhone ? editingQuery?.updatedQuery : ""
-                  }
+                  // value={
+                  //   mode === "edit" && isPhone ? editingQuery?.updatedQuery : ""
+                  // }
                   placeholder={
                     isPlay
                       ? "What do you like to play?"
                       : "What do you want to know?"
                   }
-                  onBlur={() => {
-                    if (mode === "edit" && isPhone) {
-                      setMode("add");
-                      setEditingQuery(null);
-                    }
-                  }}
+                  // onBlur={() => {
+                  //   if (mode === "edit" && isPhone) {
+                  //     setMode("add");
+                  //     setEditingQuery(null);
+                  //   }
+                  // }}
                   // on button click wont work now because caption is commented out
                   // onButtonClick={() => router.push("/conversation")}
                   icon={<IoSend />}
@@ -536,34 +537,35 @@ export default function Home() {
             {/* this is for desktop */}
             <div className="lg:max-w-[800px] px-8 lg:px-0 max-w-full w-full">
               <PlaceholdersAndVanishInput
+                disabled={mode === "edit"}
                 onChange={(e) => {
                   setSearchValue(e.target.value);
-                  if (mode === "edit" && isPhone) {
-                    setEditingQuery((pv) => ({
-                      ...pv!,
-                      updatedQuery: e.target.value,
-                    }));
-                  }
+                  // if (mode === "edit" && isPhone) {
+                  //   setEditingQuery((pv) => ({
+                  //     ...pv!,
+                  //     updatedQuery: e.target.value,
+                  //   }));
+                  // }
                 }}
                 onSubmit={(v) => {
                   fetchBot(v);
                   setSearchValue("");
                 }}
                 focused={mode === "edit" && isPhone}
-                value={
-                  mode === "edit" && isPhone ? editingQuery?.updatedQuery : ""
-                }
+                // value={
+                //   mode === "edit" && isPhone ? editingQuery?.updatedQuery : ""
+                // }
                 placeholder={
                   isPlay
                     ? "What do you like to play?"
                     : "What do you want to know?"
                 }
-                onBlur={() => {
-                  if (mode === "edit" && isPhone) {
-                    setMode("add");
-                    setEditingQuery(null);
-                  }
-                }}
+                // onBlur={() => {
+                //   if (mode === "edit" && isPhone) {
+                //     setMode("add");
+                //     setEditingQuery(null);
+                //   }
+                // }}
                 // on button click wont work now because caption is commented out
                 // onButtonClick={() => router.push("/conversation")}
                 icon={<IoSend />}

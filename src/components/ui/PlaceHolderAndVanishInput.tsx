@@ -20,6 +20,7 @@ interface IPlaceholdersAndVanishInput {
   onBlur?: () => void;
   icon: React.ReactNode;
   onButtonClick?: () => void;
+  disabled: boolean;
 }
 
 const PlaceholdersAndVanishInput: FC<IPlaceholdersAndVanishInput> = ({
@@ -32,6 +33,7 @@ const PlaceholdersAndVanishInput: FC<IPlaceholdersAndVanishInput> = ({
   onBlur,
   icon,
   onButtonClick,
+  disabled,
 }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -60,7 +62,8 @@ const PlaceholdersAndVanishInput: FC<IPlaceholdersAndVanishInput> = ({
     <form
       className={cn(
         "w-full relative mx-auto bg-white dark:bg-secondary h-12 rounded-full overflow-hidden shadow-[0px_2px_3px_-1px_rgba(0,0,0,0.1),_0px_1px_0px_0px_rgba(25,28,33,0.02),_0px_0px_0px_1px_rgba(25,28,33,0.08)] transition duration-200",
-        className
+        className,
+        disabled && "pointer-events-none bg-gray-200"
       )}
       onSubmit={handleSubmit}
     >
@@ -78,6 +81,7 @@ const PlaceholdersAndVanishInput: FC<IPlaceholdersAndVanishInput> = ({
             onChange && onChange(e);
           }
         }}
+        disabled={disabled}
         ref={inputRef}
         value={inputValue}
         spellCheck={false}
