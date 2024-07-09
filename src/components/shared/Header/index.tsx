@@ -128,7 +128,7 @@ const Header: FC<IHeader> = (props) => {
             </Button>
           )}
           {!auth && loading && (
-            <Skeleton className="w-[80px] h-[30px] bg-secondary" />
+            <Skeleton className="w-[80px] h-[30px] bg-slate-200 dark:bg-secondary" />
           )}
         </div>
       </div>
