@@ -72,7 +72,7 @@ const Query: FC<IQueryComponent> = ({
         minHeight: query.completed ? "unset" : "calc(100vh - 96px)",
       }}
     >
-      {!isPhone && mode === "edit" && editingQuery?.id === query.id ? (
+      {mode === "edit" && editingQuery?.id === query.id ? (
         <form
           onSubmit={(e) => {
             e.preventDefault();
