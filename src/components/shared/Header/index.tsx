@@ -100,7 +100,7 @@ const Header: FC<IHeader> = (props) => {
           </DropdownMenu>
         )}
         <div className="flex items-center gap-3">
-          {!auth && !loading && (
+          {/* {!auth && !loading && (
             <Link
               href={"/chat"}
               className={cn(
@@ -110,7 +110,7 @@ const Header: FC<IHeader> = (props) => {
             >
               <IoChatbubbleEllipses className="text-xl" />
             </Link>
-          )}
+          )} */}
           {mounted && (
             <Button
               onClick={() =>
