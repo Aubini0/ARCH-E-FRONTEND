@@ -78,7 +78,7 @@ const Query: FC<IQueryComponent> = ({
             e.preventDefault();
             fetchBot(editingQuery.updatedQuery);
           }}
-          className="flex flex-col bg-secondary p-5 rounded-xl items-start w-full"
+          className="flex flex-col bg-gray-100 dark:bg-secondary p-5 rounded-xl items-start w-full"
         >
           <div className="w-full h-full">
             <Input
@@ -90,6 +90,7 @@ const Query: FC<IQueryComponent> = ({
               }
               value={editingQuery?.updatedQuery}
               className="text-[30px] font-medium"
+              inputContainerClassName="!border-none !outline-none"
             />
             <div className="flex items-center justify-end gap-3">
               <Button
