@@ -1,7 +1,7 @@
-import React, { FC, useState } from "react";
+import React, { FC, useMemo, useState } from "react";
 import { motion } from "framer-motion";
 import { IQuery } from "@/types/common";
-import { cn } from "@/lib/utils";
+import { cn, getYouTubeId } from "@/lib/utils";
 import useDeviceIndicator from "@/hooks/useDeviceIndicator";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -9,7 +9,7 @@ import Image from "next/image";
 import MarkDown from "react-markdown";
 import { Skeleton } from "@/components/ui/skeleton";
 import { FaRegEdit, FaRegQuestionCircle } from "react-icons/fa";
-import logoImg from "@/assets/images/logo.png";
+import Youtube from "react-youtube";
 import {
   Sheet,
   SheetContent,
@@ -28,6 +28,8 @@ import {
   DrawerHeader,
   DrawerTitle,
 } from "@/components/ui/drawer";
+import { CgCloseR } from "react-icons/cg";
+import { FaRegCirclePlay } from "react-icons/fa6";
 
 interface IQueryComponent {
   query: IQuery;
@@ -56,6 +58,14 @@ const Query: FC<IQueryComponent> = ({
 }) => {
   const { isPhone } = useDeviceIndicator();
   const [sheetOpen, setSheetOpen] = useState(false);
+  const [videosOpen, setVideosOpen] = useState(false);
+  const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
+
+  const videoId = useMemo(() => {
+    if (!query.videos) return null;
+    if (query.videos.length === 0) return null;
+    return getYouTubeId(query.videos[currentVideoIndex].video_link)!;
+  }, [query.videos, currentVideoIndex]);
   return (
     <motion.div
       key={query.id}
@@ -116,56 +126,60 @@ const Query: FC<IQueryComponent> = ({
           <h5 className="text-[30px] font-medium">{query.query}</h5>
         </div>
       )}
-      {/* <div className="absolute hidden lg:block top-0 2xl:-right-[330px] lg:-right-[300px] lg:w-[270px] pb-5 2xl:w-[310px] h-full">
-                    <div
-                      // style={{ position: "-webkit-sticky" }}
-                      className="sticky top-[10px] grid grid-cols-2 gap-5"
-                    >
-                      <div className="col-span-2 rounded-lg overflow-hidden duration-300 h-[230px]">
-                        <img
-                          src={`https://upload.wikimedia.org/wikipedia/en/thumb/3/30/Medabots.jpg/220px-Medabots.jpg`}
-                          alt="image"
-                          className="w-full h-full object-cover"
-                        />
-                      </div>
-                      <div className="col-span-1 rounded-lg aspect-[16/10] overflow-hidden duration-300">
-                        <img
-                          src={`https://upload.wikimedia.org/wikipedia/en/thumb/3/30/Medabots.jpg/220px-Medabots.jpg`}
-                          alt="image"
-                          className="w-full h-full object-cover"
-                        />
-                      </div>
-                      <div className="col-span-1 rounded-lg aspect-[16/10] overflow-hidden duration-300">
-                        <img
-                          src={`https://upload.wikimedia.org/wikipedia/en/thumb/3/30/Medabots.jpg/220px-Medabots.jpg`}
-                          alt="image"
-                          className="w-full h-full object-cover"
-                        />
-                      </div>
-                      <div className="col-span-1 rounded-lg aspect-[16/10] overflow-hidden duration-300">
-                        <img
-                          src={`https://upload.wikimedia.org/wikipedia/en/thumb/3/30/Medabots.jpg/220px-Medabots.jpg`}
-                          alt="image"
-                          className="w-full h-full object-cover"
-                        />
-                      </div>
-                      <div
-                        onClick={() => setImageViewerOpen(true)}
-                        className="rounded-lg col-span-1 aspect-[16/10] overflow-hidden duration-300 bg-secondary flex flex-col items-center justify-center cursor-pointer"
-                      >
-                        <img
-                          src={`https://upload.wikimedia.org/wikipedia/en/thumb/3/30/Medabots.jpg/220px-Medabots.jpg`}
-                          alt="image"
-                          className="w-full h-[60px] rounded-xl object-cover"
-                        />
-                        <div className="flex items-center justify-center h-[30px]">
-                          <p className="text-sm font-medium text-white">
-                            + View more
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                  </div> */}
+      {query.videos.length > 0 && (
+        <div className="absolute hidden lg:block top-0 2xl:-right-[330px] lg:-right-[150px] xl:-right-[280px] md:w-[150px] lg:w-[120px] xl:w-[230px] pb-5 2xl:w-[310px] h-full">
+          <div
+            // style={{ position: "-webkit-sticky" }}
+            className="sticky top-[10px] grid 2xl:grid-cols-2 gap-5"
+          >
+            <div
+              onClick={() => {
+                setCurrentVideoIndex(0);
+                setVideosOpen(true);
+              }}
+              className="xl:col-span-2 cursor-pointer rounded-lg overflow-hidden duration-300 aspect-video"
+            >
+              <img
+                src={query.videos[0].thumbnails.high}
+                alt="image"
+                className="w-full h-full object-cover"
+              />
+            </div>
+            {query.videos.slice(1, query.videos.length - 1).map((v, i) => (
+              <div
+                onClick={() => {
+                  setCurrentVideoIndex(i + 1);
+                  setVideosOpen(true);
+                }}
+                key={i}
+                className="col-span-1 rounded-lg aspect-video overflow-hidden duration-300 cursor-pointer"
+              >
+                <img
+                  src={v.thumbnails.high}
+                  alt="image"
+                  className="w-full h-full object-cover"
+                />
+              </div>
+            ))}
+            <div
+              onClick={() => {
+                setCurrentVideoIndex(0);
+                setVideosOpen(true);
+              }}
+              className="rounded-lg col-span-1 aspect-video overflow-hidden duration-300 bg-secondary flex flex-col items-center justify-center cursor-pointer"
+            >
+              <img
+                src={query.videos[query.videos.length - 1].thumbnails.high}
+                alt="image"
+                className="w-full h-[60px] object-cover"
+              />
+              <div className="flex items-center justify-center h-[30px]">
+                <p className="text-sm font-medium text-white">+ View more</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
       {/* <Carousel
                     opts={{
                       align: "start",
@@ -243,43 +257,59 @@ const Query: FC<IQueryComponent> = ({
                     </div>
                   </div> */}
       <div className="flex flex-col items-start w-full">
-        {/* <Carousel
-                      opts={{
-                        align: "start",
-                      }}
-                      className="w-full md:hidden block mt-5"
-                    >
-                      <CarouselContent className="text-black">
-                        {Array.from({ length: 5 }).map((_, index) => (
-                          <CarouselItem
-                            key={index}
-                            className="basis-[50%] select-none h-[120px]"
-                          >
-                            <div className="rounded-lg h-full w-full overflow-hidden duration-300">
-                              <img
-                                src={`https://upload.wikimedia.org/wikipedia/en/thumb/3/30/Medabots.jpg/220px-Medabots.jpg`}
-                                alt="image"
-                                className="w-full h-full object-cover"
-                              />
-                            </div>
-                          </CarouselItem>
-                        ))}
-                        <CarouselItem className="basis-[50%] select-none h-[120px]">
-                          <div className="rounded-lg h-full w-full overflow-hidden duration-300 bg-secondary flex flex-col items-center justify-center">
-                            <img
-                              src={`https://upload.wikimedia.org/wikipedia/en/thumb/3/30/Medabots.jpg/220px-Medabots.jpg`}
-                              alt="image"
-                              className="w-full h-[90px] rounded-xl object-cover"
-                            />
-                            <div className="flex items-center justify-center h-[30px]">
-                              <p className="text-sm font-medium text-white">
-                                + View more
-                              </p>
-                            </div>
-                          </div>
-                        </CarouselItem>
-                      </CarouselContent>
-                    </Carousel> */}
+        <Carousel
+          opts={{
+            align: "start",
+          }}
+          className="w-full md:hidden block mt-5"
+        >
+          <CarouselContent className="text-black">
+            {query.videos
+              .slice(0, query.videos.length - 1)
+              .map((video, index) => (
+                <CarouselItem
+                  key={index}
+                  className="basis-[50%] select-none h-[120px] aspect-video"
+                >
+                  <div
+                    onClick={() => {
+                      setCurrentVideoIndex(index);
+                      setVideosOpen(true);
+                    }}
+                    className="rounded-lg h-full w-full overflow-hidden duration-300"
+                  >
+                    <img
+                      src={video.thumbnails.high}
+                      alt="image"
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                </CarouselItem>
+              ))}
+            {query.videos[query.videos.length - 1] && (
+              <CarouselItem className="basis-[50%] select-none h-[120px] aspect-video">
+                <div
+                  onClick={() => {
+                    setCurrentVideoIndex(0);
+                    setVideosOpen(true);
+                  }}
+                  className="rounded-lg h-full w-full overflow-hidden duration-300 bg-secondary flex flex-col items-center justify-center"
+                >
+                  <img
+                    src={query.videos[query.videos.length - 1].thumbnails.high}
+                    alt="image"
+                    className="w-full h-[90px] rounded-xl object-cover"
+                  />
+                  <div className="flex items-center justify-center h-[30px]">
+                    <p className="text-sm font-medium text-white">
+                      + View more
+                    </p>
+                  </div>
+                </div>
+              </CarouselItem>
+            )}
+          </CarouselContent>
+        </Carousel>
         <div className="w-full gap-3 flex items-center pb-3 pt-8">
           {/* <Image
             src={logoImg.src}
@@ -404,6 +434,102 @@ const Query: FC<IQueryComponent> = ({
             </div>
           </DrawerContent>
         </Drawer>
+      )}
+      {videosOpen && query.videos.length > 0 && (
+        <Sheet open={videosOpen} onOpenChange={setVideosOpen}>
+          <SheetContent
+            side={"right"}
+            className="!w-screen max-w-none sm:max-w-none border-none outline-none shadow-none !p-0 bg-transparent backdrop-blur-sm"
+          >
+            <div className="w-full h-full flex flex-col items-center justify-center max-w-full overflow-hidden hide-scrollbar">
+              <div className="w-full border-b-2 h-[96px] flex items-center justify-between px-10">
+                <div className="flex items-center justify-start gap-3">
+                  <div className="flex items-center justify-center gap-3 rounded-full">
+                    <img
+                      src="/images/icons/yt.webp"
+                      alt="source icon"
+                      className="w-10 h-10 rounded-full"
+                    />
+                    <span className="text-[30px]">youtube.com</span>
+                  </div>
+                </div>
+                <button
+                  onClick={() => {
+                    setVideosOpen(false);
+                  }}
+                  className="text-white z-[120] rounded-lg flex items-center justify-center text-[40px]"
+                >
+                  <CgCloseR />
+                </button>
+              </div>
+              <div
+                className="px-3 md:px-12 w-full flex-col md:flex-row flex items-center"
+                style={{ height: "calc(100vh - 96px)" }}
+              >
+                <div className="flex-1 h-full w-full md:w-auto flex items-center justify-center">
+                  <Youtube
+                    id={videoId!}
+                    videoId={videoId!}
+                    className="w-fit h-fit"
+                    iframeClassName="max-w-full h-fit md:max-w-[400px] lg:max-w-[600px] aspect-video"
+                  />
+                </div>
+                <div className="md:h-auto md:max-h-full md:w-[280px] h-[150px] max-w-full overflow-x-auto hide-scrollbar py-5 gap-5 flex md:grid grid-cols-1 flex-row md:flex-col items-stretch">
+                  {query.videos.map((v, i) => (
+                    <div
+                      key={i}
+                      onClick={() => setCurrentVideoIndex(i)}
+                      className="rounded-lg h-fit min-w-[190px] md:min-w-full md:w-auto overflow-hidden duration-300 aspect-video relative cursor-pointer"
+                    >
+                      <Image
+                        src={v.thumbnails.high}
+                        alt="image"
+                        fill
+                        className="object-cover"
+                      />
+                      <div className="absolute top-0 left-0 right-0 bottom-0 w-full h-full flex items-center justify-center">
+                        <Image
+                          src={"/images/icons/yt.webp"}
+                          alt="youtube"
+                          width={60}
+                          height={60}
+                        />
+                      </div>
+                    </div>
+                  ))}
+                </div>
+                {/* <div className="hidden md:block md:min-w-[280px] md:w-[280px] h-[120px] md:h-full py-1 md:py-8 w-auto">
+                  <div className="flex h-full md:h-auto md:grid md:grid-cols-1 gap-3 overflow-x-auto md:overflow-x-hidden md:overflow-y-auto hide-scrollbar md:w-full">
+                    {query.videos.map((v, i) => {
+                      return (
+                        <div
+                          key={i}
+                          onClick={() => setCurrentVideoIndex(i)}
+                          className="rounded-lg w-[120px] md:w-auto overflow-hidden duration-300 aspect-video relative cursor-pointer"
+                        >
+                          <Image
+                            src={v.thumbnails.high}
+                            alt="image"
+                            fill
+                            className="object-cover"
+                          />
+                          <div className="absolute top-0 left-0 right-0 bottom-0 w-full h-full flex items-center justify-center">
+                            <Image
+                              src={"/images/icons/yt.webp"}
+                              alt="youtube"
+                              width={60}
+                              height={60}
+                            />
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div> */}
+              </div>
+            </div>
+          </SheetContent>
+        </Sheet>
       )}
     </motion.div>
   );

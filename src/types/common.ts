@@ -67,4 +67,21 @@ export interface IQuery {
   response: string;
   completed: boolean;
   recommendations: [];
+  videos: IVideo[];
+  videosFetched: boolean;
+}
+
+export interface IVideo {
+  title: string;
+  thumbnails: {
+    default: string;
+    medium: string;
+    high: string;
+  };
+  video_link: string;
+}
+
+export interface APIResponse<T> {
+  status: boolean;
+  data: T;
 }
