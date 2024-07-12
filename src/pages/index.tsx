@@ -17,6 +17,7 @@ import { IoClose, IoSend } from "react-icons/io5";
 import useLocalStorage from "@/hooks/useLocalStorage";
 import { useGetUserId } from "@/hooks/api/auth";
 import { useToast } from "@/components/ui/use-toast";
+import { useSearchYoutube } from "@/hooks/api/query";
 
 export default function Home() {
   const { toast } = useToast();
@@ -40,6 +41,7 @@ export default function Home() {
   );
 
   const { mutateAsync: getUserIdMutate } = useGetUserId();
+  const { mutateAsync: searchYoutubeMutateAsync } = useSearchYoutube();
 
   const chatSocketRef = useRef<WebSocket>(null);
 
@@ -72,6 +74,21 @@ export default function Home() {
     }
   }, [userId, socketConnected]);
 
+  const handleFetchYoutubeVideos = async (id: string, query: string) => {
+    try {
+      const res = await searchYoutubeMutateAsync(query);
+      setQueries((prev) => {
+        const _queries = [...prev];
+        const currentQueryIndex = _queries.findIndex((q) => q.id === id);
+        if (currentQueryIndex !== -1) {
+          _queries[currentQueryIndex].videos = res.data.results;
+          _queries[currentQueryIndex].videosFetched = true;
+        }
+        return _queries;
+      });
+    } catch (error) {}
+  };
+
   const fetchBot = async (query: string) => {
     if (disabled) {
       return;
@@ -88,8 +105,11 @@ export default function Home() {
           response: "",
           completed: false,
           recommendations: [],
+          videos: [],
+          videosFetched: false,
         },
       ]);
+      handleFetchYoutubeVideos(id, query);
     } else {
       setQueries((prevQueries) => {
         const _queries = [...prevQueries];
@@ -104,6 +124,7 @@ export default function Home() {
 
         return _queries;
       });
+      handleFetchYoutubeVideos(id, query);
 
       setMode("add");
 
@@ -117,7 +138,6 @@ export default function Home() {
   };
 
   const updateQueries = (data: any, editingQuery: IQuery | null) => {
-    console.log("before", data.response);
     setQueries((prevQueries) => {
       const updatedQueries = [...prevQueries];
 
@@ -328,85 +348,6 @@ export default function Home() {
               </div>
             </DrawerContent>
           </Drawer>
-        )}
-        {imageViewerOpen && (
-          <div
-            style={{
-              backdropFilter: "blur(20px)",
-              WebkitBackdropFilter: "blur(20px)",
-            }}
-            className="fixed w-screen h-screen flex bg-black/20 items-center justify-center max-w-full flex-col inset-0 overflow-hidden hide-scrollbar"
-          >
-            <div className="w-full border-b-2 h-[96px] flex items-center justify-between px-10">
-              <div className="flex items-center justify-start gap-3">
-                <div className="flex items-center justify-center gap-3 rounded-full">
-                  <img
-                    src="https://www.google.com/s2/favicons?sz=128&domain=tsn.ca"
-                    alt="source icon"
-                    className="w-8 h-8 rounded-full"
-                  />
-                  <span className="text-[30px]">tsn.ca</span>
-                </div>
-              </div>
-              <button
-                onClick={() => {
-                  setImageViewerOpen(false);
-                }}
-                className="text-white z-[120] rounded-lg flex items-center justify-center text-[40px]"
-              >
-                <CgCloseR />
-              </button>
-            </div>
-            <div className="px-12 w-full h-full flex items-center">
-              <div className="flex-1 h-full flex items-center justify-center">
-                <div className="w-[300px] relative h-auto overflow-hidden aspect-[9/16] rounded-lg">
-                  <img
-                    src={`https://upload.wikimedia.org/wikipedia/en/thumb/3/30/Medabots.jpg/220px-Medabots.jpg`}
-                    alt="image"
-                    className="object-cover w-full h-full"
-                  />
-                  <div className="absolute inset-0 bg-black/30">
-                    <FaRegCirclePlay className="text-white text-[80px] absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2" />
-                  </div>
-                </div>
-              </div>
-              <div className="w-[280px] h-full py-8">
-                <div
-                  className="grid grid-cols-1 gap-3 overflow-y-auto hide-scrollbar w-full"
-                  style={{ maxHeight: "calc(100vh - 130px)" }}
-                >
-                  <div className="col-span-1 rounded-lg overflow-hidden duration-300 h-[200px]">
-                    <img
-                      src={`https://upload.wikimedia.org/wikipedia/en/thumb/3/30/Medabots.jpg/220px-Medabots.jpg`}
-                      alt="image"
-                      className="w-full h-full object-cover"
-                    />
-                  </div>
-                  <div className="col-span-1 rounded-lg aspect-[16/9] overflow-hidden duration-300">
-                    <img
-                      src={`https://upload.wikimedia.org/wikipedia/en/thumb/3/30/Medabots.jpg/220px-Medabots.jpg`}
-                      alt="image"
-                      className="w-full h-full object-cover"
-                    />
-                  </div>
-                  <div className="col-span-1 rounded-lg aspect-[16/9] overflow-hidden duration-300">
-                    <img
-                      src={`https://upload.wikimedia.org/wikipedia/en/thumb/3/30/Medabots.jpg/220px-Medabots.jpg`}
-                      alt="image"
-                      className="w-full h-full object-cover"
-                    />
-                  </div>
-                  <div className="col-span-1 rounded-lg aspect-[16/9] overflow-hidden duration-300">
-                    <img
-                      src={`https://upload.wikimedia.org/wikipedia/en/thumb/3/30/Medabots.jpg/220px-Medabots.jpg`}
-                      alt="image"
-                      className="w-full h-full object-cover"
-                    />
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
         )}
         {isPlay && (
           <div

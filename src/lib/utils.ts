@@ -49,3 +49,21 @@ export function getWebSocketURL(path = "") {
 
   return protocolPrefix + "//" + host + path;
 }
+
+export function getYouTubeId(url: string): string | null {
+  try {
+    const urlObj = new URL(url);
+    if (
+      urlObj.hostname !== "www.youtube.com" &&
+      urlObj.hostname !== "youtube.com"
+    ) {
+      return null;
+    }
+
+    const videoId = urlObj.searchParams.get("v");
+    return videoId && videoId.length === 11 ? videoId : null;
+  } catch (error) {
+    // Handle any errors, such as invalid URLs
+    return null;
+  }
+}

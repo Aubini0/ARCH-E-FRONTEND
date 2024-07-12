@@ -1,5 +1,5 @@
 import http from "@/lib/http";
-import { APIError } from "@/types/common";
+import { APIError, APIResponse, IVideo } from "@/types/common";
 import { AxiosError } from "axios";
 import {
   UseMutationOptions,
