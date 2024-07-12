@@ -446,11 +446,11 @@ const Query: FC<IQueryComponent> = ({
                 <div className="flex items-center justify-start gap-3">
                   <div className="flex items-center justify-center gap-3 rounded-full">
                     <img
-                      src="https://www.google.com/s2/favicons?sz=128&domain=tsn.ca"
+                      src="/images/icons/yt.webp"
                       alt="source icon"
-                      className="w-8 h-8 rounded-full"
+                      className="w-10 h-10 rounded-full"
                     />
-                    <span className="text-[30px]">tsn.ca</span>
+                    <span className="text-[30px]">youtube.com</span>
                   </div>
                 </div>
                 <button
