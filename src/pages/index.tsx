@@ -18,9 +18,11 @@ import useLocalStorage from "@/hooks/useLocalStorage";
 import { useGetUserId } from "@/hooks/api/auth";
 import { useToast } from "@/components/ui/use-toast";
 import { useSearchYoutube } from "@/hooks/api/query";
+import { useTheme } from "next-themes";
+import Image from "next/image";
 
 export default function Home() {
-  const { toast } = useToast();
+  const { theme } = useTheme();
   const { isPhone } = useDeviceIndicator();
   const [_, setSearchValue] = useState("");
   const [queries, setQueries] = useState<IQuery[]>([]);
@@ -34,6 +36,11 @@ export default function Home() {
   const [isPlay, setIsPlay] = useState(false);
   const [disabled, setDisabled] = useState(true);
   const [socketConnected, setSocketConnected] = useState(false);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const [userId, setUserId] = useLocalStorage<string | undefined>(
     "user_id",
@@ -107,6 +114,7 @@ export default function Home() {
           recommendations: [],
           videos: [],
           videosFetched: false,
+          web_links: [],
         },
       ]);
       handleFetchYoutubeVideos(id, query);
@@ -120,6 +128,9 @@ export default function Home() {
           _queries[currentQueryIndex].query = query;
           _queries[currentQueryIndex].response = "";
           _queries[currentQueryIndex].recommendations = [];
+          _queries[currentQueryIndex].videos = [];
+          _queries[currentQueryIndex].videosFetched = false;
+          _queries[currentQueryIndex].web_links = [];
         }
 
         return _queries;
@@ -154,6 +165,9 @@ export default function Home() {
       if (currentQueryIndex !== -1) {
         if (data.clear) {
           updatedQueries[currentQueryIndex].completed = true;
+        }
+        if (data.web_links) {
+          updatedQueries[currentQueryIndex].web_links = data.web_links;
         }
         if (!data.clear) {
           updatedQueries[currentQueryIndex].response += data.response;
@@ -373,15 +387,21 @@ export default function Home() {
           >
             {queries.length === 0 && !isPlay && (
               <div className="container w-full">
-                {/* <div className="w-[100px] relative h-[100px] mx-auto mb-5">
-                  <Image
-                    fill
-                    src={logoAnimated}
-                    alt="Animated logo"
-                    className="object-contain"
-                  />
-                </div> */}
-                <h2 className="text-[28px] md:text-[32px] font-medium text-center mb-[25vh] md:mb-12">
+                {mounted && (
+                  <div className="w-full aspect-square h-fit md:w-[250px] relative md:h-[250px] mx-auto">
+                    <Image
+                      fill
+                      src={
+                        theme === "light"
+                          ? "/images/illustrations/hero-art-dark.svg"
+                          : "/images/illustrations/hero-art-light.svg"
+                      }
+                      alt="Animated logo"
+                      className="object-contain"
+                    />
+                  </div>
+                )}
+                <h2 className="text-[28px] md:text-[32px] font-medium text-center mb-[10vh]  md:mb-5">
                   A place for the curious.
                 </h2>
               </div>

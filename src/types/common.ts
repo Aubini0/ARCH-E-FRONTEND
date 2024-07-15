@@ -69,6 +69,7 @@ export interface IQuery {
   recommendations: [];
   videos: IVideo[];
   videosFetched: boolean;
+  web_links: [];
 }
 
 export interface IVideo {

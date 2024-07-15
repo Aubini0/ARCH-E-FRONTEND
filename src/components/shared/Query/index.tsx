@@ -30,6 +30,7 @@ import {
 } from "@/components/ui/drawer";
 import { CgCloseR } from "react-icons/cg";
 import { FaRegCirclePlay } from "react-icons/fa6";
+import SourceCardViewMore from "@/components/pages/Home/SourceCardViewMore";
 
 interface IQueryComponent {
   query: IQuery;
@@ -180,29 +181,29 @@ const Query: FC<IQueryComponent> = ({
           </div>
         </div>
       )}
-      {/* <Carousel
-                    opts={{
-                      align: "start",
-                    }}
-                    className="w-full hidden md:block h-full py-5"
-                  >
-                    <CarouselContent className="text-black">
-                      {Array.from({ length: 10 }).map((_, index) => (
-                        <CarouselItem
-                          key={index}
-                          className="md:basis-1/2 lg:basis-1/4 select-none"
-                        >
-                          <SourceCard />
-                        </CarouselItem>
-                      ))}
-                      <CarouselItem
-                        onClick={() => setSheetOpen(true)}
-                        className="md:basis-1/2 lg:basis-1/4 select-none"
-                      >
-                        <SourceCardViewMore />
-                      </CarouselItem>
-                    </CarouselContent>
-                  </Carousel> */}
+      <Carousel
+        opts={{
+          align: "start",
+        }}
+        className="w-full hidden md:block h-full py-5"
+      >
+        <CarouselContent className="text-black">
+          {Array.from({ length: 10 }).map((_, index) => (
+            <CarouselItem
+              key={index}
+              className="md:basis-1/2 lg:basis-1/4 select-none"
+            >
+              <SourceCard />
+            </CarouselItem>
+          ))}
+          <CarouselItem
+            onClick={() => setSheetOpen(true)}
+            className="md:basis-1/2 lg:basis-1/4 select-none"
+          >
+            <SourceCardViewMore />
+          </CarouselItem>
+        </CarouselContent>
+      </Carousel>
       {/* <div
                     onClick={() => setSheetOpen(true)}
                     className="rounded-full md:hidden h-[42px] bg-secondary my-5 flex items-center justify-between gap-8 w-full px-3 select-none cursor-pointer hover:bg-white/40 duration-300"
@@ -498,34 +499,6 @@ const Query: FC<IQueryComponent> = ({
                     </div>
                   ))}
                 </div>
-                {/* <div className="hidden md:block md:min-w-[280px] md:w-[280px] h-[120px] md:h-full py-1 md:py-8 w-auto">
-                  <div className="flex h-full md:h-auto md:grid md:grid-cols-1 gap-3 overflow-x-auto md:overflow-x-hidden md:overflow-y-auto hide-scrollbar md:w-full">
-                    {query.videos.map((v, i) => {
-                      return (
-                        <div
-                          key={i}
-                          onClick={() => setCurrentVideoIndex(i)}
-                          className="rounded-lg w-[120px] md:w-auto overflow-hidden duration-300 aspect-video relative cursor-pointer"
-                        >
-                          <Image
-                            src={v.thumbnails.high}
-                            alt="image"
-                            fill
-                            className="object-cover"
-                          />
-                          <div className="absolute top-0 left-0 right-0 bottom-0 w-full h-full flex items-center justify-center">
-                            <Image
-                              src={"/images/icons/yt.webp"}
-                              alt="youtube"
-                              width={60}
-                              height={60}
-                            />
-                          </div>
-                        </div>
-                      );
-                    })}
-                  </div>
-                </div> */}
               </div>
             </div>
           </SheetContent>
