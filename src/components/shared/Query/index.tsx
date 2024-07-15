@@ -181,7 +181,7 @@ const Query: FC<IQueryComponent> = ({
           </div>
         </div>
       )}
-      <Carousel
+      {/* <Carousel
         opts={{
           align: "start",
         }}
@@ -203,7 +203,7 @@ const Query: FC<IQueryComponent> = ({
             <SourceCardViewMore />
           </CarouselItem>
         </CarouselContent>
-      </Carousel>
+      </Carousel> */}
       {/* <div
                     onClick={() => setSheetOpen(true)}
                     className="rounded-full md:hidden h-[42px] bg-secondary my-5 flex items-center justify-between gap-8 w-full px-3 select-none cursor-pointer hover:bg-white/40 duration-300"
