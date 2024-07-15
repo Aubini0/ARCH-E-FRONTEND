@@ -388,7 +388,7 @@ export default function Home() {
             {queries.length === 0 && !isPlay && (
               <div className="container w-full">
                 {mounted && (
-                  <div className="w-full aspect-square h-fit md:w-[250px] relative md:h-[250px] mx-auto">
+                  <div className="w-[80%] aspect-square h-fit md:w-[250px] relative md:h-[250px] mx-auto">
                     <Image
                       fill
                       src={
@@ -407,7 +407,7 @@ export default function Home() {
               </div>
             )}
             {/* this is for desktop */}
-            <div className="lg:max-w-[800px] px-8 lg:px-0 max-w-full w-full">
+            <div className="lg:max-w-[800px] px-4 lg:px-0 max-w-full w-full">
               <PlaceholdersAndVanishInput
                 disabled={disabled || mode === "edit"}
                 onChange={(e) => {
