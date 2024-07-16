@@ -25,6 +25,8 @@ import { ToastAction } from "@/components/ui/toast";
 import logoImage from "@/assets/images/logo.png";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
+import { useGoogleLogin } from '@react-oauth/google';
+
 
 interface ILogin {
   handleGoToSignUp?: () => void;
@@ -53,7 +55,10 @@ const Login: FC<ILogin> = ({ onLogin, handleGoToSignUp }) => {
 
   const { mutate, isLoading } = useSignIn();
 
-  const onSubmit = (data: FormType) => {
+  const loginGoogle = useGoogleLogin({
+    onSuccess: tokenResponse => console.log(tokenResponse),
+  });
+    const onSubmit = (data: FormType) => {
     mutate(data, {
       onSuccess: (data) => {
         const { success, token, data: userData } = data;
@@ -162,7 +167,7 @@ const Login: FC<ILogin> = ({ onLogin, handleGoToSignUp }) => {
               <div>or</div>
               <div className="w-full h-[1px] bg-secondary flex-1"></div>
             </div>
-            <Button type="button" className="w-full gap-1">
+            <Button onClick={() => loginGoogle()} type="button" className="w-full gap-1">
               <FcGoogle className="text-lg" />
               Continue with Google
             </Button>
