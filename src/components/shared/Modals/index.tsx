@@ -29,7 +29,7 @@ const Modals = () => {
           open={signInModal}
           onOpenChange={(o) => dispatch(setSignInModal({ open: o }))}
         >
-          <DrawerContent className="h-full max-h-full rounded-none flex items-center justify-center flex-col gap-12 !bg-black">
+          <DrawerContent className="h-full max-h-full rounded-none flex items-center justify-center flex-col gap-12 dark:bg-black bg-white">
             <AuthForm isDrawer />
           </DrawerContent>
         </Drawer>
