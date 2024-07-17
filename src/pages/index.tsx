@@ -356,7 +356,7 @@ export default function Home() {
                   // }}
                   // on button click wont work now because caption is commented out
                   // onButtonClick={() => router.push("/conversation")}
-                  icon={<IoSend />}
+                  icon={<IoSend className="text-zinc-500" />}
                   className="duration-300 -z-1"
                 />
               </div>
@@ -440,7 +440,7 @@ export default function Home() {
                 // }}
                 // on button click wont work now because caption is commented out
                 // onButtonClick={() => router.push("/conversation")}
-                icon={<IoSend />}
+                icon={<IoSend className="text-zinc-500" />}
                 className="duration-300 -z-1"
               />
               {/* <div className="mx-auto w-[60px] mt-12 h-[60px] rounded-full flex items-center justify-center shadow-sm bg-secondary">

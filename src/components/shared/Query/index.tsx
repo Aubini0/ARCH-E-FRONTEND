@@ -9,6 +9,7 @@ import Image from "next/image";
 import MarkDown from "react-markdown";
 import { Skeleton } from "@/components/ui/skeleton";
 import { FaRegEdit, FaRegQuestionCircle } from "react-icons/fa";
+import { HiOutlineAdjustmentsHorizontal } from "react-icons/hi2";
 import Youtube from "react-youtube";
 import {
   Sheet,
@@ -336,7 +337,7 @@ const Query: FC<IQueryComponent> = ({
           </div>
         )}
         {query.completed && (
-          <div className="flex items-center mt-5 gap-3 justify-center">
+          <div className="flex items-center mt-3 gap-3 justify-end w-full">
             {/* <div className="flex flex-col cursor-pointer items-center justify-center">
                           <VscShare className="text-xl" />
                           <span className="text-[10px]">Share</span>
@@ -346,10 +347,18 @@ const Query: FC<IQueryComponent> = ({
                 setEditingQuery({ ...query, updatedQuery: query.query });
                 setMode("edit");
               }}
-              className="flex flex-col cursor-pointer items-center justify-center"
+              className="flex-col cursor-pointer w-10 h-10 flex items-center justify-center bg-slate-100 dark:bg-secondary rounded-[12px]"
             >
-              <FaRegEdit className="text-xl" />
-              <span className="text-[10px]">Edit</span>
+              <FaRegEdit className="text-xl -mr-0.5 -mt-0.5" />
+            </div>
+            <div
+              onClick={() => {
+                setEditingQuery({ ...query, updatedQuery: query.query });
+                setMode("edit");
+              }}
+              className="flex-col cursor-pointer w-10 h-10 flex items-center justify-center bg-slate-100 dark:bg-secondary rounded-[12px]"
+            >
+              <HiOutlineAdjustmentsHorizontal className="text-xl" />
             </div>
           </div>
         )}

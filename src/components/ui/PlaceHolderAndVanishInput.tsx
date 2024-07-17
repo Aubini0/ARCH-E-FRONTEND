@@ -1,18 +1,10 @@
-import { AnimatePresence, motion } from "framer-motion";
-import React, {
-  FC,
-  HTMLAttributes,
-  useCallback,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
+import { FC, HTMLAttributes, useEffect, useRef, useState } from "react";
 import { cn } from "@/lib/utils";
 import { TextGenerateEffect } from "./TextGenerateEffect";
 
 interface IPlaceholdersAndVanishInput {
   placeholder?: string;
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
   onSubmit: (value: string) => void;
   className?: HTMLAttributes<HTMLDivElement>["className"];
   focused?: boolean;
@@ -35,10 +27,9 @@ const PlaceholdersAndVanishInput: FC<IPlaceholdersAndVanishInput> = ({
   onButtonClick,
   disabled,
 }) => {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-  const inputRef = useRef<HTMLInputElement>(null);
+  const inputRef = useRef<HTMLTextAreaElement>(null);
+  const formRef = useRef<HTMLFormElement>(null);
   const [inputValue, setInputValue] = useState("");
-  const [animating, setAnimating] = useState(false);
 
   useEffect(() => {
     if (value !== undefined) {
@@ -48,7 +39,7 @@ const PlaceholdersAndVanishInput: FC<IPlaceholdersAndVanishInput> = ({
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    onSubmit && onSubmit(inputValue);
+    onSubmit(inputValue);
     setInputValue("");
   };
 
@@ -58,42 +49,50 @@ const PlaceholdersAndVanishInput: FC<IPlaceholdersAndVanishInput> = ({
     }
   }, [focused]);
 
+  const handleKeyDown = (e: KeyboardEvent) => {
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault();
+      onSubmit(inputValue);
+      setInputValue("");
+    }
+  };
+
+  useEffect(() => {
+    const currentInputRef = inputRef.current;
+    currentInputRef?.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      currentInputRef?.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [inputValue, onSubmit]);
+
   return (
     <form
+      ref={formRef}
       className={cn(
-        "w-full relative mx-auto bg-white dark:bg-secondary h-12 rounded-full overflow-hidden shadow-[0px_2px_3px_-1px_rgba(0,0,0,0.1),_0px_1px_0px_0px_rgba(25,28,33,0.02),_0px_0px_0px_1px_rgba(25,28,33,0.08)] transition duration-200",
+        "w-full relative mx-auto bg-[#F5F6F8] dark:bg-[#27272A] h-[65px] overflow-hidden border border-[#CCCCCC] dark:border-[#595959] transition duration-200 rounded-[12px]",
         className,
         disabled && "pointer-events-none bg-gray-200"
       )}
       onSubmit={handleSubmit}
     >
-      <canvas
-        className={cn(
-          "absolute pointer-events-none text-base transform scale-50 top-[20%] left-2 sm:left-8 origin-top-left filter invert dark:invert-0 pr-20",
-          !animating ? "opacity-0" : "opacity-100"
-        )}
-        ref={canvasRef}
-      />
-      <input
+      <textarea
         onChange={(e) => {
-          if (!animating) {
-            setInputValue(e.target.value);
-            onChange && onChange(e);
-          }
+          setInputValue(e.target.value);
+          onChange(e);
         }}
         disabled={disabled}
         ref={inputRef}
         value={inputValue}
         spellCheck={false}
         autoCorrect="off"
-        type="text"
+        rows={1}
         onBlur={onBlur}
+        draggable={false}
         className={cn(
-          "w-full relative text-sm sm:text-base z-50 border-none dark:text-white bg-transparent text-black h-full rounded-full focus:outline-none focus:ring-0 pl-4 sm:pl-10 pr-20",
-          animating && "text-transparent dark:text-transparent"
+          "w-full relative text-sm sm:text-base z-50 border-none dark:text-white bg-transparent text-black h-full rounded-full focus:outline-none focus:ring-0 pl-4 sm:pl-[24px] pr-[40px] pt-[16px] hide-scrollbar resize-none"
         )}
       />
-
       <button
         onMouseDown={(e) => e.preventDefault()}
         onClick={() => {
@@ -101,21 +100,18 @@ const PlaceholdersAndVanishInput: FC<IPlaceholdersAndVanishInput> = ({
           setInputValue("");
         }}
         type="button"
-        className="absolute right-2 top-1/2 z-50 -translate-y-1/2 h-8 w-8 rounded-full cursor-pointer transition duration-200 flex items-center justify-center text-lg bg-transparent md:hover:bg-slate-200 dark:md:hover:bg-background"
+        className="absolute right-2 top-1/2 z-50 rounded-lg -translate-y-1/2 h-8 w-8 cursor-pointer transition duration-200 flex items-center justify-center text-lg bg-[#FFFFFF] dark:bg-[#121212]"
       >
         {icon}
       </button>
-
-      <div className="absolute inset-0 flex items-center rounded-full pointer-events-none">
-        <AnimatePresence mode="wait">
-          {!inputValue && placeholder && (
-            <TextGenerateEffect
-              className="text-sm text-zinc-600 pl-4 md:pl-10"
-              words={placeholder}
-            />
-          )}
-        </AnimatePresence>
-      </div>
+      {!inputValue && placeholder && (
+        <div className="absolute inset-0 -top-2 flex items-center text-sm text-zinc-600 pl-4 md:pl-[24px] pointer-events-none">
+          <TextGenerateEffect
+            className="text-sm text-[#7F7F7F]"
+            words={placeholder}
+          />
+        </div>
+      )}
     </form>
   );
 };

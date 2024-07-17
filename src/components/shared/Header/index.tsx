@@ -25,8 +25,6 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { useTheme } from "next-themes";
-import { IoChatbubbleEllipses } from "react-icons/io5";
-import Link from "next/link";
 import { cn } from "@/lib/utils";
 
 interface IHeader extends React.HTMLAttributes<HTMLDivElement> {}
