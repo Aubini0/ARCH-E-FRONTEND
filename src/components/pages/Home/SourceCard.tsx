@@ -1,23 +1,32 @@
 import Image from "next/image";
-import React from "react";
+import Link from "next/link";
+import React, { FC } from "react";
 
-const SourceCard = () => {
+interface ISourceCard {
+  url: string;
+}
+
+const SourceCard: FC<ISourceCard> = ({ url }) => {
   return (
-    <div className="w-full h-full bg-secondary text-white rounded-xl p-2">
-      <p className="leading-5 two-line-ellipsis text-xs md:text-sm">
-        Lorem ipsum dolor sit amet consectetur adipisicing
-      </p>
+    <Link
+      target="_blank"
+      href={url}
+      className="w-full block h-full bg-gray-100 dark:bg-secondary dark:text-white rounded-xl p-2"
+    >
+      <p className="leading-5 two-line-ellipsis text-xs md:text-sm">{url}</p>
       <div className="flex items-center mt-1 md:mt-3 gap-3">
         <Image
-          src={"https://i.pravatar.cc/150?u=a042581f4e29026024"}
+          src={"/images/icons/web_icon.png"}
           alt="avatar"
           width={25}
           height={25}
           className="rounded-full border-2 border-white"
         />
-        <span className="font-medium text-sm">source</span>
+        <span className="font-medium whitespace-nowrap text-ellipsis overflow-hidden inline flex-1 text-sm">
+          {new URL(url).host}
+        </span>
       </div>
-    </div>
+    </Link>
   );
 };
 
