@@ -21,6 +21,8 @@ import {
   Carousel,
   CarouselContent,
   CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
 } from "@/components/ui/carousel";
 import SourceCard from "@/components/pages/Home/SourceCard";
 import {
@@ -30,8 +32,7 @@ import {
   DrawerTitle,
 } from "@/components/ui/drawer";
 import { CgCloseR } from "react-icons/cg";
-import { FaRegCirclePlay } from "react-icons/fa6";
-import SourceCardViewMore from "@/components/pages/Home/SourceCardViewMore";
+import { MdOutlineLibraryBooks } from "react-icons/md";
 
 interface IQueryComponent {
   query: IQuery;
@@ -128,7 +129,7 @@ const Query: FC<IQueryComponent> = ({
           <h5 className="text-[30px] font-medium">{query.query}</h5>
         </div>
       )}
-      {query.videos.length > 0 && (
+      {/* {query.videos.length > 0 && (
         <div className="absolute hidden lg:block top-0 2xl:-right-[330px] lg:-right-[150px] xl:-right-[280px] md:w-[150px] lg:w-[120px] xl:w-[230px] pb-5 2xl:w-[310px] h-full">
           <div
             // style={{ position: "-webkit-sticky" }}
@@ -181,83 +182,35 @@ const Query: FC<IQueryComponent> = ({
             </div>
           </div>
         </div>
+      )} */}
+
+      {query.web_links.length > 0 && (
+        <div
+          onClick={() => setSheetOpen(true)}
+          className="rounded-full md:hidden h-[42px] bg-gray-200 dark:bg-secondary mt-5 flex items-center justify-between gap-8 w-full px-3 select-none cursor-pointer duration-300"
+        >
+          <div className="flex items-center gap-3">
+            <MdOutlineLibraryBooks className="text-2xl" />
+            <span className="text-sm md:text-base font-medium text-black dark:text-white">
+              Sources
+            </span>
+          </div>
+          <div className=" flex items-center gap-[3px]">
+            {query.web_links.slice(0, 3).map((web_link, index) => (
+              <div key={index} className="w-6 h-6 rounded-full relative">
+                <Image
+                  src={`https://www.google.com/s2/favicons?domain_url=${
+                    new URL(web_link).host
+                  }`}
+                  alt="avatar"
+                  fill
+                  className="rounded-full"
+                />
+              </div>
+            ))}
+          </div>
+        </div>
       )}
-      {/* <Carousel
-        opts={{
-          align: "start",
-        }}
-        className="w-full hidden md:block h-full py-5"
-      >
-        <CarouselContent className="text-black">
-          {Array.from({ length: 10 }).map((_, index) => (
-            <CarouselItem
-              key={index}
-              className="md:basis-1/2 lg:basis-1/4 select-none"
-            >
-              <SourceCard />
-            </CarouselItem>
-          ))}
-          <CarouselItem
-            onClick={() => setSheetOpen(true)}
-            className="md:basis-1/2 lg:basis-1/4 select-none"
-          >
-            <SourceCardViewMore />
-          </CarouselItem>
-        </CarouselContent>
-      </Carousel> */}
-      {/* <div
-                    onClick={() => setSheetOpen(true)}
-                    className="rounded-full md:hidden h-[42px] bg-secondary my-5 flex items-center justify-between gap-8 w-full px-3 select-none cursor-pointer hover:bg-white/40 duration-300"
-                  >
-                    <div className="flex items-center gap-3">
-                      <MdOutlineLibraryBooks className="text-2xl" />
-                      <span className="text-sm md:text-base font-medium text-white">
-                        Sources
-                      </span>
-                    </div>
-                    <div className=" flex items-center gap-[3px]">
-                      <div className="border-2 w-6 h-6 rounded-full border-white relative">
-                        <Image
-                          src={
-                            "https://i.pravatar.cc/150?u=a042581f4e29026024d"
-                          }
-                          alt="avatar"
-                          fill
-                          className="rounded-full"
-                        />
-                      </div>
-                      <div className="border-2 w-6 h-6 rounded-full border-white relative">
-                        <Image
-                          src={
-                            "https://i.pravatar.cc/150?u=a042581f4e29026024d"
-                          }
-                          alt="avatar"
-                          fill
-                          className="rounded-full"
-                        />
-                      </div>
-                      <div className="border-2 w-6 h-6 rounded-full border-white relative">
-                        <Image
-                          src={
-                            "https://i.pravatar.cc/150?u=a042581f4e29026024d"
-                          }
-                          alt="avatar"
-                          fill
-                          className="rounded-full"
-                        />
-                      </div>
-                      <div className="border-2 w-6 h-6 rounded-full border-white relative">
-                        <Image
-                          src={
-                            "https://i.pravatar.cc/150?u=a042581f4e29026024d"
-                          }
-                          alt="avatar"
-                          fill
-                          className="rounded-full"
-                        />
-                      </div>
-                    </div>
-                  </div> */}
       <div className="flex flex-col items-start w-full">
         <Carousel
           opts={{
@@ -312,7 +265,7 @@ const Query: FC<IQueryComponent> = ({
             )}
           </CarouselContent>
         </Carousel>
-        <div className="w-full gap-3 flex items-center pb-3 pt-8">
+        <div className="w-full gap-3 flex items-center pb-3 pt-5 md:pt-5">
           {/* <Image
             src={logoImg.src}
             alt="user"
@@ -363,6 +316,79 @@ const Query: FC<IQueryComponent> = ({
           </div>
         )}
       </div>
+
+      {query.web_links.length > 0 && (
+        <Carousel
+          opts={{
+            align: "start",
+          }}
+          className="w-full hidden md:block h-full py-5"
+        >
+          <CarouselContent className="text-black">
+            {query.web_links.map((query, index) => (
+              <CarouselItem
+                key={index}
+                className="md:basis-1/2 lg:basis-1/4 select-none"
+              >
+                <SourceCard count={index + 1} url={query} />
+              </CarouselItem>
+            ))}
+            {/* <CarouselItem
+            onClick={() => setSheetOpen(true)}
+            className="md:basis-1/2 lg:basis-1/4 select-none"
+          >
+            <SourceCardViewMore />
+          </CarouselItem> */}
+          </CarouselContent>
+        </Carousel>
+      )}
+      {!isPhone && query.videos.length > 0 && (
+        <Carousel
+          opts={{
+            align: "start",
+          }}
+          className="w-full hidden md:block h-full py-5"
+        >
+          <CarouselContent className="text-black">
+            {query.videos.map((video, index) => (
+              <CarouselItem
+                onClick={() => {
+                  setCurrentVideoIndex(index);
+                  setVideosOpen(true);
+                }}
+                key={index}
+                className="basis-[30%] cursor-pointer select-none"
+              >
+                <div className="w-full rounded-xl overflow-hidden aspect-square relative">
+                  <Image
+                    src={video.thumbnails.high}
+                    className="object-cover z-0"
+                    alt={video.title}
+                    fill
+                  />
+                  <div
+                    className="absolute z-[9] inset-0 flex items-end justify-start p-3"
+                    style={{
+                      background:
+                        "linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0) 10%, rgba(0,0,0,1) 100%)",
+                    }}
+                  >
+                    <p className="text-sm text-white">{video.title}</p>
+                  </div>
+                </div>
+              </CarouselItem>
+            ))}
+            {/* <CarouselItem
+            onClick={() => setSheetOpen(true)}
+            className="md:basis-1/2 lg:basis-1/4 select-none"
+          >
+            <SourceCardViewMore />
+          </CarouselItem> */}
+          </CarouselContent>
+          <CarouselPrevious />
+          <CarouselNext />
+        </Carousel>
+      )}
       {query.completed &&
         query.recommendations.length > 0 &&
         totalQueries - 1 === index && (
@@ -387,7 +413,7 @@ const Query: FC<IQueryComponent> = ({
           </div>
         )}
 
-      {!isPhone && (
+      {/* {!isPhone && (
         <Sheet open={sheetOpen} onOpenChange={setSheetOpen}>
           <SheetContent side={"right"}>
             <SheetHeader>
@@ -407,7 +433,7 @@ const Query: FC<IQueryComponent> = ({
                       key={index}
                       className="md:basis-1/2 lg:basis-1/4 select-none"
                     >
-                      <SourceCard />
+                      <SourceCard url={"https://www.google.com"} />
                     </CarouselItem>
                   ))}
                 </CarouselContent>
@@ -415,12 +441,14 @@ const Query: FC<IQueryComponent> = ({
             </div>
           </SheetContent>
         </Sheet>
-      )}
+      )} */}
       {isPhone && (
         <Drawer open={sheetOpen} onOpenChange={setSheetOpen}>
           <DrawerContent>
             <DrawerHeader>
-              <DrawerTitle className="text-2xl">1+ sources</DrawerTitle>
+              <DrawerTitle className="text-2xl">
+                {query.web_links.length} sources
+              </DrawerTitle>
             </DrawerHeader>
             <div className="w-full">
               <Carousel
@@ -431,12 +459,12 @@ const Query: FC<IQueryComponent> = ({
                 className="w-full px-5 py-5 md:py-10 h-full"
               >
                 <CarouselContent className="text-black">
-                  {Array.from({ length: 10 }).map((_, index) => (
+                  {query.web_links.map((web_link, index) => (
                     <CarouselItem
                       key={index}
                       className="md:basis-1/2 lg:basis-1/4 select-none"
                     >
-                      <SourceCard />
+                      <SourceCard count={index + 1} url={web_link} />
                     </CarouselItem>
                   ))}
                 </CarouselContent>
