@@ -197,9 +197,11 @@ const Query: FC<IQueryComponent> = ({
           </div>
           <div className=" flex items-center gap-[3px]">
             {query.web_links.slice(0, 3).map((web_link, index) => (
-              <div className="border-2 w-6 h-6 rounded-full border-white relative">
+              <div key={index} className="w-6 h-6 rounded-full relative">
                 <Image
-                  src={"/images/icons/web_icon.png"}
+                  src={`https://www.google.com/s2/favicons?domain_url=${
+                    new URL(web_link).host
+                  }`}
                   alt="avatar"
                   fill
                   className="rounded-full"
