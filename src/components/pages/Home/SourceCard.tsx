@@ -1,30 +1,41 @@
 import Image from "next/image";
 import Link from "next/link";
 import React, { FC } from "react";
+import { GoDotFill } from "react-icons/go";
 
 interface ISourceCard {
   url: string;
+  count: number;
 }
 
-const SourceCard: FC<ISourceCard> = ({ url }) => {
+const SourceCard: FC<ISourceCard> = ({ url, count }) => {
   return (
     <Link
       target="_blank"
       href={url}
       className="w-full block h-full bg-gray-100 dark:bg-secondary dark:text-white rounded-xl p-2"
     >
-      <p className="leading-5 two-line-ellipsis text-xs md:text-sm">{url}</p>
-      <div className="flex items-center mt-1 md:mt-3 gap-3">
+      <p className="leading-5 two-line-ellipsis text-xs md:text-sm min-h-[40px]">
+        {url}
+      </p>
+      <div className="flex items-center mt-1 md:mt-3 gap-1">
         <Image
-          src={"/images/icons/web_icon.png"}
+          src={`https://www.google.com/s2/favicons?domain_url=${
+            new URL(url).host
+          }`}
           alt="avatar"
-          width={25}
-          height={25}
-          className="rounded-full border-2 border-white"
+          width={20}
+          height={20}
         />
-        <span className="font-medium whitespace-nowrap text-ellipsis overflow-hidden inline flex-1 text-sm">
-          {new URL(url).host}
-        </span>
+        <div className="flex-1 flex items-center text-black dark:text-[#848585] text-xs gap-1">
+          <span className="font-medium whitespace-nowrap text-ellipsis overflow-hidden inline max-w-[70%]">
+            {new URL(url).host}
+          </span>
+          <span>
+            <GoDotFill />
+          </span>
+          <span>{count}</span>
+        </div>
       </div>
     </Link>
   );

@@ -185,31 +185,6 @@ const Query: FC<IQueryComponent> = ({
       )} */}
 
       {query.web_links.length > 0 && (
-        <Carousel
-          opts={{
-            align: "start",
-          }}
-          className="w-full hidden md:block h-full py-5"
-        >
-          <CarouselContent className="text-black">
-            {query.web_links.map((query, index) => (
-              <CarouselItem
-                key={index}
-                className="md:basis-1/2 lg:basis-1/4 select-none"
-              >
-                <SourceCard url={query} />
-              </CarouselItem>
-            ))}
-            {/* <CarouselItem
-            onClick={() => setSheetOpen(true)}
-            className="md:basis-1/2 lg:basis-1/4 select-none"
-          >
-            <SourceCardViewMore />
-          </CarouselItem> */}
-          </CarouselContent>
-        </Carousel>
-      )}
-      {query.web_links.length > 0 && (
         <div
           onClick={() => setSheetOpen(true)}
           className="rounded-full md:hidden h-[42px] bg-gray-200 dark:bg-secondary mt-5 flex items-center justify-between gap-8 w-full px-3 select-none cursor-pointer duration-300"
@@ -288,7 +263,7 @@ const Query: FC<IQueryComponent> = ({
             )}
           </CarouselContent>
         </Carousel>
-        <div className="w-full gap-3 flex items-center pb-3 pt-5 md:pt-0">
+        <div className="w-full gap-3 flex items-center pb-3 pt-5 md:pt-5">
           {/* <Image
             src={logoImg.src}
             alt="user"
@@ -339,6 +314,32 @@ const Query: FC<IQueryComponent> = ({
           </div>
         )}
       </div>
+
+      {query.web_links.length > 0 && (
+        <Carousel
+          opts={{
+            align: "start",
+          }}
+          className="w-full hidden md:block h-full py-5"
+        >
+          <CarouselContent className="text-black">
+            {query.web_links.map((query, index) => (
+              <CarouselItem
+                key={index}
+                className="md:basis-1/2 lg:basis-1/4 select-none"
+              >
+                <SourceCard count={index + 1} url={query} />
+              </CarouselItem>
+            ))}
+            {/* <CarouselItem
+            onClick={() => setSheetOpen(true)}
+            className="md:basis-1/2 lg:basis-1/4 select-none"
+          >
+            <SourceCardViewMore />
+          </CarouselItem> */}
+          </CarouselContent>
+        </Carousel>
+      )}
       {!isPhone && query.videos.length > 0 && (
         <Carousel
           opts={{
@@ -461,7 +462,7 @@ const Query: FC<IQueryComponent> = ({
                       key={index}
                       className="md:basis-1/2 lg:basis-1/4 select-none"
                     >
-                      <SourceCard url={web_link} />
+                      <SourceCard count={index + 1} url={web_link} />
                     </CarouselItem>
                   ))}
                 </CarouselContent>
