@@ -70,7 +70,7 @@ const PlaceholdersAndVanishInput: FC<IPlaceholdersAndVanishInput> = ({
     <form
       ref={formRef}
       className={cn(
-        "w-full relative mx-auto bg-[#F5F6F8] dark:bg-[#27272A] h-[65px] overflow-hidden border border-[#CCCCCC] dark:border-[#595959] transition duration-200 rounded-[12px]",
+        "w-full relative mx-auto bg-[#F5F6F8] dark:bg-[#27272A] overflow-hidden border border-[#CCCCCC] dark:border-[#595959] transition duration-200 rounded-[12px] h-[44px]",
         className,
         disabled && "pointer-events-none bg-gray-200"
       )}
@@ -90,7 +90,7 @@ const PlaceholdersAndVanishInput: FC<IPlaceholdersAndVanishInput> = ({
         onBlur={onBlur}
         draggable={false}
         className={cn(
-          "w-full relative text-sm sm:text-base z-50 border-none dark:text-white bg-transparent text-black h-full rounded-full focus:outline-none focus:ring-0 pl-4 sm:pl-[24px] pr-[40px] pt-[16px] hide-scrollbar resize-none"
+          "w-full relative text-sm sm:text-base z-50 border-none dark:text-white bg-transparent text-black h-full rounded-full focus:outline-none focus:ring-0 pl-4 sm:pl-[24px] pr-[40px] pt-[12px] hide-scrollbar resize-none"
         )}
       />
       <button
@@ -105,7 +105,7 @@ const PlaceholdersAndVanishInput: FC<IPlaceholdersAndVanishInput> = ({
         {icon}
       </button>
       {!inputValue && placeholder && (
-        <div className="absolute inset-0 -top-2 flex items-center text-sm text-zinc-600 pl-4 md:pl-[24px] pointer-events-none">
+        <div className="absolute inset-0 top-1 flex items-center text-sm text-zinc-600 pl-4 md:pl-[24px] pointer-events-none">
           <TextGenerateEffect
             className="text-sm text-[#7F7F7F]"
             words={placeholder}
