@@ -442,39 +442,39 @@ export default function Home() {
             </div> */}
           </div>
         </div>
+        {!isPhone && (
+          <>
+            {queries.length > 0 && !isPlay && (
+              <div
+                className={cn(
+                  "container lg:px-0 lg:mx-0 lg:max-w-none w-full max-h-full h-full duration-300 flex flex-col items-center safe-area"
+                )}
+              >
+                <ScrollShadow
+                  ref={scrollAreaRef}
+                  hideScrollBar
+                  className="flex-1 safe-area divide-y-2 divide-gray-400 dark:divide-secondary w-full"
+                >
+                  {queries.map((q, i) => (
+                    <Query
+                      query={q}
+                      editingQuery={editingQuery}
+                      fetchBot={fetchBot}
+                      index={i}
+                      mode={mode}
+                      setEditingQuery={setEditingQuery}
+                      setMode={setMode}
+                      totalQueries={queries.length}
+                      key={i}
+                    />
+                  ))}
+                </ScrollShadow>
+              </div>
+            )}
+          </>
+        )}
       </div>
 
-      {!isPhone && (
-        <>
-          {queries.length > 0 && !isPlay && (
-            <div
-              className={cn(
-                "container lg:px-0 lg:mx-0 lg:max-w-none w-full max-h-full h-full duration-300 flex flex-col items-center safe-area"
-              )}
-            >
-              <ScrollShadow
-                ref={scrollAreaRef}
-                hideScrollBar
-                className="flex-1 safe-area divide-y-2 divide-gray-400 dark:divide-secondary w-full"
-              >
-                {queries.map((q, i) => (
-                  <Query
-                    query={q}
-                    editingQuery={editingQuery}
-                    fetchBot={fetchBot}
-                    index={i}
-                    mode={mode}
-                    setEditingQuery={setEditingQuery}
-                    setMode={setMode}
-                    totalQueries={queries.length}
-                    key={i}
-                  />
-                ))}
-              </ScrollShadow>
-            </div>
-          )}
-        </>
-      )}
       {isPhone && (
         <Drawer
           open={queries.length > 0}
