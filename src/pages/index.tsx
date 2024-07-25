@@ -418,7 +418,7 @@ export default function Home() {
             </>
           )}
           {/* this is for desktop */}
-          <div className="lg:max-w-[800px] px-4 lg:px-0 max-w-full w-full">
+          <div className="lg:max-w-[800px] px-0 max-w-full w-full">
             <PlaceholdersAndVanishInput
               disabled={disabled || mode === "edit"}
               onChange={(e) => {
