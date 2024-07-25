@@ -201,9 +201,11 @@ const Query: FC<IQueryComponent> = ({
                 <Image
                   src={`https://www.google.com/s2/favicons?domain_url=${
                     new URL(web_link).host
-                  }`}
+                  }&sz=32`}
                   alt="avatar"
                   fill
+                  unoptimized
+                  quality={100}
                   className="rounded-full"
                 />
               </div>
@@ -212,59 +214,6 @@ const Query: FC<IQueryComponent> = ({
         </div>
       )}
       <div className="flex flex-col items-start w-full">
-        <Carousel
-          opts={{
-            align: "start",
-          }}
-          className="w-full md:hidden block mt-5"
-        >
-          <CarouselContent className="text-black">
-            {query.videos
-              .slice(0, query.videos.length - 1)
-              .map((video, index) => (
-                <CarouselItem
-                  key={index}
-                  className="basis-[50%] select-none h-[120px] aspect-video"
-                >
-                  <div
-                    onClick={() => {
-                      setCurrentVideoIndex(index);
-                      setVideosOpen(true);
-                    }}
-                    className="rounded-lg h-full w-full overflow-hidden duration-300"
-                  >
-                    <img
-                      src={video.thumbnails.high}
-                      alt="image"
-                      className="w-full h-full object-cover"
-                    />
-                  </div>
-                </CarouselItem>
-              ))}
-            {query.videos[query.videos.length - 1] && (
-              <CarouselItem className="basis-[50%] select-none h-[120px] aspect-video">
-                <div
-                  onClick={() => {
-                    setCurrentVideoIndex(0);
-                    setVideosOpen(true);
-                  }}
-                  className="rounded-lg h-full w-full overflow-hidden duration-300 bg-secondary flex flex-col items-center justify-center"
-                >
-                  <img
-                    src={query.videos[query.videos.length - 1].thumbnails.high}
-                    alt="image"
-                    className="w-full h-[90px] rounded-xl object-cover"
-                  />
-                  <div className="flex items-center justify-center h-[30px]">
-                    <p className="text-sm font-medium text-white">
-                      + View more
-                    </p>
-                  </div>
-                </div>
-              </CarouselItem>
-            )}
-          </CarouselContent>
-        </Carousel>
         <div className="w-full gap-3 flex items-center pb-3 pt-5 md:pt-5">
           {/* <Image
             src={logoImg.src}
@@ -389,6 +338,57 @@ const Query: FC<IQueryComponent> = ({
           <CarouselNext />
         </Carousel>
       )}
+      <Carousel
+        opts={{
+          align: "start",
+        }}
+        className="w-full md:hidden block mt-5"
+      >
+        <CarouselContent className="text-black">
+          {query.videos
+            .slice(0, query.videos.length - 1)
+            .map((video, index) => (
+              <CarouselItem
+                key={index}
+                className="basis-[50%] select-none h-[120px] aspect-video"
+              >
+                <div
+                  onClick={() => {
+                    setCurrentVideoIndex(index);
+                    setVideosOpen(true);
+                  }}
+                  className="rounded-lg h-full w-full overflow-hidden duration-300"
+                >
+                  <img
+                    src={video.thumbnails.high}
+                    alt="image"
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+              </CarouselItem>
+            ))}
+          {query.videos[query.videos.length - 1] && (
+            <CarouselItem className="basis-[50%] select-none h-[120px] aspect-video">
+              <div
+                onClick={() => {
+                  setCurrentVideoIndex(0);
+                  setVideosOpen(true);
+                }}
+                className="rounded-lg h-full w-full overflow-hidden duration-300 bg-secondary flex flex-col items-center justify-center"
+              >
+                <img
+                  src={query.videos[query.videos.length - 1].thumbnails.high}
+                  alt="image"
+                  className="w-full h-[90px] rounded-xl object-cover"
+                />
+                <div className="flex items-center justify-center h-[30px]">
+                  <p className="text-sm font-medium text-white">+ View more</p>
+                </div>
+              </div>
+            </CarouselItem>
+          )}
+        </CarouselContent>
+      </Carousel>
       {query.completed &&
         query.recommendations.length > 0 &&
         totalQueries - 1 === index && (
