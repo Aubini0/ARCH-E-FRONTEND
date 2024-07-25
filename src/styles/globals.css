@@ -4,7 +4,7 @@
 
 @layer base {
   :root {
-    --primary: 240 5.26% 26.08%;
+    --primary: 44 99% 51%;
 
     --secondary: 240 4% 16%; /* 800 */
 
@@ -28,7 +28,7 @@
   }
 
   .dark {
-    --primary: 240 5.26% 26.08%;
+    --primary: 44 99% 51%;
 
     --secondary: 240 4% 16%; /* 800 */
 
@@ -148,4 +148,12 @@ input[type="number"]::-webkit-outer-spin-button {
   .mkdown {
     font-size: 14px;
   }
+}
+
+.safe-area {
+  height: calc(100vh - 88px);
+}
+
+.safe-area-max {
+  max-height: calc(100vh - 88px);
 }

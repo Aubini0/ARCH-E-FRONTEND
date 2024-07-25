@@ -79,10 +79,10 @@ const Query: FC<IQueryComponent> = ({
         totalQueries === index + 1 ? "pb-[20px] md:pb-[120px]" : ""
       )}
       initial={{
-        minHeight: isPhone ? "100%" : "calc(100vh - 96px)",
+        minHeight: isPhone ? "100%" : "calc(100vh - 88px)",
       }}
       animate={{
-        minHeight: query.completed ? "unset" : "calc(100vh - 96px)",
+        minHeight: query.completed ? "unset" : "calc(100vh - 88px)",
       }}
     >
       {mode === "edit" && editingQuery?.id === query.id ? (
@@ -500,10 +500,7 @@ const Query: FC<IQueryComponent> = ({
                   <CgCloseR />
                 </button>
               </div>
-              <div
-                className="px-3 md:px-12 w-full flex-col md:flex-row flex items-center"
-                style={{ height: "calc(100vh - 96px)" }}
-              >
+              <div className="px-3 md:px-12 w-full flex-col md:flex-row flex items-center safe-area">
                 <div className="flex-1 h-full w-full md:w-auto flex items-center justify-center">
                   <Youtube
                     id={videoId!}
