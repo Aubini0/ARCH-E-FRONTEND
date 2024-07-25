@@ -8,21 +8,73 @@ import { cn, getWebSocketURL } from "@/lib/utils";
 import { ScrollShadow } from "@nextui-org/react";
 import { nanoid } from "@reduxjs/toolkit";
 import { useAppSelector } from "@/store/hooks";
-import { FaRegCirclePlay } from "react-icons/fa6";
-import { CgCloseR } from "react-icons/cg";
 import MusicCard from "@/components/shared/MusicCard";
 import { IQuery } from "@/types/common";
 import Query from "@/components/shared/Query";
 import { IoClose, IoSend } from "react-icons/io5";
 import useLocalStorage from "@/hooks/useLocalStorage";
 import { useGetUserId } from "@/hooks/api/auth";
-import { useToast } from "@/components/ui/use-toast";
 import { useSearchYoutube } from "@/hooks/api/query";
 import { useTheme } from "next-themes";
 import Image from "next/image";
+import { TbPlaneTilt } from "react-icons/tb";
+import { MdLocalMovies, MdOutlineSchool } from "react-icons/md";
+import { GrAnnounce } from "react-icons/gr";
+import { PiMedalMilitaryLight } from "react-icons/pi";
+import { HiOutlineHome } from "react-icons/hi2";
+
+const forYouMobile = [
+  {
+    image: "/images/for-you-1.jpeg",
+    title: "Recommended Places to Visit in Canada",
+    category: "Travel",
+    icon: <TbPlaneTilt />,
+  },
+  {
+    image: "/images/for-you-2.jpeg",
+    title: "Upcoming tech conferences",
+    category: "Education",
+    icon: <MdOutlineSchool />,
+  },
+  {
+    image: "/images/for-you-2.jpeg",
+    title: "Upcoming tech conferences",
+    category: "Education",
+    icon: <MdOutlineSchool />,
+  },
+];
+
+const forYouDesktop = [
+  {
+    image: "/images/for-you-1.jpeg",
+    title: "Road trip Rapture - Your Playlist",
+    category: "Entertainment",
+    icon: <MdLocalMovies />,
+  },
+  {
+    image: "/images/for-you-2.jpeg",
+    title: "Ultimate Meal plan: Burn fat, Keep Muscle",
+    category: "Lifestyle",
+    icon: <HiOutlineHome />,
+  },
+];
+
+const trendingDesktop = [
+  {
+    image: "/images/for-you-1.jpeg",
+    title: "Baldwin's trial verdict",
+    category: "News",
+    icon: <GrAnnounce />,
+  },
+  {
+    image: "/images/for-you-2.jpeg",
+    title: "Fever vs Lynx showdown",
+    category: "Sports",
+    icon: <PiMedalMilitaryLight />,
+  },
+];
 
 export default function Home() {
-  const { theme } = useTheme();
   const { isPhone } = useDeviceIndicator();
   const [_, setSearchValue] = useState("");
   const [queries, setQueries] = useState<IQuery[]>([]);
@@ -31,7 +83,6 @@ export default function Home() {
     (IQuery & { updatedQuery: string }) | null
   >(null);
   const editingQueryRef = useRef<IQuery & { updatedQuery: string }>(null);
-  const [imageViewerOpen, setImageViewerOpen] = useState(false);
   const [mode, setMode] = useState<"add" | "edit">("add");
   const [isPlay, setIsPlay] = useState(false);
   const [disabled, setDisabled] = useState(true);
@@ -240,74 +291,171 @@ export default function Home() {
   return (
     <MainLayout className="font-onest hide-scrollbar max-h-screen min-h-screen h-full w-full overflow-hidden">
       <div
-        className={cn("flex-col flex items-center w-full justify-center")}
-        style={{
-          height: `calc(100vh - 96px)`,
-          maxHeight: `calc(100vh - 96px)`,
-        }}
-      >
-        {!isPhone && (
-          <>
-            {queries.length > 0 && !isPlay && (
-              <div
-                className={cn(
-                  "container lg:px-0 lg:mx-0 lg:max-w-none w-full max-h-full h-full duration-300 flex flex-col items-center"
-                )}
-                style={{
-                  height: `calc(100vh - 96px)`,
-                }}
-              >
-                <ScrollShadow
-                  ref={scrollAreaRef}
-                  hideScrollBar
-                  style={{
-                    height: `calc(100vh - 96px)`,
-                  }}
-                  className="flex-1 divide-y-2 divide-gray-400 dark:divide-secondary w-full"
-                >
-                  {queries.map((q, i) => (
-                    <Query
-                      query={q}
-                      editingQuery={editingQuery}
-                      fetchBot={fetchBot}
-                      index={i}
-                      mode={mode}
-                      setEditingQuery={setEditingQuery}
-                      setMode={setMode}
-                      totalQueries={queries.length}
-                      key={i}
-                    />
-                  ))}
-                </ScrollShadow>
-              </div>
-            )}
-          </>
+        className={cn(
+          "flex-col flex items-center w-full justify-center safe-area safe-area-max"
         )}
-        {isPhone && (
-          <Drawer
-            open={queries.length > 0}
-            onOpenChange={(open) => {
-              if (!open) {
-                setQueries([]);
-              }
-            }}
+      >
+        {isPlay && (
+          <div
+            className={cn(
+              "w-full max-h-full h-full duration-300 flex items-center justify-center safe-area"
+            )}
           >
-            <DrawerContent
-              swapper={false}
-              className="min-h-[95%] h-[95%] max-h-[95%] border-none outline-none ring-0 pt-0"
-            >
-              <div className="border-b-2 border-gray-400 dark:border-secondary flex items-center justify-center relative h-[60px] px-3">
-                <div
-                  onClick={() => setQueries([])}
-                  className="absolute right-5 top-4.5"
-                >
-                  <IoClose className="text-3xl" />
+            <MusicCard className="mx-auto mb-[108px]" />
+          </div>
+        )}
+        <div
+          className={cn(
+            "flex items-center duration-300 w-full gap-3 md:gap-8 flex-col md:py-10 py-5 mx-auto px-5 relative z-10",
+            queries.length > 0 || isPlay
+              ? "fixed bottom-0 left-0"
+              : "fixed bottom-0 md:bottom-auto",
+            queries.length === 0 && !isPlay ? "pb-[48px]" : "pb-0",
+            queries.length > 0
+              ? "justify-end"
+              : "justify-between md:justify-center",
+            isPhone ? "safe-area" : queries.length === 0 ? "safe-area" : ""
+          )}
+        >
+          {queries.length === 0 && !isPlay && (
+            <>
+              <div className="block md:hidden"></div>
+              <div className="container w-full flex flex-col items-center justify-between">
+                <h2 className="lg:max-w-[800px] text-[28px] md:text-[32px] font-semibold text-center md:text-left w-full">
+                  Search personalized to{" "}
+                  <span className="text-primary">you.</span>
+                </h2>
+              </div>
+              <div className="w-full block md:hidden">
+                <p className="text-[#848585] text-sm font-medium">For You</p>
+                <div className="flex flex-col gap-3 mt-2">
+                  {forYouMobile.map((fy, i) => (
+                    <div
+                      onClick={() => fetchBot(fy.title)}
+                      key={i}
+                      className="w-full flex items-center gap-3 border border-[#3D3D3D] p-3 rounded-2xl duration-100 hover:bg-gray-100 dark:hover:bg-white/10 cursor-pointer"
+                    >
+                      <Image
+                        src={fy.image}
+                        width={64}
+                        height={64}
+                        className="rounded-lg object-cover min-w-[64px] min-h-[64px]"
+                        alt="for you"
+                      />
+                      <div>
+                        <p className="text-sm font-semibold text-black dark:text-white">
+                          {fy.title}
+                        </p>
+                        <div className="flex items-center text-[#848585] gap-1 mt-1">
+                          {fy.icon}
+                          <p className="text-xs font-medium">{fy.category}</p>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
                 </div>
               </div>
+              <div className="lg:max-w-[800px] w-full gap-5 items-center  hidden md:flex">
+                <div className="flex-1">
+                  <p className="text-[#848585] text-sm font-medium">Trending</p>
+                  <div className="flex flex-col gap-3 mt-2">
+                    {trendingDesktop.map((tr, i) => (
+                      <div
+                        onClick={() => fetchBot(tr.title)}
+                        key={i}
+                        className="w-full flex items-center gap-3 border border-[#3D3D3D] p-3 rounded-2xl duration-100 hover:bg-gray-100 dark:hover:bg-white/10 cursor-pointer"
+                      >
+                        <Image
+                          src={tr.image}
+                          width={64}
+                          height={64}
+                          className="rounded-lg object-cover min-w-[64px] min-h-[64px]"
+                          alt="trending"
+                        />
+                        <div>
+                          <p className="text-sm font-semibold text-black dark:text-white">
+                            {tr.title}
+                          </p>
+                          <div className="flex items-center text-[#848585] gap-1 mt-1">
+                            {tr.icon}
+                            <p className="text-xs font-medium">{tr.category}</p>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+                <div className="flex-1">
+                  <p className="text-[#848585] text-sm font-medium">For You</p>
+                  <div className="flex flex-col gap-3 mt-2">
+                    {forYouDesktop.map((fy, i) => (
+                      <div
+                        onClick={() => fetchBot(fy.title)}
+                        key={i}
+                        className="w-full flex items-center gap-3 border border-[#3D3D3D] p-3 rounded-2xl duration-100 hover:bg-gray-100 dark:hover:bg-white/10 cursor-pointer"
+                      >
+                        <Image
+                          src={fy.image}
+                          width={64}
+                          height={64}
+                          className="rounded-lg object-cover min-w-[64px] min-h-[64px]"
+                          alt="for you"
+                        />
+                        <div>
+                          <p className="text-sm font-semibold text-black dark:text-white">
+                            {fy.title}
+                          </p>
+                          <div className="flex items-center text-[#848585] gap-1 mt-1">
+                            {fy.icon}
+                            <p className="text-xs font-medium">{fy.category}</p>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </>
+          )}
+          {/* this is for desktop */}
+          <div className="lg:max-w-[800px] px-0 max-w-full w-full">
+            <PlaceholdersAndVanishInput
+              disabled={disabled || mode === "edit"}
+              onChange={(e) => {
+                setSearchValue(e.target.value);
+              }}
+              onSubmit={(v) => {
+                fetchBot(v);
+                setSearchValue("");
+              }}
+              focused={mode === "edit" && isPhone}
+              placeholder={
+                isPlay
+                  ? "What do you like to play?"
+                  : "What do you want to know?"
+              }
+              icon={<IoSend className="text-zinc-500" />}
+              className="duration-300 -z-1"
+            />
+            {/* <div className="mx-auto w-[60px] mt-12 h-[60px] rounded-full flex items-center justify-center shadow-sm bg-secondary">
+              <FaHeadphonesAlt className="text-[30px]" />
+            </div> */}
+          </div>
+        </div>
+      </div>
+
+      {!isPhone && (
+        <>
+          {queries.length > 0 && !isPlay && (
+            <div
+              className={cn(
+                "container lg:px-0 lg:mx-0 lg:max-w-none w-full max-h-full h-full duration-300 flex flex-col items-center safe-area"
+              )}
+            >
               <ScrollShadow
                 ref={scrollAreaRef}
                 hideScrollBar
-                className="flex-1 divide-y-2 p-5 divide-gray-400 dark:divide-secondary w-full"
+                className="flex-1 safe-area divide-y-2 divide-gray-400 dark:divide-secondary w-full"
               >
                 {queries.map((q, i) => (
                   <Query
@@ -323,133 +471,73 @@ export default function Home() {
                   />
                 ))}
               </ScrollShadow>
-              <div className="px-5 pb-3">
-                <PlaceholdersAndVanishInput
-                  disabled={disabled || mode === "edit"}
-                  onChange={(e) => {
-                    setSearchValue(e.target.value);
-                    // if (mode === "edit" && isPhone) {
-                    //   setEditingQuery((pv) => ({
-                    //     ...pv!,
-                    //     updatedQuery: e.target.value,
-                    //   }));
-                    // }
-                  }}
-                  onSubmit={(v) => {
-                    fetchBot(v);
-                    setSearchValue("");
-                  }}
-                  focused={mode === "edit" && isPhone}
-                  // value={
-                  //   mode === "edit" && isPhone ? editingQuery?.updatedQuery : ""
-                  // }
-                  placeholder={
-                    isPlay
-                      ? "What do you like to play?"
-                      : "What do you want to know?"
-                  }
-                  // onBlur={() => {
-                  //   if (mode === "edit" && isPhone) {
-                  //     setMode("add");
-                  //     setEditingQuery(null);
-                  //   }
-                  // }}
-                  // on button click wont work now because caption is commented out
-                  // onButtonClick={() => router.push("/conversation")}
-                  icon={<IoSend className="text-zinc-500" />}
-                  className="duration-300 -z-1"
+            </div>
+          )}
+        </>
+      )}
+      {isPhone && (
+        <Drawer
+          open={queries.length > 0}
+          onOpenChange={(open) => {
+            if (!open) {
+              setQueries([]);
+            }
+          }}
+        >
+          <DrawerContent
+            swapper={false}
+            className="min-h-[95%] h-[95%] max-h-[95%] border-none outline-none ring-0 pt-0"
+          >
+            <div className="border-b-2 border-gray-400 dark:border-secondary flex items-center justify-center relative h-[60px] px-3">
+              <div
+                onClick={() => setQueries([])}
+                className="absolute right-5 top-4.5"
+              >
+                <IoClose className="text-3xl" />
+              </div>
+            </div>
+            <ScrollShadow
+              ref={scrollAreaRef}
+              hideScrollBar
+              className="flex-1 divide-y-2 p-5 divide-gray-400 dark:divide-secondary w-full"
+            >
+              {queries.map((q, i) => (
+                <Query
+                  query={q}
+                  editingQuery={editingQuery}
+                  fetchBot={fetchBot}
+                  index={i}
+                  mode={mode}
+                  setEditingQuery={setEditingQuery}
+                  setMode={setMode}
+                  totalQueries={queries.length}
+                  key={i}
                 />
-              </div>
-            </DrawerContent>
-          </Drawer>
-        )}
-        {isPlay && (
-          <div
-            className={cn(
-              "w-full max-h-full h-full duration-300 flex items-center justify-center"
-            )}
-            style={{
-              height: `calc(100vh - 96px)`,
-            }}
-          >
-            <MusicCard className="mx-auto mb-[108px]" />
-          </div>
-        )}
-        {!imageViewerOpen && (
-          <div
-            className={cn(
-              "flex items-center duration-300 w-full justify-center flex-col md:py-10 py-5 mx-auto",
-              queries.length > 0 || isPlay
-                ? "fixed bottom-0 left-0"
-                : "fixed bottom-0 md:bottom-auto",
-              queries.length === 0 && !isPlay ? "mb-[48px]" : "mb-0"
-            )}
-          >
-            {queries.length === 0 && !isPlay && (
-              <div className="container w-full">
-                {mounted && (
-                  <div className="w-[80%] aspect-square h-fit md:w-[250px] relative md:h-[250px] mx-auto">
-                    <Image
-                      fill
-                      src={
-                        theme === "light"
-                          ? "/images/illustrations/hero-art-dark.svg"
-                          : "/images/illustrations/hero-art-light.svg"
-                      }
-                      alt="Animated logo"
-                      className="object-contain"
-                    />
-                  </div>
-                )}
-                <h2 className="text-[28px] md:text-[32px] font-medium text-center mb-[10vh]  md:mb-5">
-                  A place for the curious.
-                </h2>
-              </div>
-            )}
-            {/* this is for desktop */}
-            <div className="lg:max-w-[800px] px-4 lg:px-0 max-w-full w-full">
+              ))}
+            </ScrollShadow>
+            <div className="px-5 pb-3">
               <PlaceholdersAndVanishInput
                 disabled={disabled || mode === "edit"}
                 onChange={(e) => {
                   setSearchValue(e.target.value);
-                  // if (mode === "edit" && isPhone) {
-                  //   setEditingQuery((pv) => ({
-                  //     ...pv!,
-                  //     updatedQuery: e.target.value,
-                  //   }));
-                  // }
                 }}
                 onSubmit={(v) => {
                   fetchBot(v);
                   setSearchValue("");
                 }}
                 focused={mode === "edit" && isPhone}
-                // value={
-                //   mode === "edit" && isPhone ? editingQuery?.updatedQuery : ""
-                // }
                 placeholder={
                   isPlay
                     ? "What do you like to play?"
                     : "What do you want to know?"
                 }
-                // onBlur={() => {
-                //   if (mode === "edit" && isPhone) {
-                //     setMode("add");
-                //     setEditingQuery(null);
-                //   }
-                // }}
-                // on button click wont work now because caption is commented out
-                // onButtonClick={() => router.push("/conversation")}
                 icon={<IoSend className="text-zinc-500" />}
                 className="duration-300 -z-1"
               />
-              {/* <div className="mx-auto w-[60px] mt-12 h-[60px] rounded-full flex items-center justify-center shadow-sm bg-secondary">
-              <FaHeadphonesAlt className="text-[30px]" />
-            </div> */}
             </div>
-          </div>
-        )}
-      </div>
+          </DrawerContent>
+        </Drawer>
+      )}
     </MainLayout>
   );
 }
