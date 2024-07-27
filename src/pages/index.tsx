@@ -22,6 +22,7 @@ import { MdLocalMovies, MdOutlineSchool } from "react-icons/md";
 import { GrAnnounce } from "react-icons/gr";
 import { PiMedalMilitaryLight } from "react-icons/pi";
 import { HiOutlineHome } from "react-icons/hi2";
+import { HomeIcon } from "@/components/icons/HomeIcon";
 
 const forYouMobile = [
   {
@@ -319,10 +320,13 @@ export default function Home() {
         >
           {queries.length === 0 && !isPlay && (
             <>
+              <div className="md:h-[160px] md:flex justify-center hidden">
+                <HomeIcon width={200} height={200} />
+              </div>
               <div className="block md:hidden"></div>
               <div className="container w-full flex flex-col items-center justify-between">
-                <h2 className="lg:max-w-[800px] text-[28px] md:text-[32px] font-semibold text-center md:text-left w-full">
-                  Search personalized to{" "}
+                <h2 className="lg:max-w-[800px] text-[28px] md:text-[32px] font-semibold text-center w-full">
+                  Smart Search personalized to{" "}
                   <span className="text-primary">you.</span>
                 </h2>
               </div>
@@ -355,7 +359,7 @@ export default function Home() {
                   ))}
                 </div>
               </div>
-              <div className="lg:max-w-[800px] w-full gap-5 items-center  hidden md:flex">
+              {/* <div className="lg:max-w-[800px] w-full gap-5 items-center  hidden md:flex">
                 <div className="flex-1">
                   <p className="text-[#848585] text-sm font-medium">Trending</p>
                   <div className="flex flex-col gap-3 mt-2">
@@ -414,7 +418,7 @@ export default function Home() {
                     ))}
                   </div>
                 </div>
-              </div>
+              </div> */}
             </>
           )}
           {/* this is for desktop */}

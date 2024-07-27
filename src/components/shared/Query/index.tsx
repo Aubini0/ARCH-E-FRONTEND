@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import MarkDown from "react-markdown";
 import { Skeleton } from "@/components/ui/skeleton";
-import { FaRegEdit, FaRegQuestionCircle } from "react-icons/fa";
+import { FaRegEdit } from "react-icons/fa";
 import { HiOutlineAdjustmentsHorizontal } from "react-icons/hi2";
 import Youtube from "react-youtube";
 import {
@@ -33,6 +33,7 @@ import {
 } from "@/components/ui/drawer";
 import { CgCloseR } from "react-icons/cg";
 import { MdOutlineLibraryBooks } from "react-icons/md";
+import { PlusIcon } from "@/components/icons/PlusIcon";
 
 interface IQueryComponent {
   query: IQuery;
@@ -249,7 +250,7 @@ const Query: FC<IQueryComponent> = ({
                 setEditingQuery({ ...query, updatedQuery: query.query });
                 setMode("edit");
               }}
-              className="flex-col cursor-pointer w-10 h-10 flex items-center justify-center bg-slate-100 dark:bg-secondary rounded-[12px]"
+              className="flex-col cursor-pointer w-10 h-10 flex items-center justify-center bg-transparent rounded-[12px]"
             >
               <FaRegEdit className="text-xl -mr-0.5 -mt-0.5" />
             </div>
@@ -258,7 +259,7 @@ const Query: FC<IQueryComponent> = ({
                 setEditingQuery({ ...query, updatedQuery: query.query });
                 setMode("edit");
               }}
-              className="flex-col cursor-pointer w-10 h-10 flex items-center justify-center bg-slate-100 dark:bg-secondary rounded-[12px]"
+              className="flex-col cursor-pointer w-10 h-10 flex items-center justify-center bg-transparent rounded-[12px]"
             >
               <HiOutlineAdjustmentsHorizontal className="text-xl" />
             </div>
@@ -392,21 +393,21 @@ const Query: FC<IQueryComponent> = ({
       {query.completed &&
         query.recommendations.length > 0 &&
         totalQueries - 1 === index && (
-          <div className="w-full h-auto border-t-2 border-gray-400 dark:border-secondary mt-3 pt-5">
+          <div className="w-full h-auto border-t-[1.3px] border-[#2f2f30] dark:border-secondary mt-3 pt-5">
             <h5 className="text-xl font-medium font-white">
               Related Questions
             </h5>
-            <div className="divide-y-2 pt-3 divide-gray-400 dark:divide-secondary">
+            <div className="divide-y-[1.3px] pt-3 divide-[#2f2f30] dark:divide-secondary">
               {query.recommendations.map((rec, i) => (
                 <div
                   key={i}
                   onClick={() => fetchBot(rec)}
-                  className="flex items-center justify-between gap-3 w-full py-2 cursor-pointer"
+                  className="flex items-center justify-between gap-3 w-full py-3 cursor-pointer"
                 >
-                  <span className="text-sm md:text-base text-black dark:text-white w-[90%]">
+                  <span className="text-sm md:font-[300] md:text-base text-black dark:text-white w-[90%]">
                     {rec}
                   </span>
-                  <FaRegQuestionCircle className=" text-black dark:text-white text-xl" />
+                  <PlusIcon />
                 </div>
               ))}
             </div>

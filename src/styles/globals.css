@@ -115,6 +115,7 @@ input[type="number"]::-webkit-outer-spin-button {
 
 .mkdown {
   line-height: 28px;
+  font-weight: 300;
 }
 
 .mkdown ul {
@@ -147,11 +148,12 @@ input[type="number"]::-webkit-outer-spin-button {
 @media only screen and (max-width: 768px) {
   .mkdown {
     font-size: 14px;
+    font-weight: 400 !important;
   }
 }
 
 .safe-area {
-  height: calc(100vh - 88px);
+  height: calc(100vh - 160px);
 }
 
 .safe-area-max {
