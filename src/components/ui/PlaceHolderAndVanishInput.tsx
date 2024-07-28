@@ -40,9 +40,11 @@ const PlaceholdersAndVanishInput: FC<IPlaceholdersAndVanishInput> = ({
   }, [value]);
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    onSubmit(inputValue);
-    setInputValue("");
+    if (inputValue?.trimStart()) {
+      e.preventDefault();
+      onSubmit(inputValue);
+      setInputValue("");
+    }
   };
 
   useEffect(() => {
@@ -54,8 +56,10 @@ const PlaceholdersAndVanishInput: FC<IPlaceholdersAndVanishInput> = ({
   const handleKeyDown = (e: KeyboardEvent) => {
     if (e.key === "Enter" && !e.shiftKey) {
       e.preventDefault();
-      onSubmit(inputValue);
-      setInputValue("");
+      if (inputValue?.trimStart()) {
+        onSubmit(inputValue);
+        setInputValue("");
+      }
     }
   };
 
@@ -78,7 +82,6 @@ const PlaceholdersAndVanishInput: FC<IPlaceholdersAndVanishInput> = ({
         isQueryExcuted && "h-[44px]"
       )}
       onSubmit={handleSubmit}
-      
     >
       <textarea
         onChange={(e) => {
@@ -100,17 +103,31 @@ const PlaceholdersAndVanishInput: FC<IPlaceholdersAndVanishInput> = ({
       <button
         onMouseDown={(e) => e.preventDefault()}
         onClick={() => {
-          onSubmit(inputValue);
-          setInputValue("");
+          if (inputValue?.trimStart()) {
+            onSubmit(inputValue);
+            setInputValue("");
+          }
         }}
         type="button"
         disabled={!inputValue}
-        className={`absolute right-3 ${inputValue ? "light:text-white text-dark cursor-pointer" : "text-zinc-500"} ${isQueryExcuted ? "top-1/2" : "md:top-[78%] top-[75%]"} z-50 rounded-lg -translate-y-1/2 h-8 w-8 transition duration-200 flex items-center justify-center text-lg bg-[#FFFFFF] dark:bg-[#121212]`}
+        className={`absolute right-3 ${
+          inputValue?.trimStart()
+            ? "light:text-white text-dark cursor-pointer"
+            : "text-zinc-500 cursor-not-allowed"
+        } ${
+          isQueryExcuted ? "top-1/2" : "md:top-[78%] top-[75%]"
+        } z-50 rounded-lg -translate-y-1/2 h-8 w-8 transition duration-200 flex items-center justify-center text-lg bg-[#FFFFFF] dark:bg-[#121212]`}
       >
         {icon}
       </button>
       {!inputValue && placeholder && (
-        <div className={`absolute inset-0 ${isQueryExcuted ? "flex items-center md:top-[5px]" : "md:top-4 top-[11px]"} text-sm text-zinc-600 pl-4 md:pl-[24px] pointer-events-none`}>
+        <div
+          className={`absolute inset-0 ${
+            isQueryExcuted
+              ? "flex items-center md:top-[5px]"
+              : "md:top-4 top-[11px]"
+          } text-sm text-zinc-600 pl-4 md:pl-[24px] pointer-events-none`}
+        >
           <TextGenerateEffect
             className="text-sm text-[#7F7F7F]"
             words={placeholder}
