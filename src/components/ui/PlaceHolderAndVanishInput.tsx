@@ -13,6 +13,7 @@ interface IPlaceholdersAndVanishInput {
   icon: React.ReactNode;
   onButtonClick?: () => void;
   disabled: boolean;
+  isQueryExcuted?: boolean;
 }
 
 const PlaceholdersAndVanishInput: FC<IPlaceholdersAndVanishInput> = ({
@@ -25,6 +26,7 @@ const PlaceholdersAndVanishInput: FC<IPlaceholdersAndVanishInput> = ({
   onBlur,
   icon,
   onButtonClick,
+  isQueryExcuted,
   disabled,
 }) => {
   const inputRef = useRef<HTMLTextAreaElement>(null);
@@ -72,9 +74,11 @@ const PlaceholdersAndVanishInput: FC<IPlaceholdersAndVanishInput> = ({
       className={cn(
         "w-full relative mx-auto bg-[#F5F6F8] dark:bg-[#27272A] overflow-hidden border border-[#CCCCCC] dark:border-[#595959] transition duration-200 rounded-[12px]",
         className,
-        disabled && "pointer-events-none bg-gray-200"
+        disabled && "pointer-events-none bg-gray-200",
+        isQueryExcuted && "h-[44px]"
       )}
       onSubmit={handleSubmit}
+      
     >
       <textarea
         onChange={(e) => {
@@ -86,7 +90,7 @@ const PlaceholdersAndVanishInput: FC<IPlaceholdersAndVanishInput> = ({
         value={inputValue}
         spellCheck={false}
         autoCorrect="off"
-        rows={4}
+        rows={!isQueryExcuted ? 4 : 1}
         onBlur={onBlur}
         draggable={false}
         className={cn(
@@ -100,12 +104,12 @@ const PlaceholdersAndVanishInput: FC<IPlaceholdersAndVanishInput> = ({
           setInputValue("");
         }}
         type="button"
-        className="absolute right-3 md:top-[78%] top-[75%] z-50 rounded-lg -translate-y-1/2 h-8 w-8 cursor-pointer transition duration-200 flex items-center justify-center text-lg bg-[#FFFFFF] dark:bg-[#121212]"
+        className={`absolute right-3 ${inputValue ? "text-white" : "text-zinc-500"} ${isQueryExcuted ? "top-1/2" : "md:top-[78%] top-[75%]"} z-50 rounded-lg -translate-y-1/2 h-8 w-8 cursor-pointer transition duration-200 flex items-center justify-center text-lg bg-[#FFFFFF] dark:bg-[#121212]`}
       >
         {icon}
       </button>
       {!inputValue && placeholder && (
-        <div className="absolute inset-0 md:top-4 top-[11px] text-sm text-zinc-600 pl-4 md:pl-[24px] pointer-events-none">
+        <div className={`absolute inset-0 ${isQueryExcuted ? "flex items-center md:top-[5px]" : "md:top-4 top-[11px]"} text-sm text-zinc-600 pl-4 md:pl-[24px] pointer-events-none`}>
           <TextGenerateEffect
             className="text-sm text-[#7F7F7F]"
             words={placeholder}

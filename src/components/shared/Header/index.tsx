@@ -10,7 +10,7 @@ import { setSignInModal } from "@/redux/modals/modalsSlice";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { Avatar } from "@nextui-org/react";
 import { DropdownMenu } from "@radix-ui/react-dropdown-menu";
-import { HistoryIcon, LogOut, Settings, User } from "lucide-react";
+import { LogOut, Settings, User } from "lucide-react";
 import React, { FC, useEffect, useState } from "react";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -109,24 +109,19 @@ const Header: FC<IHeader> = (props) => {
               <IoChatbubbleEllipses className="text-xl" />
             </Link>
           )} */}
-          {!auth && !loading && (
-            <Button>
-              <HistoryIcon />
-            </Button>
-          )}
           {mounted && (
             <Button
               onClick={() =>
                 theme === "dark" ? setTheme("light") : setTheme("dark")
               }
-              className="w-[40px] h-[40px] p-0"
+              className="w-[50px] md:h-[46px] h-[40px] p-0"
             >
               {theme === "light" && <FiMoon className="text-xl" />}
               {theme === "dark" && <AiOutlineSun className="text-xl" />}
             </Button>
           )}
           {!auth && !loading && (
-            <Button onClick={() => dispatch(setSignInModal({ open: true }))}>
+            <Button className="md:h-[46px] h-[40px] md:w-[106px] w-[95px] text-lg md:font-[300]" onClick={() => dispatch(setSignInModal({ open: true }))}>
               Login
             </Button>
           )}

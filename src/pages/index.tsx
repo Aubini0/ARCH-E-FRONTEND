@@ -310,17 +310,17 @@ export default function Home() {
             "flex items-center duration-300 w-full gap-3 md:gap-8 flex-col md:py-10 py-5 mx-auto px-5 relative z-10",
             queries.length > 0 || isPlay
               ? "fixed bottom-0 left-0"
-              : "fixed bottom-0 md:bottom-auto",
-            queries.length === 0 && !isPlay ? "pb-[48px]" : "pb-0",
+              : "fixed bottom-[52px] md:bottom-auto",
+            queries.length === 0 && !isPlay ? "pb-5" : "pb-0",
             queries.length > 0
               ? "justify-end"
               : "justify-between md:justify-center",
-            isPhone ? "safe-area" : queries.length === 0 ? "safe-area" : ""
+            isPhone ? "safe-area-max" : queries.length === 0 ? "safe-area" : ""
           )}
         >
           {queries.length === 0 && !isPlay && (
             <>
-              <div className="md:h-[160px] md:flex justify-center hidden">
+              <div className="h-[160px] flex justify-center">
                 <HomeIcon width={200} height={200} />
               </div>
               <div className="block md:hidden"></div>
@@ -330,7 +330,8 @@ export default function Home() {
                   <span className="text-primary">you.</span>
                 </h2>
               </div>
-              <div className="w-full block md:hidden">
+              {/* hidden this for you for now  */}
+              <div className="w-full hidden">
                 <p className="text-[#848585] text-sm font-medium">For You</p>
                 <div className="flex flex-col gap-3 mt-2">
                   {forYouMobile.map((fy, i) => (
@@ -424,6 +425,7 @@ export default function Home() {
           {/* this is for desktop */}
           <div className="lg:max-w-[800px] px-0 max-w-full w-full">
             <PlaceholdersAndVanishInput
+              isQueryExcuted={queries.length > 0 || isPlay}
               disabled={disabled || mode === "edit"}
               onChange={(e) => {
                 setSearchValue(e.target.value);
@@ -438,7 +440,7 @@ export default function Home() {
                   ? "What do you like to play?"
                   : "What do you want to know?"
               }
-              icon={<IoSend className="text-zinc-500" />}
+              icon={<IoSend />}
               className="duration-300 -z-1"
             />
             {/* <div className="mx-auto w-[60px] mt-12 h-[60px] rounded-full flex items-center justify-center shadow-sm bg-secondary">
@@ -521,6 +523,7 @@ export default function Home() {
             </ScrollShadow>
             <div className="px-5 pb-3">
               <PlaceholdersAndVanishInput
+                isQueryExcuted={queries.length > 0 || isPlay}
                 disabled={disabled || mode === "edit"}
                 onChange={(e) => {
                   setSearchValue(e.target.value);
@@ -535,7 +538,7 @@ export default function Home() {
                     ? "What do you like to play?"
                     : "What do you want to know?"
                 }
-                icon={<IoSend className="text-zinc-500" />}
+                icon={<IoSend />}
                 className="duration-300 -z-1"
               />
             </div>
