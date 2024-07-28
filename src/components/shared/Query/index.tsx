@@ -34,6 +34,7 @@ import {
 import { CgCloseR } from "react-icons/cg";
 import { MdOutlineLibraryBooks } from "react-icons/md";
 import { PlusIcon } from "@/components/icons/PlusIcon";
+import CustomCodeBlock from "./codeBlock";
 
 interface IQueryComponent {
   query: IQuery;
@@ -229,7 +230,25 @@ const Query: FC<IQueryComponent> = ({
           </h5>
         </div>
         {query.response && (
-          <MarkDown className={"mkdown"}>{query.response}</MarkDown>
+          <MarkDown
+            className={"mkdown"}
+            components={{
+              code({ node, inline, className, children, ...props }) {
+                const match = /language-(\w+)/.exec(className || "");
+                return !inline && match ? (
+                  <CustomCodeBlock language={match[1]}>
+                    {String(children).replace(/\n$/, "")}
+                  </CustomCodeBlock>
+                ) : (
+                  <code className={className} {...props}>
+                    {children}
+                  </code>
+                );
+              },
+            }}
+          >
+            {query?.response}
+          </MarkDown>
         )}
 
         {!query.response && (

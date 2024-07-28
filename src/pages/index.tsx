@@ -314,8 +314,8 @@ export default function Home() {
             queries.length === 0 && !isPlay ? "pb-5" : "pb-0",
             queries.length > 0
               ? "justify-end"
-              : "justify-between md:justify-center",
-            isPhone ? "safe-area-max" : queries.length === 0 ? "safe-area" : ""
+              : "justify-center",
+            isPhone ? "safe-area" : queries.length === 0 ? "safe-area" : ""
           )}
         >
           {queries.length === 0 && !isPlay && (
