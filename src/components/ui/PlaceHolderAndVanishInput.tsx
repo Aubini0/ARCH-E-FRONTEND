@@ -104,7 +104,7 @@ const PlaceholdersAndVanishInput: FC<IPlaceholdersAndVanishInput> = ({
           setInputValue("");
         }}
         type="button"
-        className={`absolute right-3 ${inputValue ? "text-white" : "text-zinc-500"} ${isQueryExcuted ? "top-1/2" : "md:top-[78%] top-[75%]"} z-50 rounded-lg -translate-y-1/2 h-8 w-8 cursor-pointer transition duration-200 flex items-center justify-center text-lg bg-[#FFFFFF] dark:bg-[#121212]`}
+        className={`absolute right-3 ${inputValue ? "light:text-white text-dark" : "text-zinc-500"} ${isQueryExcuted ? "top-1/2" : "md:top-[78%] top-[75%]"} z-50 rounded-lg -translate-y-1/2 h-8 w-8 cursor-pointer transition duration-200 flex items-center justify-center text-lg bg-[#FFFFFF] dark:bg-[#121212]`}
       >
         {icon}
       </button>
