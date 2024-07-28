@@ -1,7 +1,10 @@
 import { CheckIcon, CopyIcon } from "lucide-react";
 import React from "react";
 
-const CustomCodeBlock = ({ children, language }) => {
+const CustomCodeBlock: React.FC<{ children: string; language: string }> = ({
+  children,
+  language,
+}) => {
   const [isCopied, setIsCopied] = React.useState(false);
   //   const styleRef = React.useRef("");
 

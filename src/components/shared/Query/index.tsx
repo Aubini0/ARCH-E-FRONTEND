@@ -6,7 +6,7 @@ import useDeviceIndicator from "@/hooks/useDeviceIndicator";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
-import MarkDown from "react-markdown";
+import Markdown from "react-markdown";
 import { Skeleton } from "@/components/ui/skeleton";
 import { FaRegEdit } from "react-icons/fa";
 import { HiOutlineAdjustmentsHorizontal } from "react-icons/hi2";
@@ -71,6 +71,7 @@ const Query: FC<IQueryComponent> = ({
     if (query.videos.length === 0) return null;
     return getYouTubeId(query.videos[currentVideoIndex].video_link)!;
   }, [query.videos, currentVideoIndex]);
+
   return (
     <motion.div
       key={query.id}
@@ -230,12 +231,12 @@ const Query: FC<IQueryComponent> = ({
           </h5>
         </div>
         {query.response && (
-          <MarkDown
+          <Markdown
             className={"mkdown"}
             components={{
-              code({ node, inline, className, children, ...props }) {
+              code({ node, className, children, ...props }) {
                 const match = /language-(\w+)/.exec(className || "");
-                return !inline && match ? (
+                return match ? (
                   <CustomCodeBlock language={match[1]}>
                     {String(children).replace(/\n$/, "")}
                   </CustomCodeBlock>
@@ -248,7 +249,7 @@ const Query: FC<IQueryComponent> = ({
             }}
           >
             {query?.response}
-          </MarkDown>
+          </Markdown>
         )}
 
         {!query.response && (
