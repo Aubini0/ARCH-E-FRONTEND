@@ -1,6 +1,5 @@
 import { CheckIcon, CopyIcon } from "lucide-react";
 import React from "react";
-import { PrismLight as SyntaxHighlighter } from "react-syntax-highlighter";
 
 const CustomCodeBlock = ({ children, language }) => {
   const [isCopied, setIsCopied] = React.useState(false);
@@ -24,7 +23,7 @@ const CustomCodeBlock = ({ children, language }) => {
 
   return (
     <div className="relative">
-      <SyntaxHighlighter language={language}>{children}</SyntaxHighlighter>
+      <pre>{children}</pre>
       <button onClick={handleCopy} className="absolute top-0 right-2">
         {isCopied ? <CheckIcon /> : <CopyIcon />}
       </button>
