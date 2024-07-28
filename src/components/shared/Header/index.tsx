@@ -114,14 +114,14 @@ const Header: FC<IHeader> = (props) => {
               onClick={() =>
                 theme === "dark" ? setTheme("light") : setTheme("dark")
               }
-              className="w-[50px] md:h-[46px] h-[40px] p-0"
+              className="w-[42px] h-[40px] p-0"
             >
               {theme === "light" && <FiMoon className="text-xl" />}
               {theme === "dark" && <AiOutlineSun className="text-xl" />}
             </Button>
           )}
           {!auth && !loading && (
-            <Button className="md:h-[46px] h-[40px] md:w-[106px] w-[95px] text-lg md:font-[300]" onClick={() => dispatch(setSignInModal({ open: true }))}>
+            <Button className="h-[40px] md:w-[106px] w-[95px] text-md" onClick={() => dispatch(setSignInModal({ open: true }))}>
               Login
             </Button>
           )}
