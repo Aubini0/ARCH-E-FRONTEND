@@ -9,7 +9,6 @@ import Image from "next/image";
 import Markdown from "react-markdown";
 import { Skeleton } from "@/components/ui/skeleton";
 import { FaRegEdit } from "react-icons/fa";
-import { HiOutlineAdjustmentsHorizontal } from "react-icons/hi2";
 import Youtube from "react-youtube";
 import {
   Sheet,
@@ -72,6 +71,20 @@ const Query: FC<IQueryComponent> = ({
     return getYouTubeId(query.videos[currentVideoIndex].video_link)!;
   }, [query.videos, currentVideoIndex]);
 
+  const handleClickEdit = (id: string, index: number) => {
+    setMode("edit");
+    setEditingQuery({ ...query, updatedQuery: query.query });
+
+    setTimeout(() => {
+      const editForm = document.getElementById(`editFrom_${id}`);
+      const editInput = document.getElementById(`editFromInput_${id}`);
+      if (editForm && editInput) {
+        editInput.scrollTo({ top: 0 });
+        editInput.focus();
+      }
+    }, 100);
+  };
+
   return (
     <motion.div
       key={query.id}
@@ -90,6 +103,7 @@ const Query: FC<IQueryComponent> = ({
     >
       {mode === "edit" && editingQuery?.id === query.id ? (
         <form
+          id={`editFrom_${query?.id}`}
           onSubmit={(e) => {
             e.preventDefault();
             fetchBot(editingQuery.updatedQuery);
@@ -98,6 +112,7 @@ const Query: FC<IQueryComponent> = ({
         >
           <div className="w-full h-full">
             <Input
+              id={`editFromInput_${query?.id}`}
               onChange={(e) =>
                 setEditingQuery((pv) => ({
                   ...pv!,
@@ -105,7 +120,7 @@ const Query: FC<IQueryComponent> = ({
                 }))
               }
               value={editingQuery?.updatedQuery}
-              className="text-[30px] font-medium"
+              className="text-[16px] font-medium"
               inputContainerClassName="!border-none !outline-none"
             />
             <div className="flex items-center justify-end gap-3">
@@ -266,15 +281,12 @@ const Query: FC<IQueryComponent> = ({
                           <span className="text-[10px]">Share</span>
                         </div> */}
             <div
-              onClick={() => {
-                setEditingQuery({ ...query, updatedQuery: query.query });
-                setMode("edit");
-              }}
+              onClick={() => handleClickEdit(query?.id, index)}
               className="flex-col cursor-pointer w-10 h-10 flex items-center justify-center bg-transparent rounded-[12px]"
             >
               <FaRegEdit className="text-xl -mr-0.5 -mt-0.5" />
             </div>
-            <div
+            {/* <div
               onClick={() => {
                 setEditingQuery({ ...query, updatedQuery: query.query });
                 setMode("edit");
@@ -282,7 +294,7 @@ const Query: FC<IQueryComponent> = ({
               className="flex-col cursor-pointer w-10 h-10 flex items-center justify-center bg-transparent rounded-[12px]"
             >
               <HiOutlineAdjustmentsHorizontal className="text-xl" />
-            </div>
+            </div> */}
           </div>
         )}
       </div>
