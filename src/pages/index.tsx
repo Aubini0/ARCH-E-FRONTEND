@@ -22,7 +22,7 @@ import { MdLocalMovies, MdOutlineSchool } from "react-icons/md";
 import { GrAnnounce } from "react-icons/gr";
 import { PiMedalMilitaryLight } from "react-icons/pi";
 import { HiOutlineHome } from "react-icons/hi2";
-import { HomeIcon } from "@/components/icons/HomeIcon";
+// import { HomeIcon } from "@/components/icons/HomeIcon";
 
 const forYouMobile = [
   {
@@ -320,9 +320,9 @@ export default function Home() {
         >
           {queries.length === 0 && !isPlay && (
             <>
-              <div className="h-[160px] flex justify-center">
+              {/* <div className="h-[160px] flex justify-center">
                 <HomeIcon width={200} height={200} />
-              </div>
+              </div> */}
               <div className="block md:hidden"></div>
               <div className="container w-full flex flex-col items-center justify-between">
                 <h2 className="lg:max-w-[800px] text-[28px] md:text-[32px] font-semibold text-center w-full">
