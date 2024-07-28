@@ -1,22 +1,13 @@
 import { CheckIcon, CopyIcon } from "lucide-react";
 import React from "react";
+import { PrismLight as SyntaxHighlighter } from "react-syntax-highlighter";
+import prism from 'react-syntax-highlighter/dist/cjs/styles/prism/prism';
 
 const CustomCodeBlock: React.FC<{ children: string; language: string }> = ({
   children,
   language,
 }) => {
   const [isCopied, setIsCopied] = React.useState(false);
-  //   const styleRef = React.useRef("");
-
-  //   React.useEffect(() => {
-  //     const loadSyntaxHighlighter = async () => {
-  //       const { default: prism } = await import(
-  //         "react-syntax-highlighter/dist/esm/styles/prism/prism"
-  //       );
-  //       styleRef.current = prism;
-  //     };
-  //     loadSyntaxHighlighter();
-  //   }, [styleRef.current]);
 
   const handleCopy = () => {
     navigator.clipboard.writeText(children);
@@ -26,7 +17,9 @@ const CustomCodeBlock: React.FC<{ children: string; language: string }> = ({
 
   return (
     <div className="relative">
-      <pre>{children}</pre>
+      <SyntaxHighlighter language={language} style={prism}>
+        {children}
+      </SyntaxHighlighter>
       <button onClick={handleCopy} className="absolute top-0 right-2">
         {isCopied ? <CheckIcon /> : <CopyIcon />}
       </button>
