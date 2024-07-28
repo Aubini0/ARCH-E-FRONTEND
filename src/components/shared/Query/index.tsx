@@ -307,7 +307,7 @@ const Query: FC<IQueryComponent> = ({
           className="w-full hidden md:block h-full py-5"
         >
           <p className="text-xl font-medium font-white mb-2">Sources</p>
-          <CarouselContent className="text-black">
+          <CarouselContent className="text-black overflow-x-auto pb-2">
             {query.web_links.map((query, index) => (
               <CarouselItem
                 key={index}

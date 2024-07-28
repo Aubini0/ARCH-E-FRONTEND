@@ -27,14 +27,14 @@ const SourceCard: FC<ISourceCard> = ({ url, count }) => {
           width={20}
           height={20}
         />
-        <div className="flex-1 flex items-center text-black dark:text-[#848585] text-xs gap-1">
-          <span className="font-medium whitespace-nowrap text-ellipsis overflow-hidden inline max-w-[100%]">
+        <div className="flex-1 w-full flex items-center text-black dark:text-[#848585] text-xs gap-1">
+          <span className="font-medium whitespace-nowrap text-ellipsis overflow-hidden inline max-w-[70%]">
             {new URL(url).host}
           </span>
-          {/* <span>
+          <span>
             <GoDotFill />
-          </span> */}
-          {/* <span>{count}</span> */}
+          </span>
+          <span>{count}</span>
         </div>
       </div>
     </Link>
