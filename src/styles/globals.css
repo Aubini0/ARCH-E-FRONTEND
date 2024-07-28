@@ -151,6 +151,7 @@ input[type="number"]::-webkit-outer-spin-button {
 }
 
 .mkdown code {
+  color: #ffffff !important;
   text-shadow: none !important;
 }
 
