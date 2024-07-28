@@ -13,12 +13,12 @@ const SourceCard: FC<ISourceCard> = ({ url, count }) => {
     <Link
       target="_blank"
       href={url}
-      className="w-full block h-full bg-gray-100 dark:bg-secondary dark:text-white rounded-xl p-2"
+      className="w-full block h-full border-[1px] dark:text-white rounded-xl p-2"
     >
-      <p className="leading-5 two-line-ellipsis text-xs md:text-sm min-h-[40px]">
+      {/* <p className="leading-5 two-line-ellipsis text-xs md:text-sm min-h-[40px]">
         {url}
-      </p>
-      <div className="flex items-center mt-1 md:mt-3 gap-1">
+      </p> */}
+      <div className="flex items-center gap-1">
         <Image
           src={`https://www.google.com/s2/favicons?domain_url=${
             new URL(url).host
@@ -28,13 +28,13 @@ const SourceCard: FC<ISourceCard> = ({ url, count }) => {
           height={20}
         />
         <div className="flex-1 flex items-center text-black dark:text-[#848585] text-xs gap-1">
-          <span className="font-medium whitespace-nowrap text-ellipsis overflow-hidden inline max-w-[70%]">
+          <span className="font-medium whitespace-nowrap text-ellipsis overflow-hidden inline max-w-[100%]">
             {new URL(url).host}
           </span>
-          <span>
+          {/* <span>
             <GoDotFill />
-          </span>
-          <span>{count}</span>
+          </span> */}
+          {/* <span>{count}</span> */}
         </div>
       </div>
     </Link>
