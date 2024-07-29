@@ -16,7 +16,7 @@ const CustomCodeBlock: React.FC<{ children: string; language: string }> = ({
   };
 
   return (
-    <div className="relative">
+    <div className="relative darkScrollbar">
       <SyntaxHighlighter
         className={`${language == "sh" && "text-white"}`}
         language={language}
