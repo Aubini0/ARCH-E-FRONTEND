@@ -32,7 +32,7 @@ export default function App({ Component, pageProps }: AppProps) {
             disableTransitionOnChange
           >
             <NextUIProvider>
-              <div suppressHydrationWarning className={cn(onest.variable)}>
+              <div suppressHydrationWarning className={`${cn(onest.variable)} lighScrollbar`}>
                 <Component {...pageProps} />
               </div>
               <Modals />

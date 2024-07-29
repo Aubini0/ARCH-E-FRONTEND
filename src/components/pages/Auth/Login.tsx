@@ -1,11 +1,5 @@
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import React, { FC, useState } from "react";
 import { FcGoogle } from "react-icons/fc";
@@ -34,8 +28,7 @@ interface ILogin {
 const formSchema = z.object({
   email: z.string().regex(emailRegex, { message: "Invalid email" }),
   password: z.string().regex(passwordRegex, {
-    message:
-      "Password should contain at least one uppercase, one lowercase, on special character and one number",
+    message: "Password should contain at least one uppercase, one lowercase, on special character and one number",
   }),
 });
 
@@ -75,15 +68,9 @@ const Login: FC<ILogin> = ({ onLogin, handleGoToSignUp }) => {
       onError: (error) => {
         toast({
           title: error.response?.data.error || "Something went wrong",
-          description: `${
-            error.response?.data.error || "Something went wrong"
-          }. Unable to sign up`,
+          description: `${error.response?.data.error || "Something went wrong"}. Unable to sign up`,
           action: (
-            <ToastAction
-              onClick={() => onSubmit(getValues())}
-              className="bg-red-500 border-red-500 hover:bg-red-500"
-              altText="Try Again"
-            >
+            <ToastAction onClick={() => onSubmit(getValues())} className="bg-red-500 border-red-500 hover:bg-red-500" altText="Try Again">
               Try Again
             </ToastAction>
           ),
@@ -94,35 +81,15 @@ const Login: FC<ILogin> = ({ onLogin, handleGoToSignUp }) => {
   };
 
   return (
-    <Card
-      className={cn(
-        "text-black dark:text-white w-full md:w-[400px] border-none"
-      )}
-    >
+    <Card className={cn("text-black dark:text-white w-full md:w-[400px] border-none")}>
       <CardHeader className="p-[40px] flex flex-row items-center justify-center">
         {/* <Image src={logoImage} alt="Logo Image" width={50} height={50} /> */}
         <h4 className="font-semibold !m-0 text-2xl">Sign In</h4>
       </CardHeader>
-      <CardContent
-        className="pb-[40px] px-[40px]"
-        onSubmit={handleSubmit(onSubmit)}
-      >
+      <CardContent className="pb-[40px] px-[40px]" onSubmit={handleSubmit(onSubmit)}>
         <form className="space-y-4">
           <div>
-            <Controller
-              control={control}
-              name="email"
-              render={({ field, fieldState }) => (
-                <Input
-                  {...field}
-                  error={fieldState.error}
-                  autoComplete="off"
-                  label="Email"
-                  id="email"
-                  type="email"
-                />
-              )}
-            />
+            <Controller control={control} name="email" render={({ field, fieldState }) => <Input {...field} error={fieldState.error} autoComplete="off" label="Email" id="email" type="email" />} />
           </div>
           <div>
             <Controller
@@ -132,15 +99,7 @@ const Login: FC<ILogin> = ({ onLogin, handleGoToSignUp }) => {
                 return (
                   <Input
                     {...field}
-                    inputSuffix={
-                      passwordVisible ? (
-                        <FaRegEye onClick={() => setPasswordVisible(false)} />
-                      ) : (
-                        <FaRegEyeSlash
-                          onClick={() => setPasswordVisible(true)}
-                        />
-                      )
-                    }
+                    inputSuffix={passwordVisible ? <FaRegEye onClick={() => setPasswordVisible(false)} /> : <FaRegEyeSlash onClick={() => setPasswordVisible(true)} />}
                     autoComplete="off"
                     label="Password"
                     id="new-password"
@@ -150,14 +109,12 @@ const Login: FC<ILogin> = ({ onLogin, handleGoToSignUp }) => {
               }}
             />
           </div>
-          <div className="text-right underline font-onest font-semibold !mt-2 text-black dark:text-white">
-            Forgot password?
-          </div>
+          {/* <div className="text-right underline font-onest font-semibold !mt-2 text-black dark:text-white">Forgot password?</div> */}
           <div className="flex flex-col gap-6">
             <Button type="submit" isLoading={isLoading} className="w-full">
               Sign In
             </Button>
-            <div className="flex items-center dark:text-white text-black h-[12px] gap-3">
+            {/* <div className="flex items-center dark:text-white text-black h-[12px] gap-3">
               <div className="w-full h-[1px] bg-secondary flex-1"></div>
               <div>or</div>
               <div className="w-full h-[1px] bg-secondary flex-1"></div>
@@ -165,15 +122,12 @@ const Login: FC<ILogin> = ({ onLogin, handleGoToSignUp }) => {
             <Button type="button" className="w-full gap-1">
               <FcGoogle className="text-lg" />
               Continue with Google
-            </Button>
+            </Button> */}
           </div>
           <div className="w-full text-center">
             <p className="text-gray-600 dark:text-gray-400 text-sm">
               Don&apos;t have an account?{" "}
-              <button
-                onClick={() => handleGoToSignUp && handleGoToSignUp()}
-                className="underline outline-none border-none text-black dark:text-white font-semibold"
-              >
+              <button onClick={() => handleGoToSignUp && handleGoToSignUp()} className="underline outline-none border-none text-black dark:text-white font-semibold">
                 Sign Up
               </button>
             </p>

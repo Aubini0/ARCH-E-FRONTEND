@@ -459,7 +459,7 @@ export default function Home() {
                 <ScrollShadow
                   ref={scrollAreaRef}
                   hideScrollBar
-                  className="flex-1 safe-area divide-y-2 divide-gray-400 dark:divide-secondary w-full"
+                  className="flex-1 safe-area divide-y-2 dark:divide-secondary w-full"
                 >
                   {queries.map((q, i) => (
                     <Query
@@ -505,7 +505,7 @@ export default function Home() {
             <ScrollShadow
               ref={scrollAreaRef}
               hideScrollBar
-              className="flex-1 divide-y-2 p-5 divide-gray-400 dark:divide-secondary w-full"
+              className="flex-1 divide-y-2 p-5 dark:divide-secondary w-full"
             >
               {queries.map((q, i) => (
                 <Query

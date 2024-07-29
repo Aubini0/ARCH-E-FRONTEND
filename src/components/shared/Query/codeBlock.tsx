@@ -14,7 +14,7 @@ const CustomCodeBlock: React.FC<{ children: string; language: string }> = ({
     setIsCopied(true);
     setTimeout(() => setIsCopied(false), 2000);
   };
-  
+
   return (
     <div className="relative">
       <SyntaxHighlighter
@@ -25,7 +25,7 @@ const CustomCodeBlock: React.FC<{ children: string; language: string }> = ({
         {children}
       </SyntaxHighlighter>
       <button onClick={handleCopy} className="absolute top-0 right-2">
-        {isCopied ? <CheckIcon /> : <CopyIcon />}
+        {isCopied ? <CheckIcon color="#fff" /> : <CopyIcon color="#fff" />}
       </button>
     </div>
   );

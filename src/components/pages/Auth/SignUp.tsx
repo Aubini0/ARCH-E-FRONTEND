@@ -1,12 +1,5 @@
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { ToastAction } from "@/components/ui/toast";
 import { useToast } from "@/components/ui/use-toast";
@@ -32,12 +25,9 @@ interface ISignUp {
 const formSchema = z.object({
   email: z.string().regex(emailRegex, { message: "Invalid email" }),
   full_name: z.string({ required_error: "Full Name is required" }),
-  password: z
-    .string({ required_error: "Password is required" })
-    .regex(passwordRegex, {
-      message:
-        "Password should contain at least one uppercase, one lowercase, on special character and one number",
-    }),
+  password: z.string({ required_error: "Password is required" }).regex(passwordRegex, {
+    message: "Password should contain at least one uppercase, one lowercase, on special character and one number",
+  }),
 });
 
 type FormType = z.infer<typeof formSchema>;
@@ -98,9 +88,7 @@ const SignUp: FC<ISignUp> = ({ handleGoToLogin, onSignUp }) => {
           onError: (error) => {
             toast({
               title: error.response?.data.error || "Something went wrong",
-              description: `${
-                error.response?.data.error || "Something went wrong"
-              }. Unable to sign up`,
+              description: `${error.response?.data.error || "Something went wrong"}. Unable to sign up`,
               action: (
                 <ToastAction className="bg-red-500" altText="Try Again">
                   Try Again
@@ -114,15 +102,9 @@ const SignUp: FC<ISignUp> = ({ handleGoToLogin, onSignUp }) => {
       if (error instanceof GeolocationPositionError) {
         toast({
           title: error.message || "Something went wrong",
-          description: `${
-            error.message || "Something went wrong"
-          }. Unable to sign up`,
+          description: `${error.message || "Something went wrong"}. Unable to sign up`,
           action: (
-            <ToastAction
-              onClick={() => onSubmit(getValues())}
-              className="bg-red-500"
-              altText="Try Again"
-            >
+            <ToastAction onClick={() => onSubmit(getValues())} className="bg-red-500" altText="Try Again">
               Try Again
             </ToastAction>
           ),
@@ -141,32 +123,10 @@ const SignUp: FC<ISignUp> = ({ handleGoToLogin, onSignUp }) => {
       <CardContent className="pb-[40px] px-[40px]">
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           <div>
-            <Controller
-              control={control}
-              name="full_name"
-              render={({ field, fieldState }) => (
-                <Input
-                  {...field}
-                  error={fieldState.error}
-                  label="Name"
-                  id="name"
-                />
-              )}
-            />
+            <Controller control={control} name="full_name" render={({ field, fieldState }) => <Input {...field} error={fieldState.error} label="Name" id="name" />} />
           </div>
           <div>
-            <Controller
-              control={control}
-              name="email"
-              render={({ field, fieldState }) => (
-                <Input
-                  {...field}
-                  error={fieldState.error}
-                  label="Email"
-                  id="email"
-                />
-              )}
-            />
+            <Controller control={control} name="email" render={({ field, fieldState }) => <Input {...field} error={fieldState.error} label="Email" id="email" />} />
           </div>
           <div className="space-y-1">
             <Controller
@@ -176,13 +136,7 @@ const SignUp: FC<ISignUp> = ({ handleGoToLogin, onSignUp }) => {
                 <Input
                   {...field}
                   error={fieldState.error}
-                  inputSuffix={
-                    passwordVisible ? (
-                      <FaRegEye onClick={() => setPasswordVisible(false)} />
-                    ) : (
-                      <FaRegEyeSlash onClick={() => setPasswordVisible(true)} />
-                    )
-                  }
+                  inputSuffix={passwordVisible ? <FaRegEye onClick={() => setPasswordVisible(false)} /> : <FaRegEyeSlash onClick={() => setPasswordVisible(true)} />}
                   autoComplete="off"
                   label="Password"
                   id="new"
@@ -195,7 +149,7 @@ const SignUp: FC<ISignUp> = ({ handleGoToLogin, onSignUp }) => {
             <Button type="submit" isLoading={isLoading} className="w-full">
               Sign Up
             </Button>
-            <div className="flex items-center dark:text-white text-black h-[12px] gap-3">
+            {/* <div className="flex items-center dark:text-white text-black h-[12px] gap-3">
               <div className="w-full h-[1px] bg-secondary flex-1"></div>
               <div>or</div>
               <div className="w-full h-[1px] bg-secondary flex-1"></div>
@@ -203,15 +157,12 @@ const SignUp: FC<ISignUp> = ({ handleGoToLogin, onSignUp }) => {
             <Button type="button" className="w-full gap-1">
               <FcGoogle className="text-lg" />
               Continue with Google
-            </Button>
+            </Button> */}
           </div>
           <div className="w-full text-center">
             <p className="text-gray-600 dark:text-gray-400 text-sm">
               Already have an account?{" "}
-              <button
-                onClick={() => handleGoToLogin && handleGoToLogin()}
-                className="underline outline-none border-none text-black dark:text-white font-semibold"
-              >
+              <button onClick={() => handleGoToLogin && handleGoToLogin()} className="underline outline-none border-none text-black dark:text-white font-semibold">
                 Sign In
               </button>
             </p>

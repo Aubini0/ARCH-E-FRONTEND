@@ -61,6 +61,25 @@
 body {
   overflow: hidden;
 }
+.lighScrollbar {
+  ::-webkit-scrollbar {
+    width: 5px;
+    height: 5px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: #f1f1f1;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    background: #a3a4a4;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: #555;
+  }
+}
 
 .two-line-ellipsis {
   display: -webkit-box;
@@ -141,7 +160,6 @@ input[type="number"]::-webkit-outer-spin-button {
 .mkdown pre {
   /* border: 1px solid white; */
   background: #0d0d0d !important;
-  color: #ffffff;
   padding: 10px;
   margin: 10px 0;
   border-radius: 10px;
@@ -149,10 +167,41 @@ input[type="number"]::-webkit-outer-spin-button {
   overflow-x: auto;
   text-shadow: none !important;
 }
+.mkdown pre code {
+  color: #ffffff !important;
+}
 
 .mkdown code {
-  color: #ffffff !important;
   text-shadow: none !important;
+}
+
+.collpaseSources {
+  animation: collpaseKeyframe 0.1s ease;
+}
+.collpaseVideos {
+  animation: collpaseVideosKeyframe 0.1s ease;
+}
+@keyframes collpaseKeyframe {
+  0% {
+    height: 0px;
+  }
+  50% {
+    height: 50px;
+  }
+  100% {
+    height: 100%;
+  }
+}
+@keyframes collpaseVideosKeyframe {
+  0% {
+    height: 0px;
+  }
+  50% {
+    height: 100px;
+  }
+  100% {
+    height: 100%;
+  }
 }
 
 @media only screen and (max-width: 768px) {
