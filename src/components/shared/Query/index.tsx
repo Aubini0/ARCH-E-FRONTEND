@@ -18,7 +18,7 @@ import { CgCloseR } from "react-icons/cg";
 import { MdOutlineLibraryBooks } from "react-icons/md";
 import { PlusIcon } from "@/components/icons/PlusIcon";
 import CustomCodeBlock from "./codeBlock";
-import { PiCaretCircleDown, PiCaretCircleUp } from "react-icons/pi";
+import { PiCaretCircleDown } from "react-icons/pi";
 
 interface IQueryComponent {
   query: IQuery;
@@ -40,9 +40,10 @@ const Query: FC<IQueryComponent> = ({ query, fetchBot, index, mode, totalQueries
   const [sheetOpen, setSheetOpen] = useState(false);
   const [videosOpen, setVideosOpen] = useState(false);
   const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
+  const [isSourceShowmore, setIsSourceShowmore] = React.useState(false);
   const [openCollapse, setOpenCollapse] = React.useState({
     source: true,
-    video: true,
+    video: false,
   });
 
   const videoId = useMemo(() => {
@@ -268,37 +269,37 @@ const Query: FC<IQueryComponent> = ({ query, fetchBot, index, mode, totalQueries
           }}
           className="w-full hidden md:block h-full py-5"
         >
-          <div onClick={() => setOpenCollapse({ ...openCollapse, source: !openCollapse?.source })} className="flex items-center mb-[16px] cursor-pointer gap-3 w-full">
+          <div onClick={() => setOpenCollapse({ ...openCollapse, source: !openCollapse?.source })} className="flex items-center mb-[16px] cursor-pointer gap-[16px] w-full">
             <p className="text-md font-medium dark:text-[#848585] mb-2">Sources</p>
             <hr className="w-full mb-1" />
-            <PiCaretCircleDown size={20} className={`mb-1 ${openCollapse?.source && "rotate-180"}`} />
+            <PiCaretCircleDown size={25} className={`mb-1 ${openCollapse?.source && "rotate-180"}`} />
           </div>
-          <CarouselContent className={`${openCollapse?.source ? "collpaseSources" : "hidden"} text-black overflow-x-auto pb-2`}>
-            {query.web_links.map((query, index) => (
+          <CarouselContent className={`${openCollapse?.source ? "collpaseSources" : "hidden"} text-black pb-2`}>
+            {query.web_links?.slice(0, 4).map((item, index) => (
               <CarouselItem key={index} className="md:basis-1/2 lg:basis-1/4 select-none">
-                <SourceCard count={index + 1} url={query} />
+                <SourceCard isDesktop={!isPhone} callBackFn={() => setIsSourceShowmore(true)} total={query?.web_links?.length} count={index + 1} url={item} />
               </CarouselItem>
             ))}
             {/* <CarouselItem
             onClick={() => setSheetOpen(true)}
             className="md:basis-1/2 lg:basis-1/4 select-none"
-          >
+            >
             <SourceCardViewMore />
-          </CarouselItem> */}
+            </CarouselItem> */}
           </CarouselContent>
         </Carousel>
       )}
-      {!isPhone && query.videos.length > 0 && (
+      {!isPhone && query.videos.length > 0 && query.completed && (
         <Carousel
           opts={{
             align: "start",
           }}
           className="w-full hidden md:block h-full py-5"
         >
-          <div onClick={() => setOpenCollapse({ ...openCollapse, video: !openCollapse?.video })} className="flex items-center mb-[16px] cursor-pointer gap-3 w-full">
+          <div onClick={() => setOpenCollapse({ ...openCollapse, video: !openCollapse?.video })} className="flex items-center mb-[16px] cursor-pointer gap-[16px] w-full">
             <p className="text-md font-medium dark:text-[#848585] mb-2">Videos</p>
             <hr className="w-full mb-1" />
-            <PiCaretCircleDown size={20} className={`mb-1 ${openCollapse?.video && "rotate-180"}`} />
+            <PiCaretCircleDown size={25} className={`mb-1 ${openCollapse?.video && "rotate-180"}`} />
           </div>
           <CarouselContent className={`${openCollapse?.video ? "collpaseVideos" : "hidden"} text-black`}>
             {query.videos.map((video, index) => (
@@ -334,10 +335,10 @@ const Query: FC<IQueryComponent> = ({ query, fetchBot, index, mode, totalQueries
         }}
         className="w-full md:hidden block mt-5"
       >
-        <div onClick={() => setOpenCollapse({ ...openCollapse, video: !openCollapse?.video })} className="flex items-center cursor-pointer gap-3 mb-[16px] w-full">
+        <div onClick={() => setOpenCollapse({ ...openCollapse, video: !openCollapse?.video })} className="flex items-center cursor-pointer gap-[16px] mb-[16px] w-full">
           <p className="text-md font-medium dark:text-[#848585] mb-2">Videos</p>
           <hr className="w-full mb-1" />
-          <PiCaretCircleDown size={20} className={`mb-1 ${openCollapse?.video && "rotate-180"}`} />
+          <PiCaretCircleDown size={25} className={`mb-1 ${openCollapse?.video && "rotate-180"}`} />
         </div>
         <CarouselContent className={`${openCollapse?.video ? "collpaseVideos" : "hidden"} text-black`}>
           {query.videos.slice(0, query.videos.length - 1).map((video, index) => (
