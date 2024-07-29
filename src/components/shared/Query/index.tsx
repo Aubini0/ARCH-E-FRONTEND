@@ -275,7 +275,7 @@ const Query: FC<IQueryComponent> = ({ query, fetchBot, index, mode, totalQueries
             <PiCaretCircleDown size={25} className={`mb-1 ${openCollapse?.source && "rotate-180"}`} />
           </div>
           <CarouselContent className={`${openCollapse?.source ? "collpaseSources" : "hidden"} text-black pb-2`}>
-            {query.web_links?.slice(0, 4).map((item, index) => (
+            {query.web_links.map((item, index) => (
               <CarouselItem key={index} className="md:basis-1/2 lg:basis-1/4 select-none">
                 <SourceCard isDesktop={!isPhone} callBackFn={() => setIsSourceShowmore(true)} total={query?.web_links?.length} count={index + 1} url={item} />
               </CarouselItem>
