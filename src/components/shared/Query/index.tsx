@@ -329,7 +329,7 @@ const Query: FC<IQueryComponent> = ({ query, fetchBot, index, mode, totalQueries
           {openCollapse?.video && <CarouselNext />}
         </Carousel>
       )}
-      <Carousel
+      {query?.completed && <Carousel
         opts={{
           align: "start",
         }}
@@ -371,7 +371,7 @@ const Query: FC<IQueryComponent> = ({ query, fetchBot, index, mode, totalQueries
             </CarouselItem>
           )}
         </CarouselContent>
-      </Carousel>
+      </Carousel>}
       {query.completed && query.recommendations.length > 0 && totalQueries - 1 === index && (
         <div className="w-full h-auto border-t-[1.3px] border-[#2f2f30] dark:border-secondary mt-3 pt-5">
           <h5 className="text-xl font-medium font-white">Related Questions</h5>
