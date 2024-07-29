@@ -43,7 +43,7 @@ const Header: FC<IHeader> = (props) => {
     <nav
       {...props}
       id="header"
-      className={cn("z-10 py-6 w-full px-6 md:px-12", props.className)}
+      className={cn("z-10 relative py-6 w-full px-6 md:px-12", props.className)}
     >
       <div className="flex items-center gap-3 justify-between">
         <TooltipProvider>
