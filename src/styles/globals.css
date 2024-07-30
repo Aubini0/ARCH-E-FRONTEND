@@ -8,6 +8,8 @@
 
     --secondary: 240 4% 16%; /* 800 */
 
+    --off-white: 37 67% 98%;
+
     --background: 240 5% 26%; /* 700 */
     --dark-background: 240 6% 10%; /* 900 */
     --foreground: 0 0% 98%;
@@ -32,6 +34,8 @@
 
     --secondary: 240 4% 16%; /* 800 */
 
+    --off-white: 37 67% 98%;
+
     --background: 240 5% 26%; /* 700 */
     --dark-background: 240 6% 10%; /* 900 */
     --foreground: 0 0% 98%;
@@ -54,7 +58,7 @@
     @apply border-border;
   }
   body {
-    @apply bg-[#FDFAF5] text-black dark:bg-dark-background dark:text-white;
+    @apply bg-off-white text-black dark:bg-dark-background dark:text-white;
   }
 }
 

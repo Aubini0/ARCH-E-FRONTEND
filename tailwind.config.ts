@@ -4,13 +4,7 @@ const { fontFamily } = require("tailwindcss/defaultTheme");
 
 const config = {
   darkMode: ["class"],
-  content: [
-    "./pages/**/*.{ts,tsx}",
-    "./components/**/*.{ts,tsx}",
-    "./app/**/*.{ts,tsx}",
-    "./src/**/*.{ts,tsx}",
-    "./node_modules/@nextui-org/theme/dist/**/*.{js,ts,jsx,tsx}",
-  ],
+  content: ["./pages/**/*.{ts,tsx}", "./components/**/*.{ts,tsx}", "./app/**/*.{ts,tsx}", "./src/**/*.{ts,tsx}", "./node_modules/@nextui-org/theme/dist/**/*.{js,ts,jsx,tsx}"],
   prefix: "",
   theme: {
     container: {
@@ -40,6 +34,7 @@ const config = {
         primary: "hsl(var(--primary))",
         secondary: "hsl(var(--secondary))",
         destructive: "hsl(var(--destructive))",
+        "off-white": "hsl(var(--off-white))",
         muted: "hsl(var(--muted))",
         background: "hsl(var(--background))",
         "dark-background": "hsl(var(--dark-background))",

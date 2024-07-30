@@ -68,7 +68,7 @@ const PlaceholdersAndVanishInput: FC<IPlaceholdersAndVanishInput> = ({ placehold
         "w-full relative mx-auto bg-[#F5F6F8] dark:bg-[#27272A] overflow-hidden border border-[#CCCCCC] dark:border-[#3D3D3D] transition duration-200 rounded-[12px]",
         className,
         disabled && "pointer-events-none bg-gray-200",
-        isQueryExcuted && "h-[84px]"
+        isQueryExcuted && "h-[48px]"
       )}
       onSubmit={handleSubmit}
     >
@@ -86,7 +86,8 @@ const PlaceholdersAndVanishInput: FC<IPlaceholdersAndVanishInput> = ({ placehold
         onBlur={onBlur}
         draggable={false}
         className={cn(
-          "w-full relative text-sm sm:text-base z-50 border-none dark:text-white bg-transparent text-black h-full rounded-full focus:outline-none focus:ring-0 md:pl-[24px] pl-[16px] pr-[65px] py-[28px] hide-scrollbar resize-none"
+          "w-full relative text-sm sm:text-base z-50 border-none dark:text-white bg-transparent text-black h-full rounded-full focus:outline-none focus:ring-0 md:pl-[24px] pl-[16px] pr-[65px] hide-scrollbar resize-none",
+          isQueryExcuted ? "py-[12px]" : "py-[28px]"
         )}
       />
       <button
