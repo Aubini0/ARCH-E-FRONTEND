@@ -54,7 +54,7 @@
     @apply border-border;
   }
   body {
-    @apply bg-white text-black dark:bg-dark-background dark:text-white;
+    @apply bg-[#FDFAF5] text-black dark:bg-dark-background dark:text-white;
   }
 }
 
