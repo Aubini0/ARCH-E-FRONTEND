@@ -24,7 +24,7 @@ const CustomCodeBlock: React.FC<{ children: string; language: string }> = ({
       >
         {children}
       </SyntaxHighlighter>
-      <button onClick={handleCopy} className="absolute top-0 right-2">
+      <button onClick={handleCopy} className="absolute top-[-6px] right-0">
         {isCopied ? <CheckIcon color="#fff" /> : <CopyIcon color="#fff" />}
       </button>
     </div>
