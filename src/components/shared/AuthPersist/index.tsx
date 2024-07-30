@@ -4,6 +4,9 @@ import { setAuth } from "@/redux/auth/authSlice";
 import { useAppDispatch } from "@/store/hooks";
 import { useRouter } from "next/router";
 import React, { FC, useEffect } from "react";
+import Cookies from "universal-cookie";
+
+const cookies = new Cookies();
 
 interface IAuthPersist {
   children: React.ReactNode;

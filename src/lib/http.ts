@@ -13,8 +13,7 @@ http.interceptors.request.use(
     const access_token = cookies.get("access_token");
 
     if (access_token) {
-      console.log(access_token);
-      config.headers.Authorization = access_token;
+      config.headers.Authorization = `Bearer ${access_token}`;
     }
     return config;
   },

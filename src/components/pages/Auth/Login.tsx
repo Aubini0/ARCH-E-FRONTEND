@@ -47,13 +47,13 @@ const Login: FC<ILogin> = ({ onLogin, handleGoToSignUp }) => {
   const onSubmit = (data: FormType) => {
     mutate(data, {
       onSuccess: (data) => {
-        const { success, token, data: userData } = data;
+        const { success, access_token, data: userData } = data;
         if (success) {
           reset();
           dispatch(setSignInModal({ open: false }));
           dispatch(
             setAuth({
-              access_token: token,
+              access_token,
               auth: true,
               user: JSON.parse(userData),
               loading: false,
