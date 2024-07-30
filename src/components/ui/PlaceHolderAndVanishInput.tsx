@@ -86,7 +86,7 @@ const PlaceholdersAndVanishInput: FC<IPlaceholdersAndVanishInput> = ({ placehold
         onBlur={onBlur}
         draggable={false}
         className={cn(
-          "w-full relative text-sm sm:text-base z-50 border-none dark:text-white bg-transparent text-black h-full rounded-full focus:outline-none focus:ring-0 pl-[24px] pr-[65px] py-[28px] hide-scrollbar resize-none"
+          "w-full relative text-sm sm:text-base z-50 border-none dark:text-white bg-transparent text-black h-full rounded-full focus:outline-none focus:ring-0 md:pl-[24px] pl-[16px] pr-[65px] py-[28px] hide-scrollbar resize-none"
         )}
       />
       <button
@@ -107,7 +107,7 @@ const PlaceholdersAndVanishInput: FC<IPlaceholdersAndVanishInput> = ({ placehold
       </button>
       {!inputValue && placeholder && (
         <div className={`absolute inset-0 ${isQueryExcuted ? "flex items-center" : "md:top-4 top-[11px]"} text-sm text-zinc-600 pl-4 md:pl-[24px] pointer-events-none`}>
-          <div className={`flex h-12 items-center gap-2`}>
+          <div className={`flex lg:h-12 md:h-[50px] h-[57px] items-center gap-2`}>
             <SearchIcon className="dark:text-[#fff]" size={20} />
             <TextGenerateEffect className="text-sm text-[#7F7F7F]" words={placeholder} />
           </div>
