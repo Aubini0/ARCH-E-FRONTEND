@@ -185,6 +185,9 @@ input[type="number"]::-webkit-outer-spin-button {
 .mkdown code {
   text-shadow: none !important;
 }
+.mkdown .language-javascript {
+  background-color: transparent !important;
+}
 
 .collpaseSources {
   animation: collpaseKeyframe 0.1s ease;
