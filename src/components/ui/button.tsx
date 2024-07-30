@@ -8,7 +8,7 @@ import { Loader2 } from "lucide-react";
 const buttonVariants = cva("inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors disabled:pointer-events-none disabled:opacity-50", {
   variants: {
     variant: {
-      default: "bg-white border border-secondary text-gray-600 dark:border-none dark:bg-secondary dark:text-white",
+      default: "bg-off-white border border-gray-300 text-gray-600 dark:border-none dark:bg-secondary dark:text-white",
       destructive: "bg-destructive text-white hover:bg-destructive/90",
       outline: "border-2 border-secondary dark:border-white bg-transparent text-black dark:text-white",
       ghost: "hover:bg-gray-100 dark:hover:bg-white/20",

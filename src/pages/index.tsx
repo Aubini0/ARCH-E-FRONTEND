@@ -300,7 +300,7 @@ export default function Home() {
         )}
         <div
           className={cn(
-            "flex items-center duration-300 w-full gap-3 md:gap-8 flex-col md:py-10 py-5 mx-auto px-5 relative z-10",
+            "flex items-center duration-300 w-full gap-3 md:gap-8 flex-col md:py-5 py-5 mx-auto px-5 relative z-10",
             queries.length > 0 || isPlay ? "fixed bottom-0 left-0" : "fixed bottom-[52px] md:bottom-auto",
             queries.length === 0 && !isPlay ? "pb-5" : "pb-0",
             queries.length > 0 ? "justify-end" : "justify-center",

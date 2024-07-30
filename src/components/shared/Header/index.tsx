@@ -70,7 +70,13 @@ const Header: FC<IHeader> = (props) => {
           {auth && (
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Avatar isBordered className="ring-0 w-[42px] h-[42px] text-lg ring-offset-0 cursor-pointer" radius="sm" name={user?.full_name[0]} src={user?.profilePic} />
+                <Avatar
+                  isBordered
+                  className="ring-0 w-[42px] h-[42px] text-lg ring-offset-0 cursor-pointer bg-off-white dark:bg-secondary border border-gray-300 dark:border-none"
+                  radius="sm"
+                  name={user?.full_name[0]}
+                  src={user?.profilePic}
+                />
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="w-56 mt-3 dark:text-white">
                 <DropdownMenuLabel>My Account</DropdownMenuLabel>
