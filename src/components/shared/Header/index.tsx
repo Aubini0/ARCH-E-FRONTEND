@@ -1,11 +1,4 @@
-import {
-  DropdownMenuContent,
-  DropdownMenuGroup,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+import { DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { setSignInModal } from "@/redux/modals/modalsSlice";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { Avatar } from "@nextui-org/react";
@@ -18,12 +11,7 @@ import { logout } from "@/redux/auth/authSlice";
 import { FaRegEdit } from "react-icons/fa";
 import { AiOutlineSun } from "react-icons/ai";
 import { FiMoon } from "react-icons/fi";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { useTheme } from "next-themes";
 import { cn } from "@/lib/utils";
 
@@ -40,19 +28,12 @@ const Header: FC<IHeader> = (props) => {
   }, []);
 
   return (
-    <nav
-      {...props}
-      id="header"
-      className={cn("z-10 relative py-6 w-full px-6 md:px-12", props.className)}
-    >
+    <nav {...props} id="header" className={cn("z-[150] relative py-6 w-full px-6 md:px-12", props.className)}>
       <div className="flex items-center gap-3 justify-between">
         <TooltipProvider>
           <Tooltip>
             <TooltipTrigger className="!border-none h-full">
-              <div
-                onClick={() => window.location.reload()}
-                className="cursor-pointer rounded-xl h-[40px] w-[40px] flex items-center justify-center duration-100 dark:hover:bg-secondary aspect-square"
-              >
+              <div onClick={() => window.location.reload()} className="cursor-pointer rounded-xl h-[40px] w-[40px] flex items-center justify-center duration-100 dark:hover:bg-secondary aspect-square">
                 {/* <h3 className="font-bold text-white text-xs md:text-2xl">ARCH-E</h3> */}
                 <FaRegEdit className="text-2xl ml-[4px] mb-[3px]" />
               </div>
@@ -65,13 +46,7 @@ const Header: FC<IHeader> = (props) => {
         {auth && (
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Avatar
-                isBordered
-                className="ring-1 w-7 h-7 md:w-8 md:h-8 ring-offset-1 cursor-pointer"
-                radius="sm"
-                name={user?.full_name[0]}
-                src={user?.profilePic}
-              />
+              <Avatar isBordered className="ring-1 w-7 h-7 md:w-8 md:h-8 ring-offset-1 cursor-pointer" radius="sm" name={user?.full_name[0]} src={user?.profilePic} />
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-56 mt-3 text-white">
               <DropdownMenuLabel>My Account</DropdownMenuLabel>
@@ -110,12 +85,7 @@ const Header: FC<IHeader> = (props) => {
             </Link>
           )} */}
           {mounted && (
-            <Button
-              onClick={() =>
-                theme === "dark" ? setTheme("light") : setTheme("dark")
-              }
-              className="w-[42px] h-[40px] p-0"
-            >
+            <Button onClick={() => (theme === "dark" ? setTheme("light") : setTheme("dark"))} className="w-[42px] h-[40px] p-0">
               {theme === "light" && <FiMoon className="text-xl" />}
               {theme === "dark" && <AiOutlineSun className="text-xl" />}
             </Button>
@@ -125,9 +95,7 @@ const Header: FC<IHeader> = (props) => {
               Login
             </Button>
           )}
-          {!auth && loading && (
-            <Skeleton className="w-[80px] h-[30px] bg-slate-200 dark:bg-secondary" />
-          )}
+          {!auth && loading && <Skeleton className="w-[80px] h-[30px] bg-slate-200 dark:bg-secondary" />}
         </div>
       </div>
     </nav>

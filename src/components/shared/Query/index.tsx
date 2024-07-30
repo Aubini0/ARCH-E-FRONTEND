@@ -329,49 +329,51 @@ const Query: FC<IQueryComponent> = ({ query, fetchBot, index, mode, totalQueries
           {openCollapse?.video && <CarouselNext />}
         </Carousel>
       )}
-      {query?.completed && <Carousel
-        opts={{
-          align: "start",
-        }}
-        className="w-full md:hidden block mt-5"
-      >
-        <div onClick={() => setOpenCollapse({ ...openCollapse, video: !openCollapse?.video })} className="flex items-center cursor-pointer gap-[16px] mb-[16px] w-full">
-          <p className="text-md font-medium dark:text-[#848585] mb-2">Videos</p>
-          <hr className="w-full mb-1" />
-          <PiCaretCircleDown size={25} className={`mb-1 ${openCollapse?.video && "rotate-180"}`} />
-        </div>
-        <CarouselContent className={`${openCollapse?.video ? "collpaseVideos" : "hidden"} text-black`}>
-          {query.videos.slice(0, query.videos.length - 1).map((video, index) => (
-            <CarouselItem key={index} className="basis-[50%] select-none h-[120px] aspect-video">
-              <div
-                onClick={() => {
-                  setCurrentVideoIndex(index);
-                  setVideosOpen(true);
-                }}
-                className="rounded-lg h-full w-full overflow-hidden duration-300"
-              >
-                <img src={video.thumbnails.high} alt="image" className="w-full h-full object-cover" />
-              </div>
-            </CarouselItem>
-          ))}
-          {query.videos[query.videos.length - 1] && (
-            <CarouselItem className="basis-[50%] select-none h-[120px] aspect-video">
-              <div
-                onClick={() => {
-                  setCurrentVideoIndex(0);
-                  setVideosOpen(true);
-                }}
-                className="rounded-lg h-full w-full overflow-hidden duration-300 bg-secondary flex flex-col items-center justify-center"
-              >
-                <img src={query.videos[query.videos.length - 1].thumbnails.high} alt="image" className="w-full h-[90px] rounded-xl object-cover" />
-                <div className="flex items-center justify-center h-[30px]">
-                  <p className="text-sm font-medium text-white">+ View more</p>
+      {query?.completed && (
+        <Carousel
+          opts={{
+            align: "start",
+          }}
+          className="w-full md:hidden block mt-5"
+        >
+          <div onClick={() => setOpenCollapse({ ...openCollapse, video: !openCollapse?.video })} className="flex items-center cursor-pointer gap-[16px] mb-[16px] w-full">
+            <p className="text-md font-medium dark:text-[#848585] mb-2">Videos</p>
+            <hr className="w-full mb-1" />
+            <PiCaretCircleDown size={25} className={`mb-1 ${openCollapse?.video && "rotate-180"}`} />
+          </div>
+          <CarouselContent className={`${openCollapse?.video ? "collpaseVideos" : "hidden"} text-black`}>
+            {query.videos.slice(0, query.videos.length - 1).map((video, index) => (
+              <CarouselItem key={index} className="basis-[50%] select-none h-[120px] aspect-video">
+                <div
+                  onClick={() => {
+                    setCurrentVideoIndex(index);
+                    setVideosOpen(true);
+                  }}
+                  className="rounded-lg h-full w-full overflow-hidden duration-300"
+                >
+                  <img src={video.thumbnails.high} alt="image" className="w-full h-full object-cover" />
                 </div>
-              </div>
-            </CarouselItem>
-          )}
-        </CarouselContent>
-      </Carousel>}
+              </CarouselItem>
+            ))}
+            {query.videos[query.videos.length - 1] && (
+              <CarouselItem className="basis-[50%] select-none h-[120px] aspect-video">
+                <div
+                  onClick={() => {
+                    setCurrentVideoIndex(0);
+                    setVideosOpen(true);
+                  }}
+                  className="rounded-lg h-full w-full overflow-hidden duration-300 bg-secondary flex flex-col items-center justify-center"
+                >
+                  <img src={query.videos[query.videos.length - 1].thumbnails.high} alt="image" className="w-full h-[90px] rounded-xl object-cover" />
+                  <div className="flex items-center justify-center h-[30px]">
+                    <p className="text-sm font-medium text-white">+ View more</p>
+                  </div>
+                </div>
+              </CarouselItem>
+            )}
+          </CarouselContent>
+        </Carousel>
+      )}
       {query.completed && query.recommendations.length > 0 && totalQueries - 1 === index && (
         <div className="w-full h-auto border-t-[1.3px] border-[#2f2f30] dark:border-secondary mt-3 pt-5">
           <h5 className="text-xl font-medium font-white">Related Questions</h5>
