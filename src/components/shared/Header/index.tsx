@@ -95,7 +95,7 @@ const Header: FC<IHeader> = (props) => {
               Login
             </Button>
           )}
-          {!auth && loading && <Skeleton className="w-[80px] h-[30px] bg-slate-200 dark:bg-secondary" />}
+          {/* {!auth && loading && <Skeleton className="w-[80px] h-[30px] bg-slate-200 dark:bg-secondary" />} */}
         </div>
       </div>
     </nav>

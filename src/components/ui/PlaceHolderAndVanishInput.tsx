@@ -1,6 +1,7 @@
 import { FC, HTMLAttributes, useEffect, useRef, useState } from "react";
 import { cn } from "@/lib/utils";
 import { TextGenerateEffect } from "./TextGenerateEffect";
+import { SearchIcon } from "lucide-react";
 
 interface IPlaceholdersAndVanishInput {
   placeholder?: string;
@@ -16,19 +17,7 @@ interface IPlaceholdersAndVanishInput {
   isQueryExcuted?: boolean;
 }
 
-const PlaceholdersAndVanishInput: FC<IPlaceholdersAndVanishInput> = ({
-  placeholder,
-  onChange,
-  onSubmit,
-  className,
-  focused = false,
-  value,
-  onBlur,
-  icon,
-  onButtonClick,
-  isQueryExcuted,
-  disabled,
-}) => {
+const PlaceholdersAndVanishInput: FC<IPlaceholdersAndVanishInput> = ({ placeholder, onChange, onSubmit, className, focused = false, value, onBlur, icon, onButtonClick, isQueryExcuted, disabled }) => {
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const formRef = useRef<HTMLFormElement>(null);
   const [inputValue, setInputValue] = useState("");
@@ -76,10 +65,10 @@ const PlaceholdersAndVanishInput: FC<IPlaceholdersAndVanishInput> = ({
     <form
       ref={formRef}
       className={cn(
-        "w-full relative mx-auto bg-[#F5F6F8] dark:bg-[#27272A] overflow-hidden border border-[#CCCCCC] dark:border-[#595959] transition duration-200 rounded-[12px]",
+        "w-full relative mx-auto bg-[#F5F6F8] dark:bg-[#27272A] overflow-hidden border border-[#CCCCCC] dark:border-[#3D3D3D] transition duration-200 rounded-[12px]",
         className,
         disabled && "pointer-events-none bg-gray-200",
-        isQueryExcuted && "h-[44px]"
+        isQueryExcuted && "h-[84px]"
       )}
       onSubmit={handleSubmit}
     >
@@ -97,7 +86,7 @@ const PlaceholdersAndVanishInput: FC<IPlaceholdersAndVanishInput> = ({
         onBlur={onBlur}
         draggable={false}
         className={cn(
-          "w-full relative text-sm sm:text-base z-50 border-none dark:text-white bg-transparent text-black h-full rounded-full focus:outline-none focus:ring-0 pl-4 sm:pl-[24px] pr-[40px] pt-[12px] hide-scrollbar resize-none"
+          "w-full relative text-sm sm:text-base z-50 border-none dark:text-white bg-transparent text-black h-full rounded-full focus:outline-none focus:ring-0 pl-[24px] pr-[65px] py-[28px] hide-scrollbar resize-none"
         )}
       />
       <button
@@ -110,28 +99,18 @@ const PlaceholdersAndVanishInput: FC<IPlaceholdersAndVanishInput> = ({
         }}
         type="button"
         disabled={!inputValue}
-        className={`absolute right-3 ${
-          inputValue?.trimStart()
-            ? "light:text-white text-dark cursor-pointer"
-            : "text-zinc-500 cursor-not-allowed"
-        } ${
+        className={`absolute right-[24px] ${inputValue?.trimStart() ? "light:text-white text-dark cursor-pointer" : "text-zinc-500 cursor-not-allowed"} ${
           isQueryExcuted ? "top-1/2" : "md:top-[78%] top-[75%]"
-        } z-50 rounded-lg -translate-y-1/2 h-8 w-8 transition duration-200 flex items-center justify-center text-lg bg-[#FFFFFF] dark:bg-[#121212]`}
+        } z-50 rounded-lg -translate-y-1/2 h-9 w-9 transition duration-200 flex items-center justify-center text-lg bg-[#FFFFFF] dark:bg-[#121212]`}
       >
         {icon}
       </button>
       {!inputValue && placeholder && (
-        <div
-          className={`absolute inset-0 ${
-            isQueryExcuted
-              ? "flex items-center md:top-[5px]"
-              : "md:top-4 top-[11px]"
-          } text-sm text-zinc-600 pl-4 md:pl-[24px] pointer-events-none`}
-        >
-          <TextGenerateEffect
-            className="text-sm text-[#7F7F7F]"
-            words={placeholder}
-          />
+        <div className={`absolute inset-0 ${isQueryExcuted ? "flex items-center" : "md:top-4 top-[11px]"} text-sm text-zinc-600 pl-4 md:pl-[24px] pointer-events-none`}>
+          <div className={`flex h-12 items-center gap-2`}>
+            <SearchIcon className="dark:text-[#fff]" size={20} />
+            <TextGenerateEffect className="text-sm text-[#7F7F7F]" words={placeholder} />
+          </div>
         </div>
       )}
     </form>

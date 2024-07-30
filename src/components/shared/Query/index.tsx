@@ -71,7 +71,7 @@ const Query: FC<IQueryComponent> = ({ query, fetchBot, index, mode, totalQueries
       key={query.id}
       id={query.id}
       className={cn(
-        "max-w-full lg:max-w-[650px] 2xl:max-w-[800px] relative duration-300 mx-auto w-full",
+        "max-w-full lg:max-w-[800px] 2xl:max-w-[800px] relative duration-300 mx-auto w-full",
         index === 0 ? "pt-0 pb-5" : "pt-5 pb-5",
         totalQueries === index + 1 ? "pb-[20px] md:pb-[120px]" : ""
       )}
@@ -125,7 +125,7 @@ const Query: FC<IQueryComponent> = ({ query, fetchBot, index, mode, totalQueries
           <div className="flex flex-col rounded-xl items-start w-full">
             <h5 className="text-[30px] py-2 font-medium">{query.query}</h5>
           </div>
-          <div className="h-[1.3px] mb-[20px] text-[#27272a] bg-[#27272a]" />
+          <hr className="h-[1.3px] mb-[20px] dark:border-[#3d3d3d]" />
         </>
       )}
       {/* {query.videos.length > 0 && (
@@ -246,8 +246,8 @@ const Query: FC<IQueryComponent> = ({ query, fetchBot, index, mode, totalQueries
                           <VscShare className="text-xl" />
                           <span className="text-[10px]">Share</span>
                         </div> */}
-            <div onClick={() => handleClickEdit(query?.id, index)} className="flex-col cursor-pointer w-10 h-10 flex items-center justify-center bg-transparent rounded-[12px]">
-              <FaRegEdit className="text-xl -mr-0.5 -mt-0.5" />
+            <div onClick={() => handleClickEdit(query?.id, index)} className="flex-col cursor-pointer h-10 flex items-center justify-center bg-transparent rounded-[12px]">
+              <FaRegEdit className="text-xl -mt-0.5" />
             </div>
             {/* <div
               onClick={() => {
@@ -271,8 +271,8 @@ const Query: FC<IQueryComponent> = ({ query, fetchBot, index, mode, totalQueries
         >
           <div onClick={() => setOpenCollapse({ ...openCollapse, source: !openCollapse?.source })} className="flex items-center mb-[16px] cursor-pointer gap-[16px] w-full">
             <p className="text-md font-medium dark:text-[#848585] mb-2">Sources</p>
-            <hr className="w-full mb-1" />
-            <PiCaretCircleDown size={25} className={`mb-1 ${openCollapse?.source && "rotate-180"}`} />
+            <hr className="w-full dark:border-[#3D3D3D] mb-1" />
+            <PiCaretCircleDown size={30} className={`mb-1 dark:text-[#7F7F7F] ${openCollapse?.source && "rotate-180"}`} />
           </div>
           <CarouselContent className={`${openCollapse?.source ? "collpaseSources" : "hidden"} text-black pb-2`}>
             {query.web_links.map((item, index) => (
@@ -298,8 +298,8 @@ const Query: FC<IQueryComponent> = ({ query, fetchBot, index, mode, totalQueries
         >
           <div onClick={() => setOpenCollapse({ ...openCollapse, video: !openCollapse?.video })} className="flex items-center mb-[16px] cursor-pointer gap-[16px] w-full">
             <p className="text-md font-medium dark:text-[#848585] mb-2">Videos</p>
-            <hr className="w-full mb-1" />
-            <PiCaretCircleDown size={25} className={`mb-1 ${openCollapse?.video && "rotate-180"}`} />
+            <hr className="w-full dark:border-[#3D3D3D] mb-1" />
+            <PiCaretCircleDown size={30} className={`mb-1 dark:text-[#7F7F7F] ${openCollapse?.video && "rotate-180"}`} />
           </div>
           <CarouselContent className={`${openCollapse?.video ? "collpaseVideos" : "hidden"} text-black`}>
             {query.videos.map((video, index) => (
@@ -329,7 +329,7 @@ const Query: FC<IQueryComponent> = ({ query, fetchBot, index, mode, totalQueries
           {openCollapse?.video && <CarouselNext />}
         </Carousel>
       )}
-      {query?.completed && (
+      {query.videos.length > 0 && query?.completed && (
         <Carousel
           opts={{
             align: "start",
@@ -338,8 +338,8 @@ const Query: FC<IQueryComponent> = ({ query, fetchBot, index, mode, totalQueries
         >
           <div onClick={() => setOpenCollapse({ ...openCollapse, video: !openCollapse?.video })} className="flex items-center cursor-pointer gap-[16px] mb-[16px] w-full">
             <p className="text-md font-medium dark:text-[#848585] mb-2">Videos</p>
-            <hr className="w-full mb-1" />
-            <PiCaretCircleDown size={25} className={`mb-1 ${openCollapse?.video && "rotate-180"}`} />
+            <hr className="w-full dark:border-[#3D3D3D] mb-1" />
+            <PiCaretCircleDown size={30} className={`mb-1 dark:text-[#7F7F7F] ${openCollapse?.video && "rotate-180"}`} />
           </div>
           <CarouselContent className={`${openCollapse?.video ? "collpaseVideos" : "hidden"} text-black`}>
             {query.videos.slice(0, query.videos.length - 1).map((video, index) => (
@@ -375,9 +375,9 @@ const Query: FC<IQueryComponent> = ({ query, fetchBot, index, mode, totalQueries
         </Carousel>
       )}
       {query.completed && query.recommendations.length > 0 && totalQueries - 1 === index && (
-        <div className="w-full h-auto border-t-[1.3px] border-[#2f2f30] dark:border-secondary mt-3 pt-5">
+        <div className="w-full h-auto border-t-[1.3px] dark:border-secondary mt-3 pt-5">
           <h5 className="text-xl font-medium font-white">Related Questions</h5>
-          <div className="divide-y-[1.3px] pt-3 divide-[#2f2f30] dark:divide-secondary">
+          <div className="divide-y-[1.3px] pt-3 dark:divide-secondary">
             {query.recommendations.map((rec, i) => (
               <div key={i} onClick={() => fetchBot(rec)} className="flex items-center justify-between gap-3 w-full py-3 cursor-pointer">
                 <span className="text-sm md:font-[300] md:text-base text-black dark:text-white w-[90%]">{rec}</span>
