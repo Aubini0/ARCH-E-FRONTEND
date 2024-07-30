@@ -3,7 +3,7 @@ import { queryToString } from "@/lib/utils";
 import { setAuth } from "@/redux/auth/authSlice";
 import { useAppDispatch } from "@/store/hooks";
 import { useRouter } from "next/router";
-import React, { FC } from "react";
+import React, { FC, useEffect } from "react";
 
 interface IAuthPersist {
   children: React.ReactNode;
@@ -15,7 +15,6 @@ const AuthPersist: FC<IAuthPersist> = ({ children }) => {
   const authType = queryToString(router.query.auth_type);
   const isGoogleTokenPresent = token && authType === "1" ? true : false;
   const dispatch = useAppDispatch();
-  // eslint-disable-next-line no-empty-pattern
   useVerifyAccess({
     queryKey: "current_user",
     refetchOnWindowFocus: false,
@@ -26,7 +25,7 @@ const AuthPersist: FC<IAuthPersist> = ({ children }) => {
         setAuth({
           access_token: data.token,
           auth: true,
-          user: data.data,
+          user: JSON.parse(data.data),
           loading: false,
         })
       );

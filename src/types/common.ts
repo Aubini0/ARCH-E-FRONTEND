@@ -1,5 +1,6 @@
 export interface APIError {
-  error: string;
+  message: string;
+  error?: string;
   success: boolean;
 }
 

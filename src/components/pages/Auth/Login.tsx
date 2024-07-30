@@ -16,8 +16,6 @@ import { toast } from "react-hot-toast";
 import { setSignInModal } from "@/redux/modals/modalsSlice";
 import { useToast } from "@/components/ui/use-toast";
 import { ToastAction } from "@/components/ui/toast";
-import logoImage from "@/assets/images/logo.png";
-import Image from "next/image";
 import { cn } from "@/lib/utils";
 
 interface ILogin {
@@ -57,7 +55,7 @@ const Login: FC<ILogin> = ({ onLogin, handleGoToSignUp }) => {
             setAuth({
               access_token: token,
               auth: true,
-              user: userData,
+              user: JSON.parse(userData),
               loading: false,
             })
           );
@@ -67,8 +65,8 @@ const Login: FC<ILogin> = ({ onLogin, handleGoToSignUp }) => {
       },
       onError: (error) => {
         toast({
-          title: error.response?.data.error || "Something went wrong",
-          description: `${error.response?.data.error || "Something went wrong"}. Unable to sign up`,
+          title: error.response?.data.message || "Something went wrong",
+          description: `${error.response?.data.message || "Something went wrong"}. Unable to sign in`,
           action: (
             <ToastAction onClick={() => onSubmit(getValues())} className="bg-red-500 border-red-500 hover:bg-red-500" altText="Try Again">
               Try Again
