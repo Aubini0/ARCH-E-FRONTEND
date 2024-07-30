@@ -5,7 +5,7 @@ export interface APIError {
 }
 
 export interface IStoreUser {
-  _id: string;
+  id: string;
   access_roles: string[];
   isSuperAdmin: boolean;
   full_name: string;

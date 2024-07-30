@@ -28,7 +28,7 @@ const Header: FC<IHeader> = (props) => {
   }, []);
 
   return (
-    <nav {...props} id="header" className={cn("z-10 relative py-6 w-full px-6 md:px-12", props.className)}>
+    <nav {...props} id="header" className={cn("z-20 relative py-6 w-full px-6 md:px-12", props.className)}>
       <div className="flex items-center gap-3 justify-between">
         <TooltipProvider>
           <Tooltip>
@@ -66,7 +66,6 @@ const Header: FC<IHeader> = (props) => {
               Login
             </Button>
           )}
-          {!auth && loading && <Skeleton className="w-[80px] h-[30px] bg-slate-200 dark:bg-secondary" />}
 
           {auth && (
             <DropdownMenu>
@@ -97,6 +96,7 @@ const Header: FC<IHeader> = (props) => {
               </DropdownMenuContent>
             </DropdownMenu>
           )}
+          {!auth && loading && <Skeleton className="w-[80px] h-[30px] bg-slate-200 dark:bg-secondary" />}
         </div>
       </div>
     </nav>
