@@ -43,35 +43,6 @@ const Header: FC<IHeader> = (props) => {
             </TooltipContent>
           </Tooltip>
         </TooltipProvider>
-        {auth && (
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Avatar isBordered className="ring-1 w-7 h-7 md:w-8 md:h-8 ring-offset-1 cursor-pointer" radius="sm" name={user?.full_name[0]} src={user?.profilePic} />
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="w-56 mt-3 text-white">
-              <DropdownMenuLabel>My Account</DropdownMenuLabel>
-              <DropdownMenuSeparator />
-              <DropdownMenuGroup>
-                <DropdownMenuItem>
-                  <User className="mr-2 h-4 w-4" />
-                  <span>Profile</span>
-                </DropdownMenuItem>
-                <DropdownMenuItem>
-                  <Settings className="mr-2 h-4 w-4" />
-                  <span>Settings</span>
-                </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => dispatch(logout())}>
-                  <LogOut className="mr-2 h-4 w-4" />
-                  <span>Log out</span>
-                </DropdownMenuItem>
-                <DropdownMenuItem>
-                  <LogOut className="mr-2 h-4 w-4" />
-                  <span>Upgrade</span>
-                </DropdownMenuItem>
-              </DropdownMenuGroup>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        )}
         <div className="flex items-center gap-3">
           {/* {!auth && !loading && (
             <Link
@@ -95,7 +66,37 @@ const Header: FC<IHeader> = (props) => {
               Login
             </Button>
           )}
-          {/* {!auth && loading && <Skeleton className="w-[80px] h-[30px] bg-slate-200 dark:bg-secondary" />} */}
+
+          {auth && (
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Avatar isBordered className="ring-1 w-7 h-7 md:w-8 md:h-8 ring-offset-1 cursor-pointer" radius="sm" name={user?.full_name[0]} src={user?.profilePic} />
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="w-56 mt-3 text-white">
+                <DropdownMenuLabel>My Account</DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuGroup>
+                  <DropdownMenuItem>
+                    <User className="mr-2 h-4 w-4" />
+                    <span>Profile</span>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem>
+                    <Settings className="mr-2 h-4 w-4" />
+                    <span>Settings</span>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => dispatch(logout())}>
+                    <LogOut className="mr-2 h-4 w-4" />
+                    <span>Log out</span>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem>
+                    <LogOut className="mr-2 h-4 w-4" />
+                    <span>Upgrade</span>
+                  </DropdownMenuItem>
+                </DropdownMenuGroup>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          )}
+          {!auth && loading && <Skeleton className="w-[80px] h-[30px] bg-slate-200 dark:bg-secondary" />}
         </div>
       </div>
     </nav>

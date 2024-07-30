@@ -1,10 +1,11 @@
 export interface APIError {
-  error: string;
+  message: string;
+  error?: string;
   success: boolean;
 }
 
 export interface IStoreUser {
-  _id: string;
+  id: string;
   access_roles: string[];
   isSuperAdmin: boolean;
   full_name: string;

@@ -15,7 +15,6 @@ import { Controller, useForm } from "react-hook-form";
 import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
 import { z } from "zod";
-import logoImage from "@/assets/images/logo.png";
 
 interface ISignUp {
   handleGoToLogin?: () => void;
@@ -26,7 +25,7 @@ const formSchema = z.object({
   email: z.string().regex(emailRegex, { message: "Invalid email" }),
   full_name: z.string({ required_error: "Full Name is required" }),
   password: z.string({ required_error: "Password is required" }).regex(passwordRegex, {
-    message: "Password should contain at least one uppercase, one lowercase, on special character and one number",
+    message: "Password should contain at least 6 characters",
   }),
 });
 
@@ -40,64 +39,41 @@ const SignUp: FC<ISignUp> = ({ handleGoToLogin, onSignUp }) => {
     resolver: zodResolver(formSchema),
   });
 
-  const handleFetchLocation = (): Promise<{ lat: number; lng: number }> => {
-    return new Promise((resolve, reject) => {
-      let lat, lng: number | undefined;
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          lat = position.coords.latitude;
-          lng = position.coords.longitude;
-          resolve({ lat, lng });
-        },
-        (error) => {
-          reject(error);
-        }
-      );
-    });
-  };
   const { mutate, isLoading } = useSignUp();
 
   const onSubmit = async (data: FormType) => {
     try {
-      const location = await handleFetchLocation();
-      mutate(
-        {
-          ...data,
-          lat: location.lat,
-          long: location.lng,
+      mutate(data, {
+        onSuccess: (data) => {
+          const { success, access_token, data: userData } = data;
+          if (success) {
+            reset();
+            dispatch(setSignInModal({ open: false }));
+            // dispatch(setEditProfile({ open: true }));
+            dispatch(
+              setAuth({
+                access_token,
+                auth: true,
+                user: JSON.parse(userData),
+                loading: false,
+              })
+            );
+            onSignUp && onSignUp();
+            // handleGoToLogin && handleGoToLogin();
+          }
         },
-        {
-          onSuccess: (data) => {
-            const { success, token, data: userData } = data;
-            if (success) {
-              reset();
-              dispatch(setSignInModal({ open: false }));
-              // dispatch(setEditProfile({ open: true }));
-              dispatch(
-                setAuth({
-                  access_token: token,
-                  auth: true,
-                  user: userData,
-                  loading: false,
-                })
-              );
-              onSignUp && onSignUp();
-              // handleGoToLogin && handleGoToLogin();
-            }
-          },
-          onError: (error) => {
-            toast({
-              title: error.response?.data.error || "Something went wrong",
-              description: `${error.response?.data.error || "Something went wrong"}. Unable to sign up`,
-              action: (
-                <ToastAction className="bg-red-500" altText="Try Again">
-                  Try Again
-                </ToastAction>
-              ),
-            });
-          },
-        }
-      );
+        onError: (error) => {
+          toast({
+            title: error.response?.data.message || "Something went wrong",
+            description: `${error.response?.data.message || "Something went wrong"}. Unable to sign up`,
+            action: (
+              <ToastAction className="bg-red-500" altText="Try Again">
+                Try Again
+              </ToastAction>
+            ),
+          });
+        },
+      });
     } catch (error) {
       if (error instanceof GeolocationPositionError) {
         toast({

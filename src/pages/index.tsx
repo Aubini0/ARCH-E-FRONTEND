@@ -80,9 +80,8 @@ export default function Home() {
   const [_, setSearchValue] = useState("");
   const [queries, setQueries] = useState<IQuery[]>([]);
   const scrollAreaRef = useRef<HTMLDivElement>(null);
-  const [editingQuery, setEditingQuery] = useState<
-    (IQuery & { updatedQuery: string }) | null
-  >(null);
+  const { user, auth, loading: authLoading } = useAppSelector((state) => state.auth);
+  const [editingQuery, setEditingQuery] = useState<(IQuery & { updatedQuery: string }) | null>(null);
   const editingQueryRef = useRef<IQuery & { updatedQuery: string }>(null);
   const [mode, setMode] = useState<"add" | "edit">("add");
   const [isPlay, setIsPlay] = useState(false);
@@ -94,17 +93,12 @@ export default function Home() {
     setMounted(true);
   }, []);
 
-  const [userId, setUserId] = useLocalStorage<string | undefined>(
-    "user_id",
-    undefined
-  );
+  const [userId, setUserId] = useLocalStorage<string | undefined>("user_id", undefined);
 
   const { mutateAsync: getUserIdMutate } = useGetUserId();
   const { mutateAsync: searchYoutubeMutateAsync } = useSearchYoutube();
 
   const chatSocketRef = useRef<WebSocket>(null);
-
-  const { auth } = useAppSelector((state) => state.auth);
 
   useEffect(() => {
     setQueries([]);
@@ -206,9 +200,7 @@ export default function Home() {
 
       let currentQueryIndex;
       if (editingQuery) {
-        currentQueryIndex = updatedQueries.findIndex(
-          (q) => q.id === editingQuery.id
-        );
+        currentQueryIndex = updatedQueries.findIndex((q) => q.id === editingQuery.id);
       } else {
         const latestId = updatedQueries[updatedQueries.length - 1]?.id;
         currentQueryIndex = updatedQueries.findIndex((q) => q.id === latestId);
@@ -223,8 +215,7 @@ export default function Home() {
         }
         if (!data.clear) {
           updatedQueries[currentQueryIndex].response += data.response;
-          updatedQueries[currentQueryIndex].recommendations =
-            data.recommendations || [];
+          updatedQueries[currentQueryIndex].recommendations = data.recommendations || [];
         }
       }
 
@@ -249,8 +240,18 @@ export default function Home() {
 
   useEffect(() => {
     let chat_socket: WebSocket | undefined;
-    if (userId) {
-      const chat_websocketUrl = getWebSocketURL(`/invoke_llm/${userId}`);
+    let id = undefined;
+    if (!authLoading) {
+      if (auth) {
+        console.log(user);
+        id = user?.id;
+      } else {
+        id = userId;
+      }
+    }
+    console.log({ userId, auth, authLoading });
+    if (id) {
+      const chat_websocketUrl = getWebSocketURL(`/invoke_llm/${id}`);
 
       chat_socket = new WebSocket(chat_websocketUrl);
 
@@ -275,7 +276,7 @@ export default function Home() {
         chat_socket.close();
       }
     };
-  }, [userId]);
+  }, [userId, auth, authLoading, user]);
 
   useEffect(() => {
     if (scrollAreaRef.current) {
@@ -291,30 +292,18 @@ export default function Home() {
 
   return (
     <MainLayout className="font-onest hide-scrollbar max-h-screen min-h-screen h-full w-full overflow-hidden">
-      <div
-        className={cn(
-          "flex-col flex items-center w-full justify-center safe-area safe-area-max"
-        )}
-      >
+      <div className={cn("flex-col flex items-center w-full justify-center safe-area safe-area-max")}>
         {isPlay && (
-          <div
-            className={cn(
-              "w-full max-h-full h-full duration-300 flex items-center justify-center safe-area"
-            )}
-          >
+          <div className={cn("w-full max-h-full h-full duration-300 flex items-center justify-center safe-area")}>
             <MusicCard className="mx-auto mb-[108px]" />
           </div>
         )}
         <div
           className={cn(
             "flex items-center duration-300 w-full gap-3 md:gap-8 flex-col md:py-10 py-5 mx-auto px-5 relative z-10",
-            queries.length > 0 || isPlay
-              ? "fixed bottom-0 left-0"
-              : "fixed bottom-[52px] md:bottom-auto",
+            queries.length > 0 || isPlay ? "fixed bottom-0 left-0" : "fixed bottom-[52px] md:bottom-auto",
             queries.length === 0 && !isPlay ? "pb-5" : "pb-0",
-            queries.length > 0
-              ? "justify-end"
-              : "justify-center",
+            queries.length > 0 ? "justify-end" : "justify-center",
             isPhone ? "safe-area" : queries.length === 0 ? "safe-area" : ""
           )}
         >
@@ -326,8 +315,7 @@ export default function Home() {
               <div className="block md:hidden"></div>
               <div className="container w-full flex flex-col items-center justify-between">
                 <h2 className="lg:max-w-[800px] text-[28px] md:text-[32px] font-semibold text-center w-full">
-                  Smart Search personalized to{" "}
-                  <span className="text-primary">you.</span>
+                  Smart Search personalized to <span className="text-primary">you.</span>
                 </h2>
               </div>
               {/* hidden this for you for now  */}
@@ -340,17 +328,9 @@ export default function Home() {
                       key={i}
                       className="w-full flex items-center gap-3 border border-[#3D3D3D] p-3 rounded-2xl duration-100 hover:bg-gray-100 dark:hover:bg-white/10 cursor-pointer"
                     >
-                      <Image
-                        src={fy.image}
-                        width={64}
-                        height={64}
-                        className="rounded-lg object-cover min-w-[64px] min-h-[64px]"
-                        alt="for you"
-                      />
+                      <Image src={fy.image} width={64} height={64} className="rounded-lg object-cover min-w-[64px] min-h-[64px]" alt="for you" />
                       <div>
-                        <p className="text-sm font-semibold text-black dark:text-white">
-                          {fy.title}
-                        </p>
+                        <p className="text-sm font-semibold text-black dark:text-white">{fy.title}</p>
                         <div className="flex items-center text-[#848585] gap-1 mt-1">
                           {fy.icon}
                           <p className="text-xs font-medium">{fy.category}</p>
@@ -435,11 +415,7 @@ export default function Home() {
                 setSearchValue("");
               }}
               focused={mode === "edit" && isPhone}
-              placeholder={
-                isPlay
-                  ? "What do you like to play?"
-                  : "What do you want to know?"
-              }
+              placeholder={isPlay ? "What do you like to play?" : "What do you want to know?"}
               icon={<IoSend />}
               className="duration-300 -z-1"
             />
@@ -451,28 +427,10 @@ export default function Home() {
         {!isPhone && (
           <>
             {queries.length > 0 && !isPlay && (
-              <div
-                className={cn(
-                  "container lg:px-0 lg:mx-0 lg:max-w-none w-full max-h-full h-full duration-300 flex flex-col items-center safe-area"
-                )}
-              >
-                <ScrollShadow
-                  ref={scrollAreaRef}
-                  hideScrollBar
-                  className="flex-1 safe-area divide-y-2 dark:divide-secondary w-full"
-                >
+              <div className={cn("container lg:px-0 lg:mx-0 lg:max-w-none w-full max-h-full h-full duration-300 flex flex-col items-center safe-area")}>
+                <ScrollShadow ref={scrollAreaRef} hideScrollBar className="flex-1 safe-area divide-y-2 dark:divide-secondary w-full">
                   {queries.map((q, i) => (
-                    <Query
-                      query={q}
-                      editingQuery={editingQuery}
-                      fetchBot={fetchBot}
-                      index={i}
-                      mode={mode}
-                      setEditingQuery={setEditingQuery}
-                      setMode={setMode}
-                      totalQueries={queries.length}
-                      key={i}
-                    />
+                    <Query query={q} editingQuery={editingQuery} fetchBot={fetchBot} index={i} mode={mode} setEditingQuery={setEditingQuery} setMode={setMode} totalQueries={queries.length} key={i} />
                   ))}
                 </ScrollShadow>
               </div>
@@ -490,35 +448,15 @@ export default function Home() {
             }
           }}
         >
-          <DrawerContent
-            swapper={false}
-            className="min-h-[95%] h-[95%] max-h-[95%] border-none outline-none ring-0 pt-0"
-          >
+          <DrawerContent swapper={false} className="min-h-[95%] h-[95%] max-h-[95%] border-none outline-none ring-0 pt-0">
             <div className="border-b-2 border-gray-400 dark:border-secondary flex items-center justify-center relative h-[60px] px-3">
-              <div
-                onClick={() => setQueries([])}
-                className="absolute right-5 top-4.5"
-              >
+              <div onClick={() => setQueries([])} className="absolute right-5 top-4.5">
                 <IoClose className="text-3xl" />
               </div>
             </div>
-            <ScrollShadow
-              ref={scrollAreaRef}
-              hideScrollBar
-              className="flex-1 divide-y-2 p-5 dark:divide-secondary w-full"
-            >
+            <ScrollShadow ref={scrollAreaRef} hideScrollBar className="flex-1 divide-y-2 p-5 dark:divide-secondary w-full">
               {queries.map((q, i) => (
-                <Query
-                  query={q}
-                  editingQuery={editingQuery}
-                  fetchBot={fetchBot}
-                  index={i}
-                  mode={mode}
-                  setEditingQuery={setEditingQuery}
-                  setMode={setMode}
-                  totalQueries={queries.length}
-                  key={i}
-                />
+                <Query query={q} editingQuery={editingQuery} fetchBot={fetchBot} index={i} mode={mode} setEditingQuery={setEditingQuery} setMode={setMode} totalQueries={queries.length} key={i} />
               ))}
             </ScrollShadow>
             <div className="px-5 pb-3">
@@ -533,11 +471,7 @@ export default function Home() {
                   setSearchValue("");
                 }}
                 focused={mode === "edit" && isPhone}
-                placeholder={
-                  isPlay
-                    ? "What do you like to play?"
-                    : "What do you want to know?"
-                }
+                placeholder={isPlay ? "What do you like to play?" : "What do you want to know?"}
                 icon={<IoSend />}
                 className="duration-300 -z-1"
               />

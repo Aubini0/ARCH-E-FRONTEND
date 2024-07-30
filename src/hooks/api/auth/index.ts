@@ -1,18 +1,9 @@
 import http from "@/lib/http";
-import { APIError, APIResponse, IVideo } from "@/types/common";
+import { APIError } from "@/types/common";
 import { AxiosError } from "axios";
-import {
-  UseMutationOptions,
-  UseMutationResult,
-  UseQueryOptions,
-  UseQueryResult,
-  useMutation,
-  useQuery,
-} from "react-query";
+import { UseMutationOptions, UseMutationResult, UseQueryOptions, UseQueryResult, useMutation, useQuery } from "react-query";
 
-export const useSignUp = (
-  props?: UseMutationOptions<any, AxiosError<APIError>, any, unknown>
-): UseMutationResult<any, AxiosError<APIError>, any> => {
+export const useSignUp = (props?: UseMutationOptions<any, AxiosError<APIError>, any, unknown>): UseMutationResult<any, AxiosError<APIError>, any> => {
   const mutation = useMutation<any, AxiosError<APIError>, any>({
     ...props,
     mutationFn: async (payload) => {
@@ -24,9 +15,7 @@ export const useSignUp = (
   return mutation;
 };
 
-export const useSignIn = (
-  props?: UseMutationOptions<any, AxiosError<APIError>, any, unknown>
-): UseMutationResult<any, AxiosError<APIError>, any> => {
+export const useSignIn = (props?: UseMutationOptions<any, AxiosError<APIError>, any, unknown>): UseMutationResult<any, AxiosError<APIError>, any> => {
   const mutation = useMutation<any, AxiosError<APIError>, any>({
     ...props,
     mutationFn: async (payload) => {
@@ -38,9 +27,7 @@ export const useSignIn = (
   return mutation;
 };
 
-export const useGetUserId = (
-  props?: UseMutationOptions<any, AxiosError<APIError>, void>
-): UseMutationResult<any, AxiosError<APIError>, void> => {
+export const useGetUserId = (props?: UseMutationOptions<any, AxiosError<APIError>, void>): UseMutationResult<any, AxiosError<APIError>, void> => {
   const mutation = useMutation<any, AxiosError<APIError>, void>({
     ...props,
     mutationFn: async () => {
@@ -52,9 +39,7 @@ export const useGetUserId = (
   return mutation;
 };
 
-export const useGoogleSignIn = (
-  props?: UseMutationOptions<any, AxiosError<APIError>, null>
-): UseMutationResult<any, AxiosError<APIError>, null> => {
+export const useGoogleSignIn = (props?: UseMutationOptions<any, AxiosError<APIError>, null>): UseMutationResult<any, AxiosError<APIError>, null> => {
   const mutation = useMutation<any, AxiosError<APIError>, null>({
     ...props,
     mutationFn: async () => {
@@ -66,42 +51,11 @@ export const useGoogleSignIn = (
   return mutation;
 };
 
-export const useSpotifyAuthUrl = (
-  props?: UseMutationOptions<any, AxiosError<APIError>, null>
-): UseMutationResult<any, AxiosError<APIError>, null> => {
-  const mutation = useMutation<any, AxiosError<APIError>, null>({
-    ...props,
-    mutationFn: async () => {
-      const response = await http.get("v2/auth/spotify");
-      return response.data;
-    },
-  });
-
-  return mutation;
-};
-export const useConnectSpotify = (
-  props?: UseMutationOptions<string, AxiosError<APIError>, string>
-): UseMutationResult<string, AxiosError<APIError>, string> => {
-  const mutation = useMutation<string, AxiosError<APIError>, string>({
-    ...props,
-    mutationFn: async (token) => {
-      const response = await http.put("v2/auth/spotify/connect", {
-        spotifyToken: token,
-      });
-      return response.data;
-    },
-  });
-
-  return mutation;
-};
-
-export const useVerifyAccess = (
-  queryOptions: UseQueryOptions<any, AxiosError<APIError>, any>
-): UseQueryResult<any, AxiosError<APIError>> => {
+export const useVerifyAccess = (queryOptions: UseQueryOptions<any, AxiosError<APIError>, any>): UseQueryResult<any, AxiosError<APIError>> => {
   return useQuery({
     ...queryOptions,
     queryFn: async () => {
-      const response = await http.get(`/auth/verify-access`);
+      const response = await http.get(`/auth/verify_access`);
       return response.data;
     },
   });
