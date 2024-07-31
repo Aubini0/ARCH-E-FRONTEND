@@ -200,9 +200,11 @@ export default function Home() {
         if (data.youtube_results) {
           updatedQueries[currentQueryIndex].videos = data.youtube_results;
         }
+        if (data.recommendations) {
+          updatedQueries[currentQueryIndex].recommendations = data.recommendations || [];
+        }
         if (!data.clear) {
           updatedQueries[currentQueryIndex].response += data.response;
-          updatedQueries[currentQueryIndex].recommendations = data.recommendations || [];
         }
       }
 
@@ -264,6 +266,8 @@ export default function Home() {
       }
     };
   }, [userId, auth, authLoading, user]);
+
+  console.log(queries);
 
   useEffect(() => {
     if (scrollAreaRef.current) {
