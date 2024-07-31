@@ -65,9 +65,9 @@ const PlaceholdersAndVanishInput: FC<IPlaceholdersAndVanishInput> = ({ placehold
     <form
       ref={formRef}
       className={cn(
-        "w-full drop-shadow-lg relative mx-auto bg-[#F5F6F8] dark:bg-[#27272A] overflow-hidden border border-[#CCCCCC] dark:border-[#3D3D3D] transition duration-200 rounded-[12px]",
+        "w-full relative mx-auto bg-off-white dark:bg-secondary overflow-hidden border-2 border-transparent input-shadow dark:border-secondary transition duration-200 rounded-[12px]",
         className,
-        disabled && "pointer-events-none bg-gray-200",
+        disabled && "pointer-events-none",
         isQueryExcuted && "h-[48px]"
       )}
       onSubmit={handleSubmit}
@@ -86,7 +86,7 @@ const PlaceholdersAndVanishInput: FC<IPlaceholdersAndVanishInput> = ({ placehold
         onBlur={onBlur}
         draggable={false}
         className={cn(
-          "w-full relative text-sm sm:text-base z-50 rounded-none border-none dark:text-white bg-transparent text-black h-full focus:outline-none focus:ring-0 md:pl-[24px] pl-[16px] pr-[60px] hide-scrollbar resize-none",
+          "w-full relative text-sm sm:text-base z-50 border-none dark:text-white bg-transparent text-black h-full rounded-full focus:outline-none focus:ring-0 md:pl-[52px] pl-[44px] pr-[65px] hide-scrollbar resize-none",
           isQueryExcuted ? "py-[12px]" : "py-[28px]"
         )}
       />
@@ -99,10 +99,10 @@ const PlaceholdersAndVanishInput: FC<IPlaceholdersAndVanishInput> = ({ placehold
           }
         }}
         type="button"
-        disabled={!inputValue?.trimStart()}
-        className={`rotate-45 absolute right-[15px] ${inputValue?.trimStart() ? "light:text-white text-dark cursor-pointer" : "text-zinc-500 cursor-not-allowed"} ${
+        disabled={!inputValue}
+        className={`absolute right-[8px] ${inputValue?.trimStart() ? "light:text-white text-dark cursor-pointer" : "text-zinc-500 cursor-not-allowed"} ${
           isQueryExcuted ? "top-1/2" : "md:top-[78%] top-[75%]"
-        } z-50 rounded-lg -translate-y-1/2 h-9 w-9 transition duration-200 flex items-center justify-center text-lg`}
+        } z-50 rounded-lg -translate-y-1/2 h-9 w-9 transition duration-200 flex items-center justify-center text-lg bg-[#FFFFFF] dark:bg-transparent`}
       >
         {icon}
       </button>
