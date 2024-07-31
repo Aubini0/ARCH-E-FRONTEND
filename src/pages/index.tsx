@@ -128,21 +128,6 @@ export default function Home() {
     }
   }, [userId, socketConnected]);
 
-  const handleFetchYoutubeVideos = async (id: string, query: string) => {
-    try {
-      const res = await searchYoutubeMutateAsync(query);
-      setQueries((prev) => {
-        const _queries = [...prev];
-        const currentQueryIndex = _queries.findIndex((q) => q.id === id);
-        if (currentQueryIndex !== -1) {
-          _queries[currentQueryIndex].videos = res.data.results;
-          _queries[currentQueryIndex].videosFetched = true;
-        }
-        return _queries;
-      });
-    } catch (error) {}
-  };
-
   const fetchBot = async (query: string) => {
     if (disabled) {
       return;
@@ -164,7 +149,6 @@ export default function Home() {
           web_links: [],
         },
       ]);
-      handleFetchYoutubeVideos(id, query);
     } else {
       setQueries((prevQueries) => {
         const _queries = [...prevQueries];
@@ -182,7 +166,6 @@ export default function Home() {
 
         return _queries;
       });
-      handleFetchYoutubeVideos(id, query);
 
       setMode("add");
 
@@ -213,6 +196,9 @@ export default function Home() {
         }
         if (data.web_links) {
           updatedQueries[currentQueryIndex].web_links = data.web_links;
+        }
+        if (data.youtube_results) {
+          updatedQueries[currentQueryIndex].videos = data.youtube_results;
         }
         if (!data.clear) {
           updatedQueries[currentQueryIndex].response += data.response;
