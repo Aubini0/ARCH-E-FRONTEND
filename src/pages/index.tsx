@@ -11,7 +11,7 @@ import { useAppSelector } from "@/store/hooks";
 import MusicCard from "@/components/shared/MusicCard";
 import { IQuery } from "@/types/common";
 import Query from "@/components/shared/Query";
-import { IoClose, IoSend } from "react-icons/io5";
+import { IoClose, IoSend, IoSendOutline } from "react-icons/io5";
 import useLocalStorage from "@/hooks/useLocalStorage";
 import { useGetUserId } from "@/hooks/api/auth";
 import { useSearchYoutube } from "@/hooks/api/query";
@@ -22,6 +22,7 @@ import { MdLocalMovies, MdOutlineSchool } from "react-icons/md";
 import { GrAnnounce } from "react-icons/gr";
 import { PiMedalMilitaryLight } from "react-icons/pi";
 import { HiOutlineHome } from "react-icons/hi2";
+import { SendIcon } from "@/components/icons/sendIcon";
 // import { HomeIcon } from "@/components/icons/HomeIcon";
 
 const forYouMobile = [
@@ -406,7 +407,7 @@ export default function Home() {
               }}
               focused={mode === "edit" && isPhone}
               placeholder={isPlay ? "What do you like to play?" : "What do you want to know?"}
-              icon={<IoSend />}
+              icon={<SendIcon />}
               className="duration-300 -z-1"
             />
             {/* <div className="mx-auto w-[60px] mt-12 h-[60px] rounded-full flex items-center justify-center shadow-sm bg-secondary">
@@ -462,7 +463,7 @@ export default function Home() {
                 }}
                 focused={mode === "edit" && isPhone}
                 placeholder={isPlay ? "What do you like to play?" : "What do you want to know?"}
-                icon={<IoSend />}
+                icon={<SendIcon />}
                 className="duration-300 -z-1"
               />
             </div>
