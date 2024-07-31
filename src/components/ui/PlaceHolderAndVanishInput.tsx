@@ -86,7 +86,7 @@ const PlaceholdersAndVanishInput: FC<IPlaceholdersAndVanishInput> = ({ placehold
         onBlur={onBlur}
         draggable={false}
         className={cn(
-          "w-full relative text-sm sm:text-base z-50 border-none dark:text-white bg-transparent text-black h-full rounded-full focus:outline-none focus:ring-0 md:pl-[24px] pl-[16px] pr-[65px] hide-scrollbar resize-none",
+          "w-full relative text-sm sm:text-base z-50 border-none dark:text-white bg-transparent text-black h-full rounded-full focus:outline-none focus:ring-0 md:pl-[52px] pl-[44px] pr-[65px] hide-scrollbar resize-none",
           isQueryExcuted ? "py-[12px]" : "py-[28px]"
         )}
       />
