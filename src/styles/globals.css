@@ -233,3 +233,13 @@ input[type="number"]::-webkit-outer-spin-button {
 .safe-area-max {
   max-height: calc(100vh - 88px);
 }
+
+.input-shadow {
+  -webkit-box-shadow: -2px 1px 20px 0px rgba(211, 211, 211, 1);
+  -moz-box-shadow: -2px 1px 20px 0px rgba(211, 211, 211, 1);
+  box-shadow: -2px 1px 20px 0px rgba(211, 211, 211, 1);
+}
+
+.input-shadow:is(.dark *) {
+  box-shadow: none;
+}

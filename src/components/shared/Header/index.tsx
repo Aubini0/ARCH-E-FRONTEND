@@ -80,7 +80,7 @@ const Header: FC<IHeader> = (props) => {
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="w-56 mt-3 dark:text-white">
                 <DropdownMenuGroup>
-                  <DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => dispatch(logout())}>
                     <LogOut className="mr-2 h-4 w-4" />
                     <span>Logout</span>
                   </DropdownMenuItem>
