@@ -58,7 +58,7 @@ const QueryHistory = () => {
               </div>
               {data.data.results.map((session, i) => (
                 <Link key={i} href={`/sessions/${session.session_id}`} className="block py-1 px-6 dark:hover:bg-white/10 cursor-pointer hover:bg-gray-100">
-                  <p className="w-full overflow-hidden text-ellipsis whitespace-nowrap text-base font-medium">{session.assistant}</p>
+                  <p className="w-full overflow-hidden text-ellipsis whitespace-nowrap text-base font-medium">{session.user}</p>
                 </Link>
               ))}
             </div>
