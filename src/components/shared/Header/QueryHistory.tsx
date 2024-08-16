@@ -1,7 +1,8 @@
 import { Button } from "@/components/ui/button";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { useQueryHistory } from "@/hooks/api/query";
+import { useToast } from "@/components/ui/use-toast";
+import { useDeleteAllChatHistory, useQueryHistory } from "@/hooks/api/query";
 import useLocalStorage from "@/hooks/useLocalStorage";
 import { groupByDateRange } from "@/lib/utils";
 import { useAppSelector } from "@/store/hooks";
@@ -12,18 +13,31 @@ import { FaRegTrashAlt } from "react-icons/fa";
 import { GrHistory } from "react-icons/gr";
 
 const QueryHistory = () => {
+  const { toast } = useToast();
   const { auth, user, loading } = useAppSelector((state) => state.auth);
+
+  const { mutateAsync: deleteChatHistory, status: deleteStatus } = useDeleteAllChatHistory();
 
   const [userId] = useLocalStorage<string | undefined>("user_id", undefined);
 
   const user_id = auth ? (user?.id as string) : (userId as string);
 
-  const { status, data } = useQueryHistory({
+  const { status, data, refetch } = useQueryHistory({
     queryKey: ["queryHistory", { user_id, search: "" }],
     enabled: Boolean(user_id),
   });
 
   const ranges = useMemo(() => groupByDateRange(data?.data.results || []), [data]);
+
+  const handleDeleteChatHistory = async () => {
+    try {
+      await deleteChatHistory({ user_id });
+      refetch();
+      toast({ title: "All History Deleted successfully", itemID: "delete-history" });
+    } catch (error) {
+      toast({ title: "Something went wrong", description: "Can't delete chat history. Please try again later", itemID: "delete-history" });
+    }
+  };
 
   return (
     <Popover>
@@ -42,7 +56,7 @@ const QueryHistory = () => {
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="mt-3 dark:text-white text-sm">
                 <DropdownMenuGroup>
-                  <DropdownMenuItem>
+                  <DropdownMenuItem isLoading={deleteStatus === "loading"} onClick={handleDeleteChatHistory}>
                     <FaRegTrashAlt className="mr-2 h-4 w-4" />
                     <span className="text-xs">Delete All History</span>
                   </DropdownMenuItem>

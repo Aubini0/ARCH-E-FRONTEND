@@ -93,14 +93,11 @@ const PlaceholdersAndVanishInput: FC<IPlaceholdersAndVanishInput> = ({ placehold
       <button
         onMouseDown={(e) => e.preventDefault()}
         onClick={() => {
-          if (inputValue?.trimStart()) {
-            onSubmit(inputValue);
-            setInputValue("");
-          }
+          onSubmit(inputValue);
+          setInputValue("");
         }}
         type="button"
-        disabled={!inputValue}
-        className={`absolute right-[8px] ${inputValue?.trimStart() ? "light:text-white text-dark cursor-pointer" : "text-zinc-500 cursor-not-allowed"} ${
+        className={`absolute right-[8px] light:text-white text-dark cursor-pointer ${
           isQueryExcuted ? "top-1/2" : "md:top-[78%] top-[75%]"
         } z-50 rounded-lg -translate-y-1/2 h-9 w-9 transition duration-200 flex items-center justify-center text-lg bg-[#FFFFFF] dark:bg-transparent`}
       >

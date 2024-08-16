@@ -48,3 +48,27 @@ export const useQueriesInSession = (
 
   return query;
 };
+
+export const useDeleteAllChatHistory = (props?: UseMutationOptions<any, AxiosError<APIError>, { user_id: string }>): UseMutationResult<any, AxiosError<APIError>, { user_id: string }> => {
+  const mutation = useMutation<any, AxiosError<APIError>, { user_id: string }>({
+    ...props,
+    mutationFn: async (params) => {
+      const response = await http.delete(`/all/chats/${params.user_id}`);
+      return response.data;
+    },
+  });
+
+  return mutation;
+};
+
+export const useDeleteQuery = (props?: UseMutationOptions<any, AxiosError<APIError>, { query_id: string }>): UseMutationResult<any, AxiosError<APIError>, { query_id: string }> => {
+  const mutation = useMutation<any, AxiosError<APIError>, { query_id: string }>({
+    ...props,
+    mutationFn: async (params) => {
+      const response = await http.delete(`/query/${params.query_id}`);
+      return response.data;
+    },
+  });
+
+  return mutation;
+};
