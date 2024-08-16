@@ -48,6 +48,7 @@ const config = {
       fontFamily: {
         sans: [...fontFamily.sans],
         onest: ["var(--font-onest)", ...fontFamily.sans],
+        montserrat: ["var(--font-montserrat)", ...fontFamily.sans],
       },
       keyframes: {
         "accordion-down": {

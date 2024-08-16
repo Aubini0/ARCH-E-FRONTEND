@@ -3,25 +3,30 @@ import { setSignInModal } from "@/redux/modals/modalsSlice";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { Avatar } from "@nextui-org/react";
 import { DropdownMenu } from "@radix-ui/react-dropdown-menu";
-import { LogOut, Settings, User } from "lucide-react";
+import { Delete, LogOut, Settings, Trash, User } from "lucide-react";
 import React, { FC, useEffect, useState } from "react";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { logout } from "@/redux/auth/authSlice";
-import { FaRegEdit } from "react-icons/fa";
+import { FaHistory, FaRegEdit, FaRegTrashAlt } from "react-icons/fa";
 import { AiOutlineSun } from "react-icons/ai";
 import { FiMoon } from "react-icons/fi";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { useTheme } from "next-themes";
 import { cn } from "@/lib/utils";
+import QueryHistory from "./QueryHistory";
+import { useRouter } from "next/router";
+import useDeviceIndicator from "@/hooks/useDeviceIndicator";
 
 interface IHeader extends React.HTMLAttributes<HTMLDivElement> {}
 
 const Header: FC<IHeader> = (props) => {
+  const router = useRouter();
   const dispatch = useAppDispatch();
   const { auth, user, loading } = useAppSelector((state) => state.auth);
   const { theme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
+  const { isPhone } = useDeviceIndicator();
 
   useEffect(() => {
     setMounted(true);
@@ -33,7 +38,7 @@ const Header: FC<IHeader> = (props) => {
         <TooltipProvider>
           <Tooltip>
             <TooltipTrigger className="!border-none h-full">
-              <div onClick={() => window.location.reload()} className="cursor-pointer rounded-xl h-[40px] w-[40px] flex items-center justify-center duration-100 dark:hover:bg-secondary aspect-square">
+              <div onClick={() => router.push("/")} className="cursor-pointer rounded-xl h-[40px] w-[40px] flex items-center justify-center duration-100 dark:hover:bg-secondary aspect-square">
                 {/* <h3 className="font-bold text-white text-xs md:text-2xl">ARCH-E</h3> */}
                 <FaRegEdit className="text-2xl ml-[4px] mb-[3px]" />
               </div>
@@ -55,6 +60,7 @@ const Header: FC<IHeader> = (props) => {
               <IoChatbubbleEllipses className="text-xl" />
             </Link>
           )} */}
+          {!isPhone && <QueryHistory />}
           {mounted && (
             <Button onClick={() => (theme === "dark" ? setTheme("light") : setTheme("dark"))} className="w-[42px] h-[40px] p-0">
               {theme === "light" && <FiMoon className="text-xl" />}

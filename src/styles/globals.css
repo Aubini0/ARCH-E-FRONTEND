@@ -62,9 +62,6 @@
   }
 }
 
-body {
-  overflow: hidden;
-}
 .lighScrollbar {
   ::-webkit-scrollbar {
     width: 5px;
@@ -235,6 +232,16 @@ input[type="number"]::-webkit-outer-spin-button {
 
 .safe-area-max {
   max-height: calc(100vh - 88px);
+}
+
+@media only screen and (max-width: 640px) {
+  .safe-area {
+    height: calc(100vh - 88px - 76px);
+  }
+
+  .safe-area-max {
+    max-height: calc(100vh - 88px - 76px);
+  }
 }
 
 .input-shadow {

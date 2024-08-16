@@ -87,3 +87,10 @@ export interface APIResponse<T> {
   status: boolean;
   data: T;
 }
+
+export interface ISession {
+  user_id: string;
+  session_id: string;
+  assistant: string;
+  user: string;
+}
