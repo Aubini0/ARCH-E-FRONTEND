@@ -6,7 +6,7 @@ import useLocalStorage from "@/hooks/useLocalStorage";
 import { groupByDateRange } from "@/lib/utils";
 import { useAppSelector } from "@/store/hooks";
 import Link from "next/link";
-import React, { useMemo } from "react";
+import React, { Fragment, useMemo } from "react";
 import { BsThreeDots } from "react-icons/bs";
 import { FaRegTrashAlt } from "react-icons/fa";
 import { GrHistory } from "react-icons/gr";
@@ -59,7 +59,7 @@ const QueryHistory = () => {
             <div className="py-2">
               {ranges.map((range, i) =>
                 range.items.length ? (
-                  <>
+                  <Fragment key={i}>
                     <div className="w-full py-1">
                       <span className="text-[#7F7F7F] text-xs font-medium px-6">{range.title}</span>
                       {range.items.map((session, i) => (
@@ -68,7 +68,7 @@ const QueryHistory = () => {
                         </Link>
                       ))}
                     </div>
-                  </>
+                  </Fragment>
                 ) : null
               )}
             </div>
