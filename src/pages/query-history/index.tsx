@@ -64,8 +64,8 @@ const QueryHistory = () => {
             {/* <div className="w-full py-1">
                 <span className="text-[#7F7F7F] text-xs font-medium px-6">Previous 7 Days</span>
               </div> */}
-            {data.data.results.map((session) => (
-              <Link href={`/sessions/${session.session_id}`} className="block py-5 dark:hover:bg-white/10 px-5 cursor-pointer hover:bg-gray-100">
+            {data.data.results.map((session, i) => (
+              <Link key={i} href={`/sessions/${session.session_id}`} className="block py-5 dark:hover:bg-white/10 px-5 cursor-pointer hover:bg-gray-100">
                 <h4 className="text-[20px] font-semibold dark:text-white text-black">{session.user}</h4>
                 <p className="text-sm font-medium line-clamp-4 text-[#848585] leading-[20px]">{session.assistant}</p>
                 <div className="flex items-center justify-between mt-4">
