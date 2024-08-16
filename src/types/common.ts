@@ -93,4 +93,5 @@ export interface ISession {
   session_id: string;
   assistant: string;
   user: string;
+  created_at: string;
 }
