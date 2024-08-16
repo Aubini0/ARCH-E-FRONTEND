@@ -10,6 +10,7 @@ import React from "react";
 import { BsThreeDots } from "react-icons/bs";
 import { FaRegTrashAlt } from "react-icons/fa";
 import { GrHistory, GrSearch } from "react-icons/gr";
+import moment from "moment";
 
 const QueryHistory = () => {
   const { auth, user, loading } = useAppSelector((state) => state.auth);
@@ -71,7 +72,7 @@ const QueryHistory = () => {
                 <div className="flex items-center justify-between mt-4">
                   <div className="flex text-[#848585] items-center gap-3">
                     <GrHistory className="text-xs" />
-                    <span className="text-xs">5 days ago</span>
+                    <span className="text-xs">{moment(session.created_at).fromNow()}</span>
                   </div>
                   <BsThreeDots />
                 </div>
