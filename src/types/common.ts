@@ -67,10 +67,10 @@ export interface IQuery {
   query: string;
   response: string;
   completed: boolean;
-  recommendations: [];
+  recommendations: string[];
   videos: IVideo[];
   videosFetched: boolean;
-  web_links: [];
+  web_links: string[];
 }
 
 export interface IVideo {
@@ -94,4 +94,10 @@ export interface ISession {
   assistant: string;
   user: string;
   created_at: string;
+  id: string;
+  metadata: {
+    recommendations: string[];
+    web_links: string[];
+    youtube_results: IVideo[];
+  };
 }

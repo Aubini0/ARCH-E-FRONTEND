@@ -19,7 +19,8 @@ import Image from "next/image";
 import { TbPlaneTilt } from "react-icons/tb";
 import { MdOutlineSchool } from "react-icons/md";
 import { SendIcon } from "@/components/icons/sendIcon";
-import { object } from "zod";
+import { useRouter } from "next/router";
+import { RiCheckboxBlankFill } from "react-icons/ri";
 
 const forYouMobile = [
   {
@@ -47,6 +48,7 @@ interface IQueries {
 }
 
 const Queries: FC<IQueries> = ({ session_id }) => {
+  const router = useRouter();
   const { isPhone } = useDeviceIndicator();
   const [_, setSearchValue] = useState("");
   const [queries, setQueries] = useState<IQuery[]>([]);
@@ -59,25 +61,32 @@ const Queries: FC<IQueries> = ({ session_id }) => {
   const [disabled, setDisabled] = useState(true);
   const [socketConnected, setSocketConnected] = useState(false);
 
+  const isQueryRunning = queries[queries.length - 1]?.completed === false;
+
   useQueriesInSession({
     queryKey: ["chat_history", { session_id: session_id! }],
     enabled: Boolean(session_id),
+    staleTime: Infinity, // Data is never considered stale
+    cacheTime: Infinity, // Cache the data indefinitely
+    refetchOnMount: false, // Do not refetch on mount
+    refetchOnWindowFocus: false, // Do not refetch on window focus
+    refetchOnReconnect: false, // Do not refetch on reconnect
     onSuccess: (data) => {
       const arr = data.data.results.map((qData) => {
         const obj: IQuery = {
           id: nanoid(),
           completed: true,
           query: qData.user,
-          recommendations: [],
           response: qData.assistant,
-          videos: [],
+          videos: Array.isArray(qData.metadata.youtube_results) ? qData.metadata.youtube_results : [],
           videosFetched: true,
-          web_links: [],
+          web_links: Array.isArray(qData.metadata.web_links) ? qData.metadata.web_links : [],
+          recommendations: Array.isArray(qData.metadata.recommendations) ? qData.metadata.recommendations : [],
         };
         return obj;
       });
 
-      setQueries((prev) => [...arr, ...prev]);
+      setQueries(arr);
     },
   });
 
@@ -161,7 +170,7 @@ const Queries: FC<IQueries> = ({ session_id }) => {
       }
     }
 
-    chatSocketRef.current?.send(JSON.stringify({ user_msg: query }));
+    chatSocketRef.current?.send(JSON.stringify({ user_msg: query, action: false }));
   };
 
   const updateQueries = (data: any, editingQuery: IQuery | null) => {
@@ -251,7 +260,11 @@ const Queries: FC<IQueries> = ({ session_id }) => {
     };
   }, [userId, auth, authLoading, user, session_id]);
 
-  console.log(queries);
+  const handleStopQuery = () => {
+    console.log("handleStopQuery");
+    chatSocketRef.current?.send(JSON.stringify({ user_msg: "", action: true }));
+    setQueries((prev) => prev.map((q) => ({ ...q, completed: false })));
+  };
 
   useEffect(() => {
     if (scrollAreaRef.current) {
@@ -386,12 +399,19 @@ const Queries: FC<IQueries> = ({ session_id }) => {
                 setSearchValue(e.target.value);
               }}
               onSubmit={(v) => {
-                fetchBot(v);
-                setSearchValue("");
+                console.log("is query running", isQueryRunning);
+                if (!isQueryRunning) {
+                  if (v) {
+                    fetchBot(v);
+                    setSearchValue("");
+                  }
+                } else {
+                  handleStopQuery();
+                }
               }}
               focused={mode === "edit" && isPhone}
               placeholder={isPlay ? "What do you like to play?" : "What do you want to know?"}
-              icon={<SendIcon />}
+              icon={isQueryRunning ? <RiCheckboxBlankFill /> : <SendIcon />}
               className="duration-300 -z-1"
             />
             {/* <div className="mx-auto w-[60px] mt-12 h-[60px] rounded-full flex items-center justify-center shadow-sm bg-secondary">
@@ -420,6 +440,7 @@ const Queries: FC<IQueries> = ({ session_id }) => {
           onOpenChange={(open) => {
             if (!open) {
               setQueries([]);
+              router.push("/");
             }
           }}
         >
@@ -442,12 +463,19 @@ const Queries: FC<IQueries> = ({ session_id }) => {
                   setSearchValue(e.target.value);
                 }}
                 onSubmit={(v) => {
-                  fetchBot(v);
-                  setSearchValue("");
+                  console.log("is query running", isQueryRunning);
+                  if (!isQueryRunning) {
+                    if (v) {
+                      fetchBot(v);
+                      setSearchValue("");
+                    }
+                  } else {
+                    handleStopQuery();
+                  }
                 }}
                 focused={mode === "edit" && isPhone}
                 placeholder={isPlay ? "What do you like to play?" : "What do you want to know?"}
-                icon={<SendIcon />}
+                icon={isQueryRunning ? <RiCheckboxBlankFill /> : <SendIcon />}
                 className="duration-300 -z-1"
               />
             </div>
