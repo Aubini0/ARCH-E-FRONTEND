@@ -39,6 +39,18 @@ export const useGetUserId = (props?: UseMutationOptions<any, AxiosError<APIError
   return mutation;
 };
 
+export const useGetSessionId = (props?: UseMutationOptions<any, AxiosError<APIError>, void>): UseMutationResult<any, AxiosError<APIError>, void> => {
+  const mutation = useMutation<any, AxiosError<APIError>, void>({
+    ...props,
+    mutationFn: async () => {
+      const response = await http.get("/session/id");
+      return response.data;
+    },
+  });
+
+  return mutation;
+};
+
 export const useGoogleSignIn = (props?: UseMutationOptions<any, AxiosError<APIError>, null>): UseMutationResult<any, AxiosError<APIError>, null> => {
   const mutation = useMutation<any, AxiosError<APIError>, null>({
     ...props,
