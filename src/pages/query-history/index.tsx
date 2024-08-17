@@ -117,7 +117,7 @@ const QueryHistory = () => {
                           }}
                         >
                           <FaRegTrashAlt className="mr-2 h-4 w-4" />
-                          <span className="text-xs">Delete Query</span>
+                          <span className="text-xs">Delete Thread</span>
                         </DropdownMenuItem>
                       </DropdownMenuGroup>
                     </DropdownMenuContent>
