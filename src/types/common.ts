@@ -97,6 +97,7 @@ export interface ISession {
   id: string;
   metadata: {
     recommendations: string[];
+    recomendations: string[];
     web_links: string[];
     youtube_results: IVideo[];
   };
