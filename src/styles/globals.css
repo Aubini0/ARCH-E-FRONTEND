@@ -233,14 +233,20 @@ input[type="number"]::-webkit-outer-spin-button {
 .safe-area-max {
   max-height: calc(100vh - 88px);
 }
+.safe-area-min {
+  min-height: calc(100vh - 88px);
+}
 
 @media only screen and (max-width: 640px) {
   .safe-area {
-    height: calc(100vh - 88px - 76px);
+    height: calc(100vh - 88px - 60px);
   }
 
   .safe-area-max {
-    max-height: calc(100vh - 88px - 76px);
+    max-height: calc(100vh - 88px - 60px);
+  }
+  .safe-area-min {
+    min-height: calc(100vh - 88px - 60px);
   }
 }
 

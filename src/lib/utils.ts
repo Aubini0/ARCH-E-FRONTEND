@@ -59,7 +59,7 @@ export function getYouTubeId(url: string): string | null {
   }
 }
 
-export const groupByDateRange = <T>(data: T[]) => {
+export const groupByDateRangeUnspecifiedTz = <T>(data: T[]) => {
   const today = new Date();
 
   // Calculate previous date ranges
@@ -86,7 +86,7 @@ export const groupByDateRange = <T>(data: T[]) => {
 
   // Group the items based on their created_at date
   data.forEach((item) => {
-    const createdAt = new Date((item as any).created_at);
+    const createdAt = new Date(addTimezoneUTC((item as any).created_at));
 
     if (createdAt >= previous7Days) {
       groups[0].items.push(item);
@@ -103,3 +103,12 @@ export const groupByDateRange = <T>(data: T[]) => {
 
   return groups;
 };
+
+export function addTimezoneUTC(dateStr: Date | string) {
+  const str = dateStr.toString();
+  if (str.endsWith("Z") || str.endsWith("+00:00")) {
+    return dateStr;
+  }
+
+  return dateStr + "+00:00";
+}
