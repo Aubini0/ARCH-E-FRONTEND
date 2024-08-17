@@ -101,8 +101,10 @@ const QueryHistory = () => {
         {status === "success" && data.data.results.length > 0 && (
           <div className="py-2 divide-y divide-gray-300 dark:divide-[#3D3D3D]">
             {data.data.results.map((session, i) => (
-              <Link key={i} href={`/sessions/${session.session_id}`} className="block py-5 dark:hover:bg-white/10 px-5 cursor-pointer hover:bg-gray-100">
-                <h4 className="text-[20px] font-semibold dark:text-white text-black">{session.user}</h4>
+              <div key={i} className="block py-5 px-5 cursor-pointer">
+                <Link href={`/sessions/${session.session_id}`} className="text-[20px] border-b-2 border-transparent duration-200 hover:border-primary inline font-semibold dark:text-white text-black">
+                  {session.user}
+                </Link>
                 <p className="text-sm font-medium line-clamp-4 text-[#848585] leading-[20px]">{session.assistant}</p>
                 <div className="flex items-center justify-between mt-4">
                   <div className="flex text-[#848585] items-center gap-3">
@@ -128,7 +130,7 @@ const QueryHistory = () => {
                     </DropdownMenuContent>
                   </DropdownMenu>
                 </div>
-              </Link>
+              </div>
             ))}
           </div>
         )}
