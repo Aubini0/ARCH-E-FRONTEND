@@ -63,12 +63,12 @@ const Queries: FC<IQueries> = ({ session_id }) => {
 
   const isQueryRunning = queries[queries.length - 1]?.completed === false;
 
-  useQueriesInSession({
+  const { refetch: refetchSession } = useQueriesInSession({
     queryKey: ["chat_history", { session_id: session_id! }],
     enabled: Boolean(session_id),
-    refetchOnMount: false, // Do not refetch on mount
-    refetchOnWindowFocus: false, // Do not refetch on window focus
-    refetchOnReconnect: false, // Do not refetch on reconnect
+    refetchOnMount: false,
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: false,
     onSuccess: (data) => {
       const arr = data.data.results.map((qData) => {
         const obj: IQuery = {
@@ -87,6 +87,10 @@ const Queries: FC<IQueries> = ({ session_id }) => {
       setQueries(arr);
     },
   });
+
+  useEffect(() => {
+    refetchSession();
+  }, [session_id]);
 
   const [userId, setUserId] = useLocalStorage<string | undefined>("user_id", undefined);
 
