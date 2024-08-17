@@ -2,6 +2,7 @@ import { FC, HTMLAttributes, useEffect, useRef, useState } from "react";
 import { cn } from "@/lib/utils";
 import { TextGenerateEffect } from "./TextGenerateEffect";
 import { SearchIcon } from "lucide-react";
+import useDeviceIndicator from "@/hooks/useDeviceIndicator";
 
 interface IPlaceholdersAndVanishInput {
   placeholder?: string;
@@ -21,6 +22,7 @@ const PlaceholdersAndVanishInput: FC<IPlaceholdersAndVanishInput> = ({ placehold
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const formRef = useRef<HTMLFormElement>(null);
   const [inputValue, setInputValue] = useState("");
+  const { isPhone } = useDeviceIndicator();
 
   useEffect(() => {
     if (value !== undefined) {
@@ -82,12 +84,12 @@ const PlaceholdersAndVanishInput: FC<IPlaceholdersAndVanishInput> = ({ placehold
         value={inputValue}
         spellCheck={false}
         autoCorrect="off"
-        rows={!isQueryExcuted ? 4 : 1}
+        rows={!isQueryExcuted ? (isPhone ? 2 : 4) : 1}
         onBlur={onBlur}
         draggable={false}
         className={cn(
           "w-full relative text-sm sm:text-base z-50 border-none dark:text-white bg-transparent text-black h-full rounded-full focus:outline-none focus:ring-0 md:pl-[52px] pl-[44px] pr-[65px] hide-scrollbar resize-none",
-          isQueryExcuted ? "py-[12px]" : "py-[28px]"
+          isQueryExcuted ? "py-[12px]" : "pt-[12px] pb-[24px] md:py-0 md:pt-[20px] md:pb-[24px]"
         )}
       />
       <button
@@ -97,20 +99,21 @@ const PlaceholdersAndVanishInput: FC<IPlaceholdersAndVanishInput> = ({ placehold
           setInputValue("");
         }}
         type="button"
-        className={`absolute right-[8px] light:text-white text-dark cursor-pointer ${
-          isQueryExcuted ? "top-1/2" : "md:top-[78%] top-[75%]"
-        } z-50 rounded-lg -translate-y-1/2 h-9 w-9 transition duration-200 flex items-center justify-center text-lg bg-[#FFFFFF] dark:bg-transparent`}
+        className={cn(
+          `absolute right-[2px] light:text-white text-dark cursor-pointer ${
+            isQueryExcuted ? "top-1/2" : "md:top-[85%] top-[75%]"
+          } z-50 rounded-lg -translate-y-1/2 h-9 w-9 transition duration-200 flex items-center justify-center text-[24px] bg-[#FFFFFF] dark:bg-transparent`,
+          !inputValue.trimStart() && "opacity-35"
+        )}
       >
         {icon}
       </button>
-      {!inputValue && placeholder && (
-        <div className={`absolute inset-0 ${isQueryExcuted ? "flex items-center" : "md:top-4 top-[11px]"} text-sm text-zinc-600 pl-4 md:pl-[24px] pointer-events-none`}>
-          <div className={`flex lg:h-12 md:h-[50px] h-[57px] items-center gap-2`}>
-            <SearchIcon className="dark:text-[#fff]" size={20} />
-            <TextGenerateEffect className="text-sm text-[#7F7F7F]" words={placeholder} />
-          </div>
+      <div className={`absolute inset-0 ${isQueryExcuted ? "flex items-center" : "md:top-2 top-[-8px]"} text-sm text-zinc-600 pl-4 md:pl-[24px] pointer-events-none`}>
+        <div className={`flex lg:h-12 md:h-[50px] h-[57px] items-center gap-2`}>
+          <SearchIcon className="dark:text-[#fff]" size={20} />
+          {!inputValue && placeholder && <TextGenerateEffect className="text-sm text-[#7F7F7F]" words={placeholder} />}
         </div>
-      )}
+      </div>
     </form>
   );
 };

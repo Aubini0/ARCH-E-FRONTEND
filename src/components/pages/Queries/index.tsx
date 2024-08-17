@@ -20,7 +20,7 @@ import { TbPlaneTilt } from "react-icons/tb";
 import { MdOutlineSchool } from "react-icons/md";
 import { SendIcon } from "@/components/icons/sendIcon";
 import { useRouter } from "next/router";
-import { RiCheckboxBlankFill } from "react-icons/ri";
+import { FaCircleArrowRight } from "react-icons/fa6";
 
 const forYouMobile = [
   {
@@ -409,7 +409,7 @@ const Queries: FC<IQueries> = ({ session_id }) => {
               }}
               focused={mode === "edit" && isPhone}
               placeholder={isPlay ? "What do you like to play?" : "What do you want to know?"}
-              icon={<SendIcon />}
+              icon={<FaCircleArrowRight />}
               className="duration-300 -z-1"
             />
             {/* <div className="mx-auto w-[60px] mt-12 h-[60px] rounded-full flex items-center justify-center shadow-sm bg-secondary">
@@ -473,7 +473,7 @@ const Queries: FC<IQueries> = ({ session_id }) => {
                 }}
                 focused={mode === "edit" && isPhone}
                 placeholder={isPlay ? "What do you like to play?" : "What do you want to know?"}
-                icon={<SendIcon />}
+                icon={<FaCircleArrowRight />}
                 className="duration-300 -z-1"
               />
             </div>

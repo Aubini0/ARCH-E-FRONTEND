@@ -12,6 +12,7 @@ const config = {
       padding: "2rem",
       screens: {
         "2xl": "1400px",
+        "3xl": "1600px",
       },
     },
     fontWeight: {
@@ -49,6 +50,7 @@ const config = {
         sans: [...fontFamily.sans],
         onest: ["var(--font-onest)", ...fontFamily.sans],
         montserrat: ["var(--font-montserrat)", ...fontFamily.sans],
+        "comic-sans": ["var(--font-comic-sans)", ...fontFamily.sans],
       },
       keyframes: {
         "accordion-down": {

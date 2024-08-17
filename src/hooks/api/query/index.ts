@@ -1,5 +1,5 @@
 import http from "@/lib/http";
-import { APIError, APIResponse, ISession, IVideo } from "@/types/common";
+import { APIError, APIResponse, IQueryInHistory, ISessionInHistory, IVideo } from "@/types/common";
 import { AxiosError } from "axios";
 import { UseMutationOptions, UseMutationResult, UseQueryOptions, UseQueryResult, useMutation, useQuery } from "react-query";
 
@@ -20,13 +20,28 @@ export const useSearchYoutube = (
 };
 
 export const useQueryHistory = (
-  props?: UseQueryOptions<APIResponse<{ results: ISession[] }>, AxiosError<APIError>, any, [string, { user_id: string; search: string }]>
-): UseQueryResult<APIResponse<{ results: ISession[] }>, AxiosError<APIError>> => {
-  const query = useQuery<APIResponse<{ results: ISession[] }>, AxiosError<APIError>, any, [string, { user_id: string; search: string }]>({
+  props?: UseQueryOptions<APIResponse<{ results: IQueryInHistory[] }>, AxiosError<APIError>, any, [string, { user_id: string; search: string }]>
+): UseQueryResult<APIResponse<{ results: IQueryInHistory[] }>, AxiosError<APIError>> => {
+  const query = useQuery<APIResponse<{ results: IQueryInHistory[] }>, AxiosError<APIError>, any, [string, { user_id: string; search: string }]>({
     ...props,
     queryFn: async (query) => {
       const params = query.queryKey[1];
-      const response = await http.get(`/search/${params.user_id}/?query=${params.search || ""}`);
+      const response = await http.get(`/search/query/${params.user_id}/?query=${params.search || ""}`);
+      return response.data;
+    },
+  });
+
+  return query;
+};
+
+export const useSessionHistory = (
+  props?: UseQueryOptions<APIResponse<{ results: ISessionInHistory[] }>, AxiosError<APIError>, any, [string, { user_id: string }]>
+): UseQueryResult<APIResponse<{ results: ISessionInHistory[] }>, AxiosError<APIError>> => {
+  const query = useQuery<APIResponse<{ results: ISessionInHistory[] }>, AxiosError<APIError>, any, [string, { user_id: string }]>({
+    ...props,
+    queryFn: async (query) => {
+      const params = query.queryKey[1];
+      const response = await http.get(`/search/session/${params.user_id}`);
       return response.data;
     },
   });
@@ -35,9 +50,9 @@ export const useQueryHistory = (
 };
 
 export const useQueriesInSession = (
-  props?: UseQueryOptions<APIResponse<{ results: ISession[] }>, AxiosError<APIError>, APIResponse<{ results: ISession[] }>, [string, { session_id: string }]>
-): UseQueryResult<APIResponse<{ results: ISession[] }>, AxiosError<APIError>> => {
-  const query = useQuery<APIResponse<{ results: ISession[] }>, AxiosError<APIError>, any, [string, { session_id: string }]>({
+  props?: UseQueryOptions<APIResponse<{ results: IQueryInHistory[] }>, AxiosError<APIError>, APIResponse<{ results: IQueryInHistory[] }>, [string, { session_id: string }]>
+): UseQueryResult<APIResponse<{ results: IQueryInHistory[] }>, AxiosError<APIError>> => {
+  const query = useQuery<APIResponse<{ results: IQueryInHistory[] }>, AxiosError<APIError>, any, [string, { session_id: string }]>({
     ...props,
     queryFn: async (query) => {
       const params = query.queryKey[1];

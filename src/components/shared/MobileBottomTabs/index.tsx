@@ -2,13 +2,12 @@ import { cn } from "@/lib/utils";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import React from "react";
-import { CiSearch } from "react-icons/ci";
 import { GrHistory } from "react-icons/gr";
 import { IoSearch } from "react-icons/io5";
 const MobileBottomTabs = () => {
   const router = useRouter();
   return (
-    <div className="h-[76px] bg-white fixed bottom-0 w-full dark:bg-secondary flex items-center justify-around">
+    <div className="h-[60px] bg-white fixed bottom-0 w-full dark:bg-secondary flex items-center justify-around">
       <Link
         href={"/"}
         className={cn(
@@ -16,7 +15,7 @@ const MobileBottomTabs = () => {
           router.asPath === "/" || router.asPath.includes("/sessions/") ? "border-primary dark:text-white text-black" : "border-transparent dark:text-[#7F7F7F] text-gray-600"
         )}
       >
-        <IoSearch className="text-3xl" />
+        <IoSearch className="text-xl" />
       </Link>
       <Link
         href={"/query-history"}
@@ -25,7 +24,7 @@ const MobileBottomTabs = () => {
           router.asPath === "/query-history" ? "border-primary dark:text-white text-black" : "border-transparent dark:text-[#7F7F7F] text-gray-600"
         )}
       >
-        <GrHistory className="text-2xl" />
+        <GrHistory className="text-lg" />
       </Link>
     </div>
   );

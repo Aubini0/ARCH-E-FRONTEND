@@ -4,23 +4,27 @@ import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { Avatar } from "@nextui-org/react";
 import { DropdownMenu } from "@radix-ui/react-dropdown-menu";
 import { Delete, LogOut, Settings, Trash, User } from "lucide-react";
-import React, { FC, useEffect, useState } from "react";
+import React, { FC, useEffect, useRef, useState } from "react";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { logout } from "@/redux/auth/authSlice";
 import { FaHistory, FaRegEdit, FaRegTrashAlt } from "react-icons/fa";
 import { AiOutlineSun } from "react-icons/ai";
-import { FiMoon } from "react-icons/fi";
+import { FiMoon, FiSearch } from "react-icons/fi";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { useTheme } from "next-themes";
 import { cn } from "@/lib/utils";
 import QueryHistory from "./QueryHistory";
 import { useRouter } from "next/router";
 import useDeviceIndicator from "@/hooks/useDeviceIndicator";
+import logoImg from "@/assets/images/logo.png";
+import Image from "next/image";
+import Link from "next/link";
 
 interface IHeader extends React.HTMLAttributes<HTMLDivElement> {}
 
 const Header: FC<IHeader> = (props) => {
+  const buttonsRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
   const dispatch = useAppDispatch();
   const { auth, user, loading } = useAppSelector((state) => state.auth);
@@ -33,14 +37,13 @@ const Header: FC<IHeader> = (props) => {
   }, []);
 
   return (
-    <nav {...props} id="header" className={cn("z-20 relative py-6 w-full px-6 md:px-12", props.className)}>
+    <nav {...props} id="header" className={cn("z-20 relative py-6 w-full px-6 md:px-12 md:border-b border-[#3D3D3D]", props.className)}>
       <div className="flex items-center gap-3 justify-between">
         <TooltipProvider>
           <Tooltip>
-            <TooltipTrigger className="!border-none h-full">
-              <div onClick={() => router.push("/")} className="cursor-pointer rounded-xl h-[40px] w-[40px] flex items-center justify-center duration-100 dark:hover:bg-secondary aspect-square">
-                {/* <h3 className="font-bold text-white text-xs md:text-2xl">ARCH-E</h3> */}
-                <FaRegEdit className="text-2xl ml-[4px] mb-[3px]" />
+            <TooltipTrigger className={"hidden md:block !border-none h-full duration-300"} style={{ width: buttonsRef?.current?.clientWidth + "px" }}>
+              <div onClick={() => router.push("/")} className="cursor-pointer rounded-lg h-[40px] w-[40px] flex items-center justify-center duration-100 dark:bg-secondary aspect-square">
+                <FiSearch className="text-xl" />
               </div>
             </TooltipTrigger>
             <TooltipContent>
@@ -48,7 +51,11 @@ const Header: FC<IHeader> = (props) => {
             </TooltipContent>
           </Tooltip>
         </TooltipProvider>
-        <div className="flex items-center gap-3">
+        <Link href={"/"} className="flex items-center gap-3">
+          <Image src={logoImg} width={32} height={32} quality={100} className="object-contain w-[28px] h-[28px] md:w-[32px] md:h-[32px]" alt="logo" />
+          <h4 className="text-white hidden md:block font-montserrat font-bold text-2xl">Arche</h4>
+        </Link>
+        <div ref={buttonsRef} className="flex items-center gap-3">
           {/* {!auth && !loading && (
             <Link
               href={"/chat"}
@@ -62,13 +69,16 @@ const Header: FC<IHeader> = (props) => {
           )} */}
           {!isPhone && <QueryHistory />}
           {mounted && (
-            <Button onClick={() => (theme === "dark" ? setTheme("light") : setTheme("dark"))} className="w-[42px] h-[40px] p-0">
+            <Button
+              onClick={() => (theme === "dark" ? setTheme("light") : setTheme("dark"))}
+              className="w-[42px] bg-transparent dark:bg-transparent dark:hover:bg-secondary border-transparent hover:border-gray-300 h-[40px] p-0"
+            >
               {theme === "light" && <FiMoon className="text-xl" />}
               {theme === "dark" && <AiOutlineSun className="text-xl" />}
             </Button>
           )}
           {!auth && !loading && (
-            <Button className="h-[40px] md:w-[106px] w-[95px] text-md" onClick={() => dispatch(setSignInModal({ open: true }))}>
+            <Button className="h-[40px] md:w-[106px] w-[70px] text-md" onClick={() => dispatch(setSignInModal({ open: true }))}>
               Login
             </Button>
           )}

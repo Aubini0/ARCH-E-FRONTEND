@@ -88,7 +88,7 @@ export interface APIResponse<T> {
   data: T;
 }
 
-export interface ISession {
+export interface IQueryInHistory {
   user_id: string;
   session_id: string;
   assistant: string;
@@ -101,4 +101,10 @@ export interface ISession {
     web_links: string[];
     youtube_results: IVideo[];
   };
+}
+
+export interface ISessionInHistory {
+  id: string;
+  session_id: string;
+  session_name: string;
 }
