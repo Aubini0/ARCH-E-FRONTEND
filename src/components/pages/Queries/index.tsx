@@ -79,7 +79,7 @@ const Queries: FC<IQueries> = ({ session_id }) => {
           videos: Array.isArray(qData.metadata.youtube_results) ? qData.metadata.youtube_results : [],
           videosFetched: true,
           web_links: Array.isArray(qData.metadata.web_links) ? qData.metadata.web_links : [],
-          recommendations: Array.isArray(qData.metadata.recommendations) ? qData.metadata.recommendations : [],
+          recommendations: Array.isArray(qData.metadata.recomendations) ? qData.metadata.recomendations : [],
         };
         return obj;
       });
