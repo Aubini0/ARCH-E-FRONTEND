@@ -58,7 +58,7 @@ const QueryHistory = () => {
               href={"/query-history"}
               className={cn("lg:text-xs xl:text-sm 2xl:text-base font-semibold flex gap-2 items-center cursor-pointer dark:text-white/60 dark:hover:text-white text-black")}
             >
-              <GrHistory className="text-white" /> Chat History
+              <GrHistory className="text-black dark:text-white" /> Chat History
             </Link>
             <DropdownMenu>
               <DropdownMenuTrigger>
@@ -79,7 +79,7 @@ const QueryHistory = () => {
           </div>
           {status === "success" && data.data.results.length === 0 && (
             <div className="w-full py-5">
-              <h5 className="lg:text-xs xl:text-sm 3xl:text-base px-4 font-medium text-white">No Threads Found.</h5>
+              <h5 className="lg:text-xs xl:text-sm 3xl:text-base px-4 font-medium text-black dark:text-white">No Threads Found.</h5>
             </div>
           )}
           {status === "success" && data.data.results.length > 0 && (

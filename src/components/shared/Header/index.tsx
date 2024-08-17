@@ -37,24 +37,24 @@ const Header: FC<IHeader> = (props) => {
   }, []);
 
   return (
-    <nav {...props} id="header" className={cn("z-20 relative py-6 w-full px-6 md:px-12 md:border-b border-[#3D3D3D]", props.className)}>
+    <nav {...props} id="header" className={cn("z-20 relative py-2 w-full px-6 md:px-12 md:border-b border-gray-300 dark:border-[#3D3D3D]", props.className)}>
       <div className="flex items-center gap-3 justify-between">
         <TooltipProvider>
           <Tooltip>
-            <TooltipTrigger className={"hidden md:block !border-none h-full duration-300"} style={{ width: buttonsRef?.current?.clientWidth + "px" }}>
+            <TooltipTrigger className={"block !border-none h-full duration-300"}>
               <div onClick={() => router.push("/")} className="cursor-pointer rounded-lg h-[40px] w-[40px] flex items-center justify-center duration-100 dark:bg-secondary aspect-square">
                 <FiSearch className="text-xl" />
               </div>
             </TooltipTrigger>
             <TooltipContent>
-              <p>New Chat</p>
+              <p>New Search</p>
             </TooltipContent>
           </Tooltip>
         </TooltipProvider>
-        <Link href={"/"} className="flex items-center gap-3">
+        {/* <Link href={"/"} className="flex items-center gap-3">
           <Image src={logoImg} width={32} height={32} quality={100} className="object-contain w-[28px] h-[28px] md:w-[32px] md:h-[32px]" alt="logo" />
           <h4 className="text-white hidden md:block font-montserrat font-bold text-2xl">Arche</h4>
-        </Link>
+        </Link> */}
         <div ref={buttonsRef} className="flex items-center gap-3">
           {/* {!auth && !loading && (
             <Link
