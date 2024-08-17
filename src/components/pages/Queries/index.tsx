@@ -66,8 +66,6 @@ const Queries: FC<IQueries> = ({ session_id }) => {
   useQueriesInSession({
     queryKey: ["chat_history", { session_id: session_id! }],
     enabled: Boolean(session_id),
-    staleTime: Infinity, // Data is never considered stale
-    cacheTime: Infinity, // Cache the data indefinitely
     refetchOnMount: false, // Do not refetch on mount
     refetchOnWindowFocus: false, // Do not refetch on window focus
     refetchOnReconnect: false, // Do not refetch on reconnect
