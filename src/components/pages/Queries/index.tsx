@@ -60,7 +60,7 @@ const Queries: FC<IQueries> = ({ session_id }) => {
   const [isPlay, setIsPlay] = useState(false);
   const [disabled, setDisabled] = useState(true);
   const [socketConnected, setSocketConnected] = useState(false);
-  const [queriesLoading, setQueriesLoading] = useState(router.pathname !== "/");
+  const [queriesLoading, setQueriesLoading] = useState(true);
 
   const isQueryRunning = queries[queries.length - 1]?.completed === false;
 
