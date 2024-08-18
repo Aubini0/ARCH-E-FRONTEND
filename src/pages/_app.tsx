@@ -21,6 +21,13 @@ export default function App({ Component, pageProps }: AppProps) {
       <QueryClientProvider client={queryClient}>
         <Head>
           <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, maximum-scale=1.0" />
+          <title>Arche</title>
+          <meta property="og:locale" content="en_US" />
+          <meta property="og:type" content="website" />
+          <meta property="og:title" content="Arche" />
+          <meta property="og:url" content="https://www.arche.social" />
+          <meta property="og:site_name" content="Arche" />
+          <meta property="og:image" content="/og-image.png" />
         </Head>
         <AuthPersist>
           <ThemeProvider attribute="class" defaultTheme="dark" disableTransitionOnChange>
