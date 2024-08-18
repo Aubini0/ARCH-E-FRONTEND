@@ -59,7 +59,7 @@ const QueryHistory = () => {
   };
 
   return (
-    <MainLayout header={!isPhone} className="min-h-screen">
+    <MainLayout header={!isPhone} className="h-screen overflow-y-auto">
       <div className="mx-auto pb-[50px] flex flex-col md:pt-[50px] lg:max-w-[800px] xl:max-w-[max-w-900px] 2xl:max-w-[1000px] safe-area-min 3xl:max-w-[1200px] font-montserrat py-5">
         <div className="flex flex-col md:flex-row md:justify-between md:items-center px-5 border-b border-gray-300 dark:border-[#3D3D3D] pb-5">
           <div className="h-full flex items-center gap-3">
@@ -99,7 +99,7 @@ const QueryHistory = () => {
           </div>
         )}
         {status === "success" && data.data.results.length > 0 && (
-          <div className="py-2 divide-y divide-gray-300 dark:divide-[#3D3D3D]">
+          <div className="py-2 divide-y h-full divide-gray-300 dark:divide-[#3D3D3D]">
             {data.data.results.map((session, i) => (
               <div key={i} className="block py-5 px-5 cursor-pointer">
                 <Link href={`/sessions/${session.session_id}`} className="text-[20px] border-b-2 border-transparent duration-200 hover:border-primary inline font-semibold dark:text-white text-black">
