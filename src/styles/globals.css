@@ -62,6 +62,10 @@
   }
 }
 
+body {
+  overflow: hidden;
+}
+
 .lighScrollbar {
   ::-webkit-scrollbar {
     width: 5px;

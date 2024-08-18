@@ -60,6 +60,7 @@ const Queries: FC<IQueries> = ({ session_id }) => {
   const [isPlay, setIsPlay] = useState(false);
   const [disabled, setDisabled] = useState(true);
   const [socketConnected, setSocketConnected] = useState(false);
+  const [queriesLoading, setQueriesLoading] = useState(true);
 
   const isQueryRunning = queries[queries.length - 1]?.completed === false;
 
@@ -70,6 +71,7 @@ const Queries: FC<IQueries> = ({ session_id }) => {
     refetchOnWindowFocus: false,
     refetchOnReconnect: false,
     onSuccess: (data) => {
+      setQueriesLoading(false);
       const arr = data.data.results.map((qData) => {
         const obj: IQuery = {
           id: nanoid(),
@@ -85,6 +87,9 @@ const Queries: FC<IQueries> = ({ session_id }) => {
       });
 
       setQueries(arr);
+    },
+    onError: () => {
+      setQueriesLoading(false);
     },
   });
 
@@ -297,7 +302,7 @@ const Queries: FC<IQueries> = ({ session_id }) => {
             isPhone ? "safe-area" : queries.length === 0 ? "safe-area" : ""
           )}
         >
-          {queries.length === 0 && !isPlay && (
+          {queries.length === 0 && !isPlay && !queriesLoading && (
             <>
               {/* <div className="h-[160px] flex justify-center">
                 <HomeIcon width={200} height={200} />
@@ -393,37 +398,39 @@ const Queries: FC<IQueries> = ({ session_id }) => {
             </>
           )}
           {/* this is for desktop */}
-          <div className="lg:max-w-[800px] px-0 max-w-full w-full">
-            <PlaceholdersAndVanishInput
-              isQueryExcuted={queries.length > 0 || isPlay}
-              disabled={disabled || mode === "edit"}
-              onChange={(e) => {
-                setSearchValue(e.target.value);
-              }}
-              onSubmit={(v) => {
-                console.log("is query running", isQueryRunning);
-                if (!isQueryRunning) {
-                  if (v) {
-                    fetchBot(v);
-                    setSearchValue("");
+          {!queriesLoading && (
+            <div className="lg:max-w-[800px] px-0 max-w-full w-full">
+              <PlaceholdersAndVanishInput
+                isQueryExcuted={queries.length > 0 || isPlay}
+                disabled={disabled || mode === "edit"}
+                onChange={(e) => {
+                  setSearchValue(e.target.value);
+                }}
+                onSubmit={(v) => {
+                  console.log("is query running", isQueryRunning);
+                  if (!isQueryRunning) {
+                    if (v) {
+                      fetchBot(v);
+                      setSearchValue("");
+                    }
+                  } else {
+                    handleStopQuery();
                   }
-                } else {
-                  handleStopQuery();
-                }
-              }}
-              focused={mode === "edit" && isPhone}
-              placeholder={isPlay ? "What do you like to play?" : "What do you want to know?"}
-              icon={<FaCircleArrowRight />}
-              className="duration-300 -z-1"
-            />
-            {/* <div className="mx-auto w-[60px] mt-12 h-[60px] rounded-full flex items-center justify-center shadow-sm bg-secondary">
+                }}
+                focused={mode === "edit" && isPhone}
+                placeholder={isPlay ? "What do you like to play?" : "What do you want to know?"}
+                icon={<FaCircleArrowRight />}
+                className="duration-300 -z-1"
+              />
+              {/* <div className="mx-auto w-[60px] mt-12 h-[60px] rounded-full flex items-center justify-center shadow-sm bg-secondary">
               <FaHeadphonesAlt className="text-[30px]" />
             </div> */}
-          </div>
+            </div>
+          )}
         </div>
         {!isPhone && (
           <>
-            {queries.length > 0 && !isPlay && (
+            {queries.length > 0 && !isPlay && !queriesLoading && (
               <div className={cn("container lg:px-0 lg:mx-0 lg:max-w-none w-full max-h-full h-full duration-300 flex flex-col items-center safe-area")}>
                 <ScrollShadow ref={scrollAreaRef} hideScrollBar className="flex-1 safe-area divide-y-2 dark:divide-secondary w-full">
                   {queries.map((q, i) => (
@@ -436,7 +443,7 @@ const Queries: FC<IQueries> = ({ session_id }) => {
         )}
       </div>
 
-      {isPhone && (
+      {isPhone && !queriesLoading && (
         <Drawer
           open={queries.length > 0}
           onOpenChange={(open) => {
