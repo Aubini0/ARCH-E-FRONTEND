@@ -98,6 +98,7 @@ const PlaceholdersAndVanishInput: FC<IPlaceholdersAndVanishInput> = ({ placehold
           onSubmit(inputValue);
           setInputValue("");
         }}
+        disabled={!inputValue.trimStart()}
         type="button"
         className={cn(
           `absolute right-[2px] light:text-white text-dark cursor-pointer ${
