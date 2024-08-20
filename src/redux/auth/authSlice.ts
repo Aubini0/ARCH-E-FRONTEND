@@ -4,7 +4,7 @@ import Cookies from "universal-cookie";
 
 import { jwtDecode } from "jwt-decode";
 
-const cookies = new Cookies();
+const cookies = new Cookies(null, { path: "/" });
 interface IInitialState {
   auth: boolean;
   user: IStoreUser | null;
@@ -30,13 +30,7 @@ const authSlice = createSlice({
       if (action.payload.access_token) {
         const decoded = jwtDecode(action.payload.access_token);
         cookies.set("access_token", action.payload.access_token, {
-          expires: decoded.exp
-            ? new Date(
-                new Date().setMilliseconds(
-                  new Date().getMilliseconds() + (decoded.exp || 0)
-                )
-              )
-            : undefined,
+          expires: decoded.exp ? new Date(new Date().setMilliseconds(new Date().getMilliseconds() + (decoded.exp || 0))) : undefined,
           path: "/",
         });
       }
