@@ -34,7 +34,7 @@ const QueryHistory = () => {
   const user_id = auth ? (user?.id as string) : (userId as string);
 
   const { status, data, refetch } = useQueryHistory({
-    queryKey: ["queryHistory", { user_id, search: value }],
+    queryKey: ["queryHistory", { search: value }],
     enabled: Boolean(user_id),
   });
 
