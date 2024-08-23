@@ -67,7 +67,7 @@ const Header: FC<IHeader> = (props) => {
               <IoChatbubbleEllipses className="text-xl" />
             </Link>
           )} */}
-          {!isPhone && <QueryHistory />}
+          {!isPhone && auth && <QueryHistory />}
           {mounted && (
             <Button
               onClick={() => (theme === "dark" ? setTheme("light") : setTheme("dark"))}

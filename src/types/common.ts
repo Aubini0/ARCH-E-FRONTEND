@@ -71,6 +71,8 @@ export interface IQuery {
   videos: IVideo[];
   videosFetched: boolean;
   web_links: string[];
+  rating: number;
+  ratingGiven: boolean;
 }
 
 export interface IVideo {

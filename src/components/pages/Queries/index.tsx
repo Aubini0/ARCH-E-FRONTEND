@@ -82,6 +82,8 @@ const Queries: FC<IQueries> = ({ session_id }) => {
           videosFetched: true,
           web_links: Array.isArray(qData.metadata.web_links) ? qData.metadata.web_links : [],
           recommendations: Array.isArray(qData.metadata.recomendations) ? qData.metadata.recomendations : [],
+          rating: 0,
+          ratingGiven: false,
         };
         return obj;
       });
@@ -149,6 +151,8 @@ const Queries: FC<IQueries> = ({ session_id }) => {
           videos: [],
           videosFetched: false,
           web_links: [],
+          rating: 0,
+          ratingGiven: false,
         },
       ]);
     } else {
@@ -285,8 +289,20 @@ const Queries: FC<IQueries> = ({ session_id }) => {
     }
   }, [queries.length]);
 
+  const handleSetRating = (id: string, v: number) => {
+    setQueries((pv) => {
+      const _queries = [...pv];
+      const currentQueryIndex = _queries.findIndex((q) => q.id === id);
+      if (currentQueryIndex !== -1) {
+        _queries[currentQueryIndex].rating = v;
+        _queries[currentQueryIndex].ratingGiven = true;
+      }
+      return _queries;
+    });
+  };
+
   return (
-    <MainLayout className="font-onest hide-scrollbar max-h-screen min-h-screen h-full w-full overflow-hidden">
+    <MainLayout emailTrigger={false} bottomTab={auth} className="font-onest hide-scrollbar max-h-screen min-h-screen h-full w-full overflow-hidden">
       <div className={cn("flex-col flex items-center w-full justify-center safe-area safe-area-max")}>
         {isPlay && (
           <div className={cn("w-full max-h-full h-full duration-300 flex items-center justify-center safe-area")}>
@@ -434,7 +450,18 @@ const Queries: FC<IQueries> = ({ session_id }) => {
               <div className={cn("container lg:px-0 lg:mx-0 lg:max-w-none w-full max-h-full h-full duration-300 flex flex-col items-center safe-area")}>
                 <ScrollShadow ref={scrollAreaRef} hideScrollBar className="flex-1 safe-area divide-y-2 dark:divide-secondary w-full">
                   {queries.map((q, i) => (
-                    <Query query={q} editingQuery={editingQuery} fetchBot={fetchBot} index={i} mode={mode} setEditingQuery={setEditingQuery} setMode={setMode} totalQueries={queries.length} key={i} />
+                    <Query
+                      setRating={handleSetRating}
+                      query={q}
+                      editingQuery={editingQuery}
+                      fetchBot={fetchBot}
+                      index={i}
+                      mode={mode}
+                      setEditingQuery={setEditingQuery}
+                      setMode={setMode}
+                      totalQueries={queries.length}
+                      key={i}
+                    />
                   ))}
                 </ScrollShadow>
               </div>
@@ -461,7 +488,18 @@ const Queries: FC<IQueries> = ({ session_id }) => {
             </div>
             <ScrollShadow ref={scrollAreaRef} hideScrollBar className="flex-1 divide-y-2 p-5 dark:divide-secondary w-full">
               {queries.map((q, i) => (
-                <Query query={q} editingQuery={editingQuery} fetchBot={fetchBot} index={i} mode={mode} setEditingQuery={setEditingQuery} setMode={setMode} totalQueries={queries.length} key={i} />
+                <Query
+                  setRating={handleSetRating}
+                  query={q}
+                  editingQuery={editingQuery}
+                  fetchBot={fetchBot}
+                  index={i}
+                  mode={mode}
+                  setEditingQuery={setEditingQuery}
+                  setMode={setMode}
+                  totalQueries={queries.length}
+                  key={i}
+                />
               ))}
             </ScrollShadow>
             <div className="px-5 pb-3">
