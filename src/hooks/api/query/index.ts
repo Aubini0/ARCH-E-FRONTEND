@@ -20,13 +20,13 @@ export const useSearchYoutube = (
 };
 
 export const useQueryHistory = (
-  props?: UseQueryOptions<APIResponse<{ results: IQueryInHistory[] }>, AxiosError<APIError>, any, [string, { user_id: string; search: string }]>
+  props?: UseQueryOptions<APIResponse<{ results: IQueryInHistory[] }>, AxiosError<APIError>, any, [string, { search: string }]>
 ): UseQueryResult<APIResponse<{ results: IQueryInHistory[] }>, AxiosError<APIError>> => {
-  const query = useQuery<APIResponse<{ results: IQueryInHistory[] }>, AxiosError<APIError>, any, [string, { user_id: string; search: string }]>({
+  const query = useQuery<APIResponse<{ results: IQueryInHistory[] }>, AxiosError<APIError>, any, [string, { search: string }]>({
     ...props,
     queryFn: async (query) => {
       const params = query.queryKey[1];
-      const response = await http.get(`/search/query/${params.user_id}/?query=${params.search || ""}`);
+      const response = await http.get(`/search/query?query=${params.search || ""}`);
       return response.data;
     },
   });
@@ -41,7 +41,7 @@ export const useSessionHistory = (
     ...props,
     queryFn: async (query) => {
       const params = query.queryKey[1];
-      const response = await http.get(`/search/session/${params.user_id}`);
+      const response = await http.get(`/search/session`);
       return response.data;
     },
   });
@@ -68,7 +68,7 @@ export const useDeleteAllChatHistory = (props?: UseMutationOptions<any, AxiosErr
   const mutation = useMutation<any, AxiosError<APIError>, { user_id: string }>({
     ...props,
     mutationFn: async (params) => {
-      const response = await http.delete(`/all/chats/${params.user_id}`);
+      const response = await http.delete(`/all/chats`);
       return response.data;
     },
   });

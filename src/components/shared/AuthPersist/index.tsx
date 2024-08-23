@@ -28,7 +28,7 @@ const AuthPersist: FC<IAuthPersist> = ({ children }) => {
         setAuth({
           access_token: data.token,
           auth: true,
-          user: data.data,
+          user: JSON.parse(data.data),
           loading: false,
         })
       );

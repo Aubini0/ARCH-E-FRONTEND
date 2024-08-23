@@ -11,6 +11,7 @@ const Home = () => {
 
   const handleGetSessionid = async () => {
     try {
+      localStorage.removeItem("queries");
       const res = await getSessionId();
       router.replace(`/sessions/${res.data.session_id}`);
     } catch (error) {
