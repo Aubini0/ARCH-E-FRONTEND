@@ -8,17 +8,21 @@ import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import Markdown from "react-markdown";
 import { Skeleton } from "@/components/ui/skeleton";
-import { FaRegEdit } from "react-icons/fa";
+import { FaRegEdit, FaRegStar, FaStar } from "react-icons/fa";
 import Youtube from "react-youtube";
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
 import SourceCard from "@/components/pages/Home/SourceCard";
 import { Drawer, DrawerContent, DrawerHeader, DrawerTitle } from "@/components/ui/drawer";
 import { CgCloseR } from "react-icons/cg";
-import { MdOutlineLibraryBooks } from "react-icons/md";
+import { MdOutlineLibraryBooks, MdOutlineRefresh } from "react-icons/md";
 import { PlusIcon } from "@/components/icons/PlusIcon";
 import CustomCodeBlock from "./codeBlock";
 import { PiCaretCircleDown } from "react-icons/pi";
+import Rating from "react-rating";
+import { Dialog, DialogClose, DialogContent, DialogTrigger } from "@/components/ui/dialog";
+import { Textarea } from "@/components/ui/textarea";
+import { useAppSelector } from "@/store/hooks";
 
 interface IQueryComponent {
   query: IQuery;
@@ -29,20 +33,22 @@ interface IQueryComponent {
   fetchBot: (query: string) => void;
   editingQuery: IEditingQuery | null;
   setEditingQuery: React.Dispatch<React.SetStateAction<IEditingQuery | null>>;
+  setRating: (id: string, value: number) => void;
 }
 
 interface IEditingQuery extends IQuery {
   updatedQuery: string;
 }
 
-const Query: FC<IQueryComponent> = ({ query, fetchBot, index, mode, totalQueries, editingQuery, setEditingQuery, setMode }) => {
+const Query: FC<IQueryComponent> = ({ query, fetchBot, index, mode, totalQueries, editingQuery, setEditingQuery, setMode, setRating }) => {
   const { isPhone } = useDeviceIndicator();
   const [sheetOpen, setSheetOpen] = useState(false);
   const [videosOpen, setVideosOpen] = useState(false);
   const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
   const [isSourceShowmore, setIsSourceShowmore] = React.useState(false);
+  const [feedbackOpen, setFeedbackOpen] = useState(false);
   const [openCollapse, setOpenCollapse] = React.useState({
-    source: true,
+    source: false,
     video: false,
   });
 
@@ -128,60 +134,6 @@ const Query: FC<IQueryComponent> = ({ query, fetchBot, index, mode, totalQueries
           <hr className="h-[1.3px] mb-[20px] dark:border-[#3d3d3d]" />
         </>
       )}
-      {/* {query.videos.length > 0 && (
-        <div className="absolute hidden lg:block top-0 2xl:-right-[330px] lg:-right-[150px] xl:-right-[280px] md:w-[150px] lg:w-[120px] xl:w-[230px] pb-5 2xl:w-[310px] h-full">
-          <div
-            // style={{ position: "-webkit-sticky" }}
-            className="sticky top-[10px] grid 2xl:grid-cols-2 gap-5"
-          >
-            <div
-              onClick={() => {
-                setCurrentVideoIndex(0);
-                setVideosOpen(true);
-              }}
-              className="xl:col-span-2 cursor-pointer rounded-lg overflow-hidden duration-300 aspect-video"
-            >
-              <img
-                src={query.videos[0].thumbnails.high}
-                alt="image"
-                className="w-full h-full object-cover"
-              />
-            </div>
-            {query.videos.slice(1, query.videos.length - 1).map((v, i) => (
-              <div
-                onClick={() => {
-                  setCurrentVideoIndex(i + 1);
-                  setVideosOpen(true);
-                }}
-                key={i}
-                className="col-span-1 rounded-lg aspect-video overflow-hidden duration-300 cursor-pointer"
-              >
-                <img
-                  src={v.thumbnails.high}
-                  alt="image"
-                  className="w-full h-full object-cover"
-                />
-              </div>
-            ))}
-            <div
-              onClick={() => {
-                setCurrentVideoIndex(0);
-                setVideosOpen(true);
-              }}
-              className="rounded-lg col-span-1 aspect-video overflow-hidden duration-300 bg-secondary flex flex-col items-center justify-center cursor-pointer"
-            >
-              <img
-                src={query.videos[query.videos.length - 1].thumbnails.high}
-                alt="image"
-                className="w-full h-[60px] object-cover"
-              />
-              <div className="flex items-center justify-center h-[30px]">
-                <p className="text-sm font-medium text-white">+ View more</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      )} */}
 
       {query.web_links.length > 0 && (
         <div
@@ -203,14 +155,6 @@ const Query: FC<IQueryComponent> = ({ query, fetchBot, index, mode, totalQueries
       )}
       <div className="flex flex-col items-start w-full">
         <div className="w-full gap-3 flex items-center pb-[16px] pt-5 md:pt-5">
-          {/* <Image
-            src={logoImg.src}
-            alt="user"
-            height={32}
-            width={32}
-            quality={100}
-            className="object-contain"
-          /> */}
           <h5 className="font-semibold text-lg dark:text-white text-black">ARCH-E</h5>
         </div>
         {query.response && (
@@ -241,15 +185,88 @@ const Query: FC<IQueryComponent> = ({ query, fetchBot, index, mode, totalQueries
           </div>
         )}
         {query.completed && (
-          <div className="flex items-center mt-3 gap-3 justify-end w-full">
-            {/* <div className="flex flex-col cursor-pointer items-center justify-center">
+          <div className="mt-6 flex-1 w-full items-center justify-between">
+            {/* make it flex to make it visible */}
+            <div className="hidden items-center gap-4">
+              {totalQueries - 1 === index && (
+                <Button className="w-9 h-9 p-0 flex items-center justify-center">
+                  <MdOutlineRefresh className="text-xl" />
+                </Button>
+              )}
+              {/* @ts-ignore */}
+              <Rating
+                fractions={2}
+                onChange={(v) => {
+                  setRating(query.id, v);
+                  if (isPhone) {
+                    setFeedbackOpen(true);
+                  }
+                }}
+                emptySymbol={<FaRegStar className="text-primary" />}
+                className="text-xl space-x-2 h-[24px]"
+                direction="ltr"
+                step={1}
+                fullSymbol={<FaStar className="text-primary" />}
+                initialRating={query.rating}
+              />
+              {query.ratingGiven && !isPhone && (
+                <Dialog open={feedbackOpen} onOpenChange={setFeedbackOpen}>
+                  <DialogTrigger>
+                    <Button onClick={() => setFeedbackOpen(true)} className="font-semibold text-base">
+                      Tell Us More
+                    </Button>
+                  </DialogTrigger>
+                  <DialogContent className="bg-off-white dark:bg-secondary font-inter border-none rounded-2xl p-4 2xl:p-4 3xl:p-6 md:max-w-[400px] 2xl:max-w-[400px] 3xl:max-w-[600px] gap-4 3xl:gap-6">
+                    <Textarea
+                      className="rounded-xl px-2 py-2 3xl:px-4 3xl:py-4 outline-none bg-gray-200 dark:bg-[#18181B] h-[150px] 2xl:h-[180px] 3xl:h-[230px] placeholder:text-[#848585] border dark:border-[#3D3D3D] placeholder:font-semibold placeholder:text-sm 2xl:placeholder:text-sm 3xl:placeholder:text-lg text-lg resize-none"
+                      placeholder="leave your feedback..."
+                    />
+                    <div className="flex items-center justify-end gap-3">
+                      <DialogClose asChild>
+                        <Button variant={"text"} className="text-sm 3xl:text-base font-semibold">
+                          Cancel
+                        </Button>
+                      </DialogClose>
+                      <Button variant={"inverted"} className="text-sm 3xl:text-base font-semibold">
+                        Submit Feedback
+                      </Button>
+                    </div>
+                  </DialogContent>
+                </Dialog>
+              )}
+              {isPhone && (
+                <Drawer open={feedbackOpen} onOpenChange={setFeedbackOpen}>
+                  <DrawerContent
+                    swapperClassName="dark:bg-[#18181B] bg-gray-400"
+                    className="bg-off-white h-1/2 dark:bg-secondary font-inter border-none rounded-tl-2xl rounded-tr-2xl p-4 2xl:p-4 3xl:p-6 md:max-w-[400px] 2xl:max-w-[400px] 3xl:max-w-[600px] gap-4 3xl:gap-6"
+                  >
+                    <Textarea
+                      className="rounded-xl mt-5 px-2 py-2 3xl:px-4 3xl:py-4 outline-none bg-gray-200 dark:bg-[#18181B] h-full placeholder:text-[#848585] border dark:border-[#3D3D3D] placeholder:font-semibold placeholder:text-sm 2xl:placeholder:text-sm 3xl:placeholder:text-lg text-lg resize-none"
+                      placeholder="leave your feedback..."
+                    />
+                    <div className="flex items-center justify-end gap-3">
+                      <DialogClose asChild>
+                        <Button variant={"text"} className="text-sm 3xl:text-base font-semibold">
+                          Cancel
+                        </Button>
+                      </DialogClose>
+                      <Button variant={"inverted"} className="text-sm 3xl:text-base font-semibold">
+                        Submit Feedback
+                      </Button>
+                    </div>
+                  </DrawerContent>
+                </Drawer>
+              )}
+            </div>
+            <div className="flex flex-1 items-center gap-3 justify-end w-full">
+              {/* <div className="flex flex-col cursor-pointer items-center justify-center">
                           <VscShare className="text-xl" />
                           <span className="text-[10px]">Share</span>
                         </div> */}
-            <div onClick={() => handleClickEdit(query?.id, index)} className="flex-col cursor-pointer h-10 flex items-center justify-center bg-transparent rounded-[12px]">
-              <FaRegEdit className="text-xl -mt-0.5" />
-            </div>
-            {/* <div
+              <Button onClick={() => handleClickEdit(query?.id, index)} className="flex-col cursor-pointer w-9 h-9 flex items-center justify-center rounded-md">
+                <FaRegEdit className="text-xl -mt-0.5 -mr-1" />
+              </Button>
+              {/* <div
               onClick={() => {
                 setEditingQuery({ ...query, updatedQuery: query.query });
                 setMode("edit");
@@ -258,6 +275,7 @@ const Query: FC<IQueryComponent> = ({ query, fetchBot, index, mode, totalQueries
             >
               <HiOutlineAdjustmentsHorizontal className="text-xl" />
             </div> */}
+            </div>
           </div>
         )}
       </div>
@@ -280,12 +298,6 @@ const Query: FC<IQueryComponent> = ({ query, fetchBot, index, mode, totalQueries
                 <SourceCard isDesktop={!isPhone} callBackFn={() => setIsSourceShowmore(true)} total={query?.web_links?.length} count={index + 1} url={item} />
               </CarouselItem>
             ))}
-            {/* <CarouselItem
-            onClick={() => setSheetOpen(true)}
-            className="md:basis-1/2 lg:basis-1/4 select-none"
-            >
-            <SourceCardViewMore />
-            </CarouselItem> */}
           </CarouselContent>
         </Carousel>
       )}
@@ -388,35 +400,6 @@ const Query: FC<IQueryComponent> = ({ query, fetchBot, index, mode, totalQueries
         </div>
       )}
 
-      {/* {!isPhone && (
-        <Sheet open={sheetOpen} onOpenChange={setSheetOpen}>
-          <SheetContent side={"right"}>
-            <SheetHeader>
-              <SheetTitle className="text-2xl">1+ sources</SheetTitle>
-            </SheetHeader>
-            <div className="w-full">
-              <Carousel
-                opts={{
-                  align: "start",
-                }}
-                orientation="vertical"
-                className="w-full py-5 md:py-10 h-full"
-              >
-                <CarouselContent className="text-black">
-                  {Array.from({ length: 10 }).map((_, index) => (
-                    <CarouselItem
-                      key={index}
-                      className="md:basis-1/2 lg:basis-1/4 select-none"
-                    >
-                      <SourceCard url={"https://www.google.com"} />
-                    </CarouselItem>
-                  ))}
-                </CarouselContent>
-              </Carousel>
-            </div>
-          </SheetContent>
-        </Sheet>
-      )} */}
       {isPhone && (
         <Drawer open={sheetOpen} onOpenChange={setSheetOpen}>
           <DrawerContent>

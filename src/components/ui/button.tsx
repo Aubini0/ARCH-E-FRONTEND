@@ -9,18 +9,20 @@ const buttonVariants = cva("inline-flex items-center justify-center whitespace-n
   variants: {
     variant: {
       default: "bg-off-white border border-gray-300 text-gray-600 dark:border-none dark:bg-secondary dark:text-white",
+      inverted: "bg-black text-white dark:bg-white dark:text-[#18181B]",
       destructive: "bg-destructive text-white hover:bg-destructive/90",
       outline: "border-2 border-secondary dark:border-white bg-transparent text-black dark:text-white",
       ghost: "hover:bg-gray-100 dark:hover:bg-white/20",
       link: "text-primary underline-offset-4 hover:underline",
       grey: "bg-white/30 text-white shadow-sm hover:bg-white/80",
+      text: "bg-transparent dark:text-white text-black",
     },
     size: {
       default: "h-10 px-4 py-2",
       sm: "h-9 rounded-md px-3",
       lg: "h-11 rounded-md px-8",
       icon: "h-10 w-10",
-      xl: "h-16 rounded-md px-5 ",
+      xl: "h-16 rounded-md px-5",
     },
   },
   defaultVariants: {
