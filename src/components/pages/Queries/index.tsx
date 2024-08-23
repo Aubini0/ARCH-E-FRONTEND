@@ -66,7 +66,7 @@ const Queries: FC<IQueries> = ({ session_id }) => {
 
   const { refetch: refetchSession } = useQueriesInSession({
     queryKey: ["chat_history", { session_id: session_id! }],
-    enabled: Boolean(session_id),
+    enabled: Boolean(auth && session_id),
     refetchOnMount: false,
     refetchOnWindowFocus: false,
     refetchOnReconnect: false,
@@ -131,6 +131,17 @@ const Queries: FC<IQueries> = ({ session_id }) => {
       handleUserId();
     }
   }, [userId, socketConnected]);
+
+  useEffect(() => {
+    if (!authLoading && !auth) {
+      const queries = localStorage.getItem("queries");
+
+      if (queries && JSON.parse(queries!)?.length > 0) {
+        setQueries(JSON.parse(queries!));
+      }
+      setQueriesLoading(false);
+    }
+  }, [authLoading, auth]);
 
   const fetchBot = async (query: string) => {
     if (disabled) {
@@ -199,15 +210,27 @@ const Queries: FC<IQueries> = ({ session_id }) => {
       if (currentQueryIndex !== -1) {
         if (data.clear) {
           updatedQueries[currentQueryIndex].completed = true;
+          if (!auth) {
+            localStorage.setItem("queries", JSON.stringify(updatedQueries));
+          }
         }
         if (data.web_links) {
           updatedQueries[currentQueryIndex].web_links = data.web_links;
+          if (!auth) {
+            localStorage.setItem("queries", JSON.stringify(updatedQueries));
+          }
         }
         if (data.youtube_results) {
           updatedQueries[currentQueryIndex].videos = data.youtube_results;
+          if (!auth) {
+            localStorage.setItem("queries", JSON.stringify(updatedQueries));
+          }
         }
         if (data.recommendations) {
           updatedQueries[currentQueryIndex].recommendations = data.recommendations || [];
+          if (!auth) {
+            localStorage.setItem("queries", JSON.stringify(updatedQueries));
+          }
         }
         if (!data.clear) {
           updatedQueries[currentQueryIndex].response += data.response;
