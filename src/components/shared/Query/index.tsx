@@ -154,6 +154,67 @@ const Query: FC<IQueryComponent> = ({ query, fetchBot, index, mode, totalQueries
         </div>
       )}
       <div className="flex flex-col items-start w-full">
+        {query.web_links.length > 0 && (
+          <Carousel
+            opts={{
+              align: "start",
+            }}
+            className="w-full hidden md:block h-full py-5"
+          >
+            <div onClick={() => setOpenCollapse({ ...openCollapse, source: !openCollapse?.source })} className="flex items-center mb-[16px] cursor-pointer gap-[16px] w-full">
+              <p className="text-md font-medium dark:text-[#848585] mb-2">Sources</p>
+              <hr className="w-full dark:border-[#3D3D3D] mb-1" />
+              <PiCaretCircleDown size={30} className={`mb-1 dark:text-[#7F7F7F] ${openCollapse?.source && "rotate-180"}`} />
+            </div>
+            <CarouselContent className={`${openCollapse?.source ? "collpaseSources" : "hidden"} text-black pb-2`}>
+              {query.web_links.map((item, index) => (
+                <CarouselItem key={index} className="md:basis-1/2 lg:basis-1/4 select-none">
+                  <SourceCard isDesktop={!isPhone} callBackFn={() => setIsSourceShowmore(true)} total={query?.web_links?.length} count={index + 1} url={item} />
+                </CarouselItem>
+              ))}
+            </CarouselContent>
+          </Carousel>
+        )}
+        {!isPhone && query.videos.length > 0 && query.completed && (
+          <Carousel
+            opts={{
+              align: "start",
+            }}
+            className="w-full hidden md:block h-full py-5"
+          >
+            <div onClick={() => setOpenCollapse({ ...openCollapse, video: !openCollapse?.video })} className="flex items-center mb-[16px] cursor-pointer gap-[16px] w-full">
+              <p className="text-md font-medium dark:text-[#848585] mb-2">Videos</p>
+              <hr className="w-full dark:border-[#3D3D3D] mb-1" />
+              <PiCaretCircleDown size={30} className={`mb-1 dark:text-[#7F7F7F] ${openCollapse?.video && "rotate-180"}`} />
+            </div>
+            <CarouselContent className={`${openCollapse?.video ? "collpaseVideos" : "hidden"} text-black`}>
+              {query.videos.map((video, index) => (
+                <CarouselItem
+                  onClick={() => {
+                    setCurrentVideoIndex(index);
+                    setVideosOpen(true);
+                  }}
+                  key={index}
+                  className="basis-[30%] cursor-pointer select-none"
+                >
+                  <div className="w-full rounded-xl overflow-hidden aspect-square relative">
+                    <Image src={video.thumbnails.high} className="object-cover z-0" alt={video.title} fill />
+                    <div
+                      className="absolute z-[9] inset-0 flex items-end justify-start p-3"
+                      style={{
+                        background: "linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0) 10%, rgba(0,0,0,1) 100%)",
+                      }}
+                    >
+                      <p className="text-sm text-white">{video.title}</p>
+                    </div>
+                  </div>
+                </CarouselItem>
+              ))}
+            </CarouselContent>
+            {openCollapse?.video && <CarouselPrevious />}
+            {openCollapse?.video && <CarouselNext />}
+          </Carousel>
+        )}
         <div className="w-full gap-3 flex items-center pb-[16px] pt-5 md:pt-5">
           <h5 className="font-semibold text-lg dark:text-white text-black">ARCH-E</h5>
         </div>
@@ -280,67 +341,6 @@ const Query: FC<IQueryComponent> = ({ query, fetchBot, index, mode, totalQueries
         )}
       </div>
 
-      {query.web_links.length > 0 && (
-        <Carousel
-          opts={{
-            align: "start",
-          }}
-          className="w-full hidden md:block h-full py-5"
-        >
-          <div onClick={() => setOpenCollapse({ ...openCollapse, source: !openCollapse?.source })} className="flex items-center mb-[16px] cursor-pointer gap-[16px] w-full">
-            <p className="text-md font-medium dark:text-[#848585] mb-2">Sources</p>
-            <hr className="w-full dark:border-[#3D3D3D] mb-1" />
-            <PiCaretCircleDown size={30} className={`mb-1 dark:text-[#7F7F7F] ${openCollapse?.source && "rotate-180"}`} />
-          </div>
-          <CarouselContent className={`${openCollapse?.source ? "collpaseSources" : "hidden"} text-black pb-2`}>
-            {query.web_links.map((item, index) => (
-              <CarouselItem key={index} className="md:basis-1/2 lg:basis-1/4 select-none">
-                <SourceCard isDesktop={!isPhone} callBackFn={() => setIsSourceShowmore(true)} total={query?.web_links?.length} count={index + 1} url={item} />
-              </CarouselItem>
-            ))}
-          </CarouselContent>
-        </Carousel>
-      )}
-      {!isPhone && query.videos.length > 0 && query.completed && (
-        <Carousel
-          opts={{
-            align: "start",
-          }}
-          className="w-full hidden md:block h-full py-5"
-        >
-          <div onClick={() => setOpenCollapse({ ...openCollapse, video: !openCollapse?.video })} className="flex items-center mb-[16px] cursor-pointer gap-[16px] w-full">
-            <p className="text-md font-medium dark:text-[#848585] mb-2">Videos</p>
-            <hr className="w-full dark:border-[#3D3D3D] mb-1" />
-            <PiCaretCircleDown size={30} className={`mb-1 dark:text-[#7F7F7F] ${openCollapse?.video && "rotate-180"}`} />
-          </div>
-          <CarouselContent className={`${openCollapse?.video ? "collpaseVideos" : "hidden"} text-black`}>
-            {query.videos.map((video, index) => (
-              <CarouselItem
-                onClick={() => {
-                  setCurrentVideoIndex(index);
-                  setVideosOpen(true);
-                }}
-                key={index}
-                className="basis-[30%] cursor-pointer select-none"
-              >
-                <div className="w-full rounded-xl overflow-hidden aspect-square relative">
-                  <Image src={video.thumbnails.high} className="object-cover z-0" alt={video.title} fill />
-                  <div
-                    className="absolute z-[9] inset-0 flex items-end justify-start p-3"
-                    style={{
-                      background: "linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0) 10%, rgba(0,0,0,1) 100%)",
-                    }}
-                  >
-                    <p className="text-sm text-white">{video.title}</p>
-                  </div>
-                </div>
-              </CarouselItem>
-            ))}
-          </CarouselContent>
-          {openCollapse?.video && <CarouselPrevious />}
-          {openCollapse?.video && <CarouselNext />}
-        </Carousel>
-      )}
       {query.videos.length > 0 && query?.completed && (
         <Carousel
           opts={{
