@@ -22,7 +22,7 @@ import { PiCaretCircleDown } from "react-icons/pi";
 import Rating from "react-rating";
 import { Dialog, DialogClose, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { Textarea } from "@/components/ui/textarea";
-import { useAppSelector } from "@/store/hooks";
+import rehypeRaw from "rehype-raw";
 
 interface IQueryComponent {
   query: IQuery;
@@ -266,6 +266,7 @@ const Query: FC<IQueryComponent> = ({ query, fetchBot, index, mode, totalQueries
         {query.response && (
           <Markdown
             className={"mkdown"}
+            rehypePlugins={[rehypeRaw]}
             components={{
               code({ node, className, children, ...props }) {
                 const match = /language-(\w+)/.exec(className || "");

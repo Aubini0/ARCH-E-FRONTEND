@@ -112,3 +112,11 @@ export function addTimezoneUTC(dateStr: Date | string) {
 
   return dateStr + "+00:00";
 }
+
+export function formatSources(str: string) {
+  const text = str.replace(/\(Source (\d+) \[([^\]]+)\]\(([^)]+)\)\)/g, (match, n, url) => {
+    return `<a class="inline-source"><span>${n}</span></a>`;
+  });
+
+  return text;
+}

@@ -263,3 +263,23 @@ input[type="number"]::-webkit-outer-spin-button {
 .input-shadow:is(.dark *) {
   box-shadow: none;
 }
+
+.home-gradient {
+  @apply bg-off-white;
+}
+
+.inline-source {
+  width: 20px;
+  height: 20px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: hsl(var(--secondary));
+  color: white;
+  border-radius: 50%;
+  font-size: 10px;
+  font-weight: 500;
+  cursor: pointer;
+  text-decoration: none !important;
+  @apply text-gray-300;
+}
