@@ -5,15 +5,15 @@ import { FaFolder } from "react-icons/fa";
 
 const NewHome = () => {
   const openIcons = [
-    <CircleIcon className="h-8 w-8 fill-black stroke-black rounded-full" />,
-    <TriangleIcon className="h-8 w-8 fill-black stroke-black rounded-full" />,
-    <SquareIcon className="h-8 w-8 fill-black stroke-black rounded-full" />,
-    <PentagonIcon className="h-8 w-8 fill-black stroke-black rounded-full" />,
-    <HexagonIcon className="h-8 w-8 fill-black stroke-black rounded-full" />,
-    <OctagonIcon className="h-8 w-8 fill-black stroke-black rounded-full" />,
-    <OctagonIcon className="h-8 w-8 fill-black stroke-black rounded-full" />, // skip
+    <CircleIcon key={1} className="h-8 w-8 fill-black stroke-black rounded-full" />,
+    <TriangleIcon key={2} className="h-8 w-8 fill-black stroke-black rounded-full" />,
+    <SquareIcon key={3} className="h-8 w-8 fill-black stroke-black rounded-full" />,
+    <PentagonIcon key={4} className="h-8 w-8 fill-black stroke-black rounded-full" />,
+    <HexagonIcon key={5} className="h-8 w-8 fill-black stroke-black rounded-full" />,
+    <OctagonIcon key={6} className="h-8 w-8 fill-black stroke-black rounded-full" />,
+    <OctagonIcon key={7} className="h-8 w-8 fill-black stroke-black rounded-full" />, // skip
     null,
-    <BlocksIcon className="h-8 w-8 fill-black stroke-black rounded-full" />,
+    <BlocksIcon key={8} className="h-8 w-8 fill-black stroke-black rounded-full" />,
   ];
   return (
     <div className="home-gradient pb-[90px] h-screen w-full">
