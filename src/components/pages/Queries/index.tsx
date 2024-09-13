@@ -4,7 +4,7 @@ import useDeviceIndicator from "@/hooks/useDeviceIndicator";
 import { Drawer, DrawerContent } from "@/components/ui/drawer";
 import MainLayout from "@/components/layouts/MainLayout";
 import PlaceholdersAndVanishInput from "@/components/ui/PlaceHolderAndVanishInput";
-import { cn, getWebSocketURL } from "@/lib/utils";
+import { cn, formatSources, getWebSocketURL } from "@/lib/utils";
 import { ScrollShadow } from "@nextui-org/react";
 import { nanoid } from "@reduxjs/toolkit";
 import { useAppSelector } from "@/store/hooks";
@@ -77,7 +77,7 @@ const Queries: FC<IQueries> = ({ session_id }) => {
           id: nanoid(),
           completed: true,
           query: qData.user,
-          response: qData.assistant,
+          response: formatSources(qData.assistant),
           videos: Array.isArray(qData.metadata.youtube_results) ? qData.metadata.youtube_results : [],
           videosFetched: true,
           web_links: Array.isArray(qData.metadata.web_links) ? qData.metadata.web_links : [],
@@ -98,6 +98,8 @@ const Queries: FC<IQueries> = ({ session_id }) => {
   useEffect(() => {
     refetchSession();
   }, [session_id]);
+
+  console.log(queries);
 
   const [userId, setUserId] = useLocalStorage<string | undefined>("user_id", undefined);
 
@@ -233,7 +235,7 @@ const Queries: FC<IQueries> = ({ session_id }) => {
           }
         }
         if (!data.clear) {
-          updatedQueries[currentQueryIndex].response += data.response;
+          updatedQueries[currentQueryIndex].response = formatSources(updatedQueries[currentQueryIndex].response + data.response);
         }
       }
 
