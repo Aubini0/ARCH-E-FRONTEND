@@ -114,8 +114,13 @@ export function addTimezoneUTC(dateStr: Date | string) {
 }
 
 export function formatSources(str: string) {
-  const text = str.replace(/\(Source (\d+) \[([^\]]+)\]\(([^)]+)\)\)/g, (match, n, url) => {
-    return `<a class="inline-source"><span>${n}</span></a>`;
+  // Update the regex to match different possible formats
+  const text = str.replace(/\(Source(?: \[?(\d+)\]?)? ?(?:\[(.*?)\]\((.*?)\)|([^\)]+))\)/g, (match, n, urlName, url, urlFallback) => {
+    // Use urlFallback if url is undefined (for cases without a markdown-style URL)
+    const finalUrl = url || urlFallback;
+
+    // Return the modified string with the appropriate href and span elements
+    return finalUrl ? `<a class="inline-source" href="${finalUrl}" target="_blank"><span>${n || ""}</span></a>` : match; // Return the original match if no URL is found
   });
 
   return text;
