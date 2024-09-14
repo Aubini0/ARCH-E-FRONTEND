@@ -283,3 +283,17 @@ input[type="number"]::-webkit-outer-spin-button {
   text-decoration: none !important;
   @apply text-gray-300;
 }
+
+.chooseRoom .chooseRoom_item:hover {
+  background: #3D3D3D
+}
+
+.chooseRoom .chooseRoom_item:first-child:hover {
+  border-top-right-radius: 12px;
+  border-top-left-radius: 12px;
+}
+
+.chooseRoom .chooseRoom_item:last-child:hover {
+  border-bottom-right-radius: 12px;
+  border-bottom-left-radius: 12px;
+}

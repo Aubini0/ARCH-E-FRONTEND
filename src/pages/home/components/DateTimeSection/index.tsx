@@ -2,6 +2,7 @@ import React from "react";
 import Clock from "@/pages/home/components/Clock";
 import Calendar from "@/pages/home/components/Calendar";
 import {PlusIconWhite} from "@/components/icons/PlusIconWhite";
+import StopWatch from "@/pages/home/components/Stopwatch";
 
 const style = {
     container: {
@@ -42,7 +43,8 @@ const style = {
         background: "#383838",
         display: "flex",
         alignItems: "center",
-        justifyContent: "center"
+        justifyContent: "center",
+        cursor: 'pointer',
     }
 }
 
@@ -62,6 +64,9 @@ const DateTimeSection = () => {
                 <div style={style.addNotePlus as React.CSSProperties}>
                     <PlusIconWhite />
                 </div>
+            </div>
+            <div>
+                <StopWatch />
             </div>
         </div>
     )
