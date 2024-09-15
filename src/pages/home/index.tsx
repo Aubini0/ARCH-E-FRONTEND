@@ -3,15 +3,20 @@ import React, { useEffect, useState } from "react";
 import backgroundImage from "@/assets/images/home-background.png";
 import DateTimeSection from "@/pages/home/components/DateTimeSection";
 import RightSection from "@/pages/home/components/RightSection";
+import styles from "./home-styles.module.css";
+import { HomeDock } from "./components/Dock";
 
 const Home = () => {
-    return (
-        <div style={{backgroundColor: 'white', backgroundImage: `url(${backgroundImage.src})`, height: '100vh', backgroundRepeat: 'no-repeat', backgroundSize: 'auto', backgroundPosition: 'left top'}}>
-            <Header/>
-            <DateTimeSection/>
-            <RightSection />
-        </div>
-    )
+  return (
+    <div
+      className={styles.homeMain}
+    >
+      <Header />
+      <DateTimeSection />
+      <RightSection />
+      <HomeDock />
+    </div>
+  );
 };
 
 export default Home;

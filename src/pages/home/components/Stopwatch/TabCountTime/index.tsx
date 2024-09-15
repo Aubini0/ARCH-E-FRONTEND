@@ -80,7 +80,7 @@ const TabCountTime: React.FC<Props> = ({onChange, onShowSetting}) => {
     }, [running]);
     return (
         <>
-            <div style={style.clock as React.CSSProperties}>
+            <div className="text-white" style={style.clock as React.CSSProperties}>
                 <span>{("0" + Math.floor((time / 60000) % 60)).slice(-2)}:</span>
                 <span>{("0" + Math.floor((time / 1000) % 60)).slice(-2)}</span>
             </div>
