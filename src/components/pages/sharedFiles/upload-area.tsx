@@ -95,7 +95,7 @@ export const FilesUploadArea = () => {
           <>
             {share?.map((item, idx) => {
               return (
-                <div className="h-[56px] dark:hover:bg-[#27272A] hover:bg-[#efefef] rounded-[8px] cursor-pointer px-[15px] flex items-center justify-between py-[20px]">
+                <div key={idx} className="h-[56px] dark:hover:bg-[#27272A] hover:bg-[#efefef] rounded-[8px] cursor-pointer px-[15px] flex items-center justify-between py-[20px]">
                   <div className="flex items-center gap-4" key={idx}>
                     <IconInactive color="#7F7F7F" />
                     {item}
