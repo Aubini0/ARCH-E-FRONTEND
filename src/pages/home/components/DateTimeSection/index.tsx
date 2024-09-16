@@ -3,6 +3,7 @@ import Clock from "@/pages/home/components/Clock";
 import Calendar from "@/pages/home/components/Calendar";
 import {PlusIconWhite} from "@/components/icons/PlusIconWhite";
 import StopWatch from "@/pages/home/components/Stopwatch";
+import { NotebookPen } from "lucide-react";
 
 const style = {
     container: {
@@ -20,7 +21,7 @@ const style = {
         padding: "var(--Spacing-5, 20px)",
         justifyContent: "center",
         alignItems: "center",
-        gap: "8px",
+        gap: "10px",
         flexShrink: 0,
         borderRadius: "99px",
         background: "rgba(24, 24, 27, 0.35)",
@@ -56,14 +57,6 @@ const DateTimeSection = () => {
             </div>
             <div>
                 <Calendar />
-            </div>
-            <div style={style.addNoteButton as React.CSSProperties}>
-                <div style={style.addNoteText as React.CSSProperties}>
-                    add note
-                </div>
-                <div style={style.addNotePlus as React.CSSProperties}>
-                    <PlusIconWhite />
-                </div>
             </div>
             <div>
                 <StopWatch />

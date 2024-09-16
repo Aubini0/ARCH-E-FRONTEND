@@ -14,12 +14,14 @@ interface Props {}
 
 const RightSection: React.FC<Props> = () => {
   return (
-    <div className="flex gap-[8px]" style={style.container as React.CSSProperties}>
-      <ChatBadge />
-      <div>
+    <>
+      <div className="absolute top-[20px] left-[50%] transform translate-x-[-50%]">
+        <ChatBadge />
+      </div>
+      <div style={style.container as React.CSSProperties}>
         <InviteSection />
       </div>
-    </div>
+    </>
   );
 };
 

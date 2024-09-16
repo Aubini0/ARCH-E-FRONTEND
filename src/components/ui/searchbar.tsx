@@ -54,7 +54,7 @@ export default function SearchToolbar() {
                     <ArrowLeft className="h-5 w-5" />
                   </Button>
                   <div className="relative w-full">
-                    <input className="h-9 w-full rounded-lg border light:border-zinc-950/10 border-[#848585] bg-transparent p-2 dark:text-white text-zinc-900 placeholder-zinc-500 focus:outline-none" autoFocus placeholder="Search notes" />
+                    <input className="h-9 w-full rounded-lg border light:border-zinc-950/10 border-[#848585] bg-transparent p-2 dark:text-white text-zinc-900 placeholder-zinc-500 focus:outline-none" autoFocus placeholder="Search files" />
                     <div className="absolute right-1 top-0 flex h-full items-center justify-center"></div>
                   </div>
                 </div>

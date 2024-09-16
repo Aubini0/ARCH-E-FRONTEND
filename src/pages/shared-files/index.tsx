@@ -4,7 +4,7 @@ import styles from "../home/home-styles.module.css";
 
 const SharedFiles = () => {
   return (
-    <div className={styles.poppins}>
+    <div className={`${styles.poppins} max-w-[1348px] mx-auto`}>
       <SharedFilesComponent />
     </div>
   );
