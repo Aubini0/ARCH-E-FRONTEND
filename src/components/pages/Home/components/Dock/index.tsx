@@ -1,5 +1,4 @@
-import { AlarmClock, CalendarDays, Folder, HomeIcon, Images, Search, Tv } from "lucide-react";
-
+import { AlarmClock, Folder, HomeIcon, Images, Search } from "lucide-react";
 import { Dock, DockIcon, DockItem, DockLabel } from "./dockContext";
 import { useRouter } from "next/router";
 import { Modal } from "@/components/pages/Home/modal";
@@ -19,15 +18,15 @@ const data = [
     icon: <AlarmClock className="text-white" />,
     href: "#",
   },
-  {
-    title: "TV",
-    icon: <Tv className="text-white" />,
-    href: "#",
-  },
+  // {
+  //   title: "TV",
+  //   icon: <Tv className="text-white" />,
+  //   href: "#",
+  // },
   {
     title: "Search",
     icon: <Search className="text-white" />,
-    href: "/",
+    href: "/search",
   },
   {
     title: "File Management",
@@ -45,7 +44,7 @@ const data = [
 export function HomeDock({ setHomePageBg }: Props) {
   const router = useRouter();
   const [isOpen, setIsOpen] = React.useState({ isOpen: false, key: "" });
-  const closeModal = () => setIsOpen({ isOpen: false, key: "" });
+  const closeModal = () => setIsOpen({ ...isOpen, isOpen: false });
   const handleClick = (route: string) => {
     if (route == "/shared-files" || route == "/background") {
       const key = route == "/shared-files" ? "files" : "background";
