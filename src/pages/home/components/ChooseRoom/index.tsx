@@ -1,6 +1,5 @@
 import {ArrowTopIcon} from "@/components/icons/ArrowTopIcon";
 import React, {useState} from "react";
-import styled from "styled-components";
 
 const style = {
     container: {
