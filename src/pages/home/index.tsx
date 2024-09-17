@@ -16,10 +16,12 @@ const Home = () => {
   }, [homePageBg]);
   return (
     <div style={{ background: `url(${background})`, backgroundSize: "cover" }} className={styles.homeMain}>
-      <Header />
-      <DateTimeSection />
-      <RightSection />
-      <HomeDock setHomePageBg={setHomePageBg} />
+      <div style={{zoom: "67%"}}>
+        <Header />
+        <DateTimeSection />
+        <RightSection />
+        <HomeDock setHomePageBg={setHomePageBg} />
+      </div>
     </div>
   );
 };

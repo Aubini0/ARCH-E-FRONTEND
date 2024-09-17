@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { ArrowTopIcon } from "@/components/icons/ArrowTopIcon";
 import ChooseRoom from "../../ChooseRoom";
+import { Avatar, AvatarImage } from "@/components/ui/avatar";
+
 
 const style = {
   container: {
@@ -11,7 +13,7 @@ const style = {
     borderRadius: "40px",
     background: "#18181B",
     margin: "20.5px 20px 0 0",
-    width: "320px",
+    width: "400px",
   },
   left: {
     display: "flex",
@@ -19,7 +21,7 @@ const style = {
     alignItems: "center",
     alignSelf: "stretch",
     borderRight: "1px solid #3D3D3D",
-    width: "182px",
+    width: "240px",
     padding: "12px 16px",
   },
   invite: {
@@ -36,11 +38,14 @@ const style = {
 interface Props {}
 
 const InviteSection: React.FC<Props> = () => {
-  const [isShow, setIsShow] = useState(true);
+  const [isShow, setIsShow] = useState(false);
   return (
     <>
       <div className="text-white cursor-pointer" style={style.container as React.CSSProperties}>
         <div onClick={() => setIsShow(!isShow)} style={style.left as React.CSSProperties}>
+          <Avatar>
+            <AvatarImage src="/user2.png" />
+          </Avatar>
           <div>Aubin’s Room</div>
           <div style={{ transform: isShow ? "" : "rotateX(150deg)" }}>
             <ArrowTopIcon />

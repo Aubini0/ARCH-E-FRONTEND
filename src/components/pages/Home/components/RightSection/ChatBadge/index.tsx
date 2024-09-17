@@ -4,13 +4,13 @@ import { Dock, DockIcon, DockItem, DockLabel } from "../../Dock/dockContext";
 
 const ChatBadge = () => {
   const floatingIcons = [
-    { title: "Notes", icon: <NotebookPen size={25} color="white" /> },
-    { title: "Video Call", icon: <VideoIcon size={30} color="white" /> },
-    { title: "Notification", icon: <BellIcon size={30} color="white" /> },
+    { title: "Notes", icon: <NotebookPen size={20} color="white" /> },
+    { title: "Video Call", icon: <VideoIcon size={20} color="white" /> },
+    { title: "Notification", icon: <BellIcon size={20} color="white" /> },
   ];
   return (
-    <div className="flex h-[65px] items-center gap-[26px] mt-[20px] p-8">
-      <Dock className="items-end relative gap-[24px] bg-[#191919]">
+    <div className="flex h-[30px] items-center gap-[26px] mt-[25px] p-8">
+      <Dock className="items-end max-h-[100px] rounded-[40px] relative gap-[24px] bg-[#191919]">
         {floatingIcons.map((item, idx) => {
           return (
             <div key={idx} className={`relative pb-4`}>

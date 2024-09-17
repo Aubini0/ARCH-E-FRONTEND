@@ -12,7 +12,7 @@ interface Props {
 export const Modal = ({ open, onClose, isBackground, setHomePageBg}: Props) => {
   return (
     <Dialog open={open} onOpenChange={onClose}>
-      <DialogContent className={`!p-0 !border-none sm:rounded-[30px] md:h-[740px] ${isBackground ? "md:max-w-[1000px]" : "md:max-w-[1360px]"} w-full`}>{isBackground ? <BackgroundComponent setHomePageBg={setHomePageBg} onClose={onClose} /> : <SharedFilesComponent />}</DialogContent>
+      <DialogContent style={{zoom: "67%"}} className={`!p-0 !border-none sm:rounded-[30px] md:h-[740px] ${isBackground ? "md:max-w-[1000px]" : "md:max-w-[1360px]"} w-full`}>{isBackground ? <BackgroundComponent setHomePageBg={setHomePageBg} onClose={onClose} /> : <SharedFilesComponent />}</DialogContent>
     </Dialog>
   );
 };
