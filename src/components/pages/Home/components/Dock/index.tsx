@@ -5,6 +5,9 @@ import { useRouter } from "next/router";
 import { Modal } from "@/components/pages/Home/modal";
 import React from "react";
 
+interface Props {
+  setHomePageBg?: (value: string) => void;
+}
 const data = [
   {
     title: "Home",
@@ -39,7 +42,7 @@ const data = [
   },
 ];
 
-export function HomeDock() {
+export function HomeDock({ setHomePageBg }: Props) {
   const router = useRouter();
   const [isOpen, setIsOpen] = React.useState({ isOpen: false, key: "" });
   const closeModal = () => setIsOpen({ isOpen: false, key: "" });
@@ -65,7 +68,7 @@ export function HomeDock() {
           );
         })}
       </Dock>
-      <Modal isBackground={isOpen?.key == "background"} open={isOpen?.isOpen} onClose={closeModal} />
+      <Modal setHomePageBg={setHomePageBg} isBackground={isOpen?.key == "background"} open={isOpen?.isOpen} onClose={closeModal} />
     </div>
   );
 }

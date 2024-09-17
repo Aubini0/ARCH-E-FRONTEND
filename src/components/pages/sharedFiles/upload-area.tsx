@@ -39,7 +39,7 @@ export const FilesUploadArea = () => {
   return (
     <main className={`p-[38px] overflow-auto scrollbar-hide h-screen`}>
       <section className="mb-[40px]">
-        <div className="flex justify-between items-center mb-[24px]">
+        <div className="flex justify-between text-white items-center mb-[24px]">
           <div onClick={() => handleMenu("space")} className="flex select-none cursor-pointer items-center gap-2">
             {isActiveMenu?.space ? <ChevronDown color="#7F7F7F" /> : <ChevronUp color="#7F7F7F" />}
             <p>Spaces</p>
@@ -53,7 +53,7 @@ export const FilesUploadArea = () => {
                 <div
                   onMouseEnter={() => setIsHovered(idx)}
                   onMouseLeave={() => setIsHovered(-1)}
-                  className="h-[56px] cursor-pointer justify-between dark:hover:bg-[#27272A] hover:bg-[#efefef] rounded-[8px] px-[15px] flex items-center gap-4 py-[20px]"
+                  className="h-[56px] cursor-pointer justify-between hover:bg-[#27272A] text-white rounded-[8px] px-[15px] flex items-center gap-4 py-[20px]"
                   key={idx}
                 >
                   <div className="flex gap-2">
@@ -87,7 +87,7 @@ export const FilesUploadArea = () => {
         )}
       </section>
       <section>
-        <div onClick={() => handleMenu("share")} className="flex select-none mb-[24px] cursor-pointer items-center gap-2">
+        <div onClick={() => handleMenu("share")} className="flex select-none mb-[24px] text-white cursor-pointer items-center gap-2">
           {isActiveMenu?.share ? <ChevronDown color="#7F7F7F" /> : <ChevronUp color="#7F7F7F" />}
           <p>Share</p>
         </div>
@@ -95,7 +95,7 @@ export const FilesUploadArea = () => {
           <>
             {share?.map((item, idx) => {
               return (
-                <div key={idx} className="h-[56px] dark:hover:bg-[#27272A] hover:bg-[#efefef] rounded-[8px] cursor-pointer px-[15px] flex items-center justify-between py-[20px]">
+                <div key={idx} className="h-[56px] hover:bg-[#27272A] text-white rounded-[8px] cursor-pointer px-[15px] flex items-center justify-between py-[20px]">
                   <div className="flex items-center gap-4" key={idx}>
                     <IconInactive color="#7F7F7F" />
                     {item}

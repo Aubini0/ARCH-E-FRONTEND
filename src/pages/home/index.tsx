@@ -7,7 +7,7 @@ import RightSection from "@/components/pages/Home/components/RightSection";
 import { HomeDock } from "@/components/pages/Home/components/Dock";
 
 const Home = () => {
-  const [homePageBg] = useLocalStorage("home_bg_image", "");
+  const [homePageBg, setHomePageBg] = useLocalStorage("home_bg_image", "");
   const [background, setBackground] = React.useState("");
 
   React.useEffect(() => {
@@ -19,7 +19,7 @@ const Home = () => {
       <Header />
       <DateTimeSection />
       <RightSection />
-      <HomeDock />
+      <HomeDock setHomePageBg={setHomePageBg} />
     </div>
   );
 };

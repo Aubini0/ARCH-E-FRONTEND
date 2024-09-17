@@ -1,23 +1,24 @@
 import { ImageIcon } from "lucide-react";
-import { useRouter } from "next/router";
 import React from "react";
 import useLocalStorage from "use-local-storage";
 
 interface Props {
-    onClose: () => void;
+  onClose: () => void;
+  setHomePageBg?: (value: string) => void;
 }
-export const BackgroundComponent = ({ onClose }: Props) => {
+export const BackgroundComponent = ({ onClose, setHomePageBg }: Props) => {
   const [activeBg, setActiveBg] = React.useState(-1);
-  const [_, setBackgroundImage] = useLocalStorage("home_bg_image", "");
   const [file, setFile] = useLocalStorage("file", "");
   const handleChangeBg = (active: number) => {
     setActiveBg(active);
   };
   const handleSave = () => {
-    if (activeBg < 8) {
-      setBackgroundImage(`/backgroundImages/${activeBg + 1}.jpg`);
-    } else {
-      setBackgroundImage("/home-background.png");
+    if (setHomePageBg) {
+      if (activeBg < 8) {
+        setHomePageBg(`/backgroundImages/${activeBg + 1}.jpg`);
+      } else {
+        setHomePageBg("/home-background.png");
+      }
     }
     onClose();
   };
@@ -39,11 +40,11 @@ export const BackgroundComponent = ({ onClose }: Props) => {
     <main className="px-[32px] py-[24px] h-full overflow-auto">
       <section className="mb-[40px]">
         <div className="flex items-center justify-between">
-          <p className="font-[500] text-[24px]">Background</p>
+          <p className="font-[500] text-[24px] text-white">Background</p>
           <button
             onClick={handleSave}
             disabled={activeBg == -1}
-            className={`${activeBg == -1 && "dark:text-[#6f726f] text-[#b9afaf]"} dark:bg-[#3D3D3D] p-[12px_24px_12px_24px] bg-[#efefef] rounded-[48px]`}
+            className={`${activeBg == -1 ? "text-[#6f726f]" : "text-white"} bg-[#3D3D3D] p-[12px_24px_12px_24px] rounded-[48px]`}
           >
             Save
           </button>
@@ -55,7 +56,7 @@ export const BackgroundComponent = ({ onClose }: Props) => {
             <div className="flex items-center justify-center w-full">
               <label
                 htmlFor="dropzone-file"
-                className="flex flex-col items-center justify-center w-full h-[300px] border-2 border-[#3D3D3D] border-dashed rounded-lg cursor-pointer bg-[#efefef] dark:bg-[#18181B] hover:bg-gray-100 dark:hover:bg-[#161618]"
+                className="flex flex-col items-center justify-center w-full h-[300px] border-2 border-[#3D3D3D] border-dashed rounded-lg cursor-pointer bg-[#18181B hover:bg-[#161618]"
               >
                 <div className="flex flex-col items-center justify-center pt-5 pb-6">
                   <ImageIcon size={40} color="#7F7F7F" />

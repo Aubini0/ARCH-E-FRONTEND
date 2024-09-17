@@ -9,7 +9,7 @@ interface Props {
 export const ConfirmationModal = ({ open, onClose }: Props) => {
   return (
     <Dialog open={open} onOpenChange={onClose}>
-      <DialogContent className={`!p-0 !border-none md:max-w-[450px]`}>
+      <DialogContent className={`!p-0 !border-none md:max-w-[450px] text-white`}>
         <main className="p-[20px]">
           <div className="mb-10">
             <section className="flex justify-between items-center mb-7">

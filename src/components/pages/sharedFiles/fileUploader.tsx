@@ -156,7 +156,7 @@ export default function ImageUpload() {
         <label {...getRootProps()} className="relative flex flex-col items-center justify-center w-full h-[280px] py-6 border-2 border-[#3D3D3D] border-dashed rounded-lg cursor-pointer ">
           <div className=" text-center">
             <div className=" border p-2 rounded-md max-w-min mx-auto">
-              <UploadCloud size={20} />
+              <UploadCloud color="white" size={20} />
             </div>
 
             <p className="mt-2 text-sm text-gray-600">
@@ -176,13 +176,13 @@ export default function ImageUpload() {
             <div className="space-y-2 pr-3">
               {filesToUpload.map((fileUploadProgress) => {
                 return (
-                  <div key={fileUploadProgress.File.lastModified} className="flex justify-between gap-2 rounded-lg overflow-hidden border border-[#3D3D3D] hover:pr-0 pr-2">
+                  <div key={fileUploadProgress.File.lastModified} className="flex justify-between text-white gap-2 rounded-lg overflow-hidden border border-[#3D3D3D]">
                     <div className="flex items-center flex-1 p-2">
                       <div className="text-white">{getFileIconAndColor(fileUploadProgress.File).icon}</div>
 
                       <div className="w-full ml-2 space-y-1">
                         <div className="text-sm flex justify-between">
-                          <p className="text-muted-foreground ">{fileUploadProgress.File.name.slice(0, 25)}</p>
+                          <p className="text-muted-foreground">{fileUploadProgress.File.name.slice(0, 25)}</p>
                           <span className="text-xs">{fileUploadProgress.progress}%</span>
                         </div>
                         <ProgressBar progress={fileUploadProgress.progress} className={getFileIconAndColor(fileUploadProgress.File).color} />
@@ -193,7 +193,7 @@ export default function ImageUpload() {
                         if (fileUploadProgress.source) fileUploadProgress.source.cancel("Upload cancelled");
                         removeFile(fileUploadProgress.File);
                       }}
-                      className="bg-red-500 text-white transition-all items-center justify-center cursor-pointer px-2 hidden group-hover:flex"
+                      className="bg-red-500 text-white transition-all items-center justify-center cursor-pointer px-2 group-hover:flex"
                     >
                       <X size={20} />
                     </button>
@@ -211,7 +211,7 @@ export default function ImageUpload() {
           <div className="space-y-2 pr-3">
             {uploadedFiles.map((file) => {
               return (
-                <div key={file.lastModified} className="flex justify-between gap-2 rounded-lg overflow-hidden border border-slate-100 group hover:pr-0 pr-2 hover:border-slate-300 transition-all">
+                <div key={file.lastModified} className="flex justify-between gap-2 rounded-lg overflow-hidden border border-slate-100 group hover:border-slate-300 transition-all">
                   <div className="flex items-center flex-1 p-2">
                     <div className="text-white">{getFileIconAndColor(file).icon}</div>
                     <div className="w-full ml-2 space-y-1">
@@ -220,7 +220,7 @@ export default function ImageUpload() {
                       </div>
                     </div>
                   </div>
-                  <button onClick={() => removeFile(file)} className="bg-red-500 text-white transition-all items-center justify-center px-2 hidden group-hover:flex">
+                  <button onClick={() => removeFile(file)} className="bg-red-500 text-white transition-all items-center justify-center px-2 flex">
                     <X size={20} />
                   </button>
                 </div>

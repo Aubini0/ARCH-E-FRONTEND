@@ -26,15 +26,15 @@ export const FilesAreaView = () => {
           <div>
             <SearchToolbar />
           </div>
-          <div className="flex gap-4 items-center">
+          <div className="flex gap-4 text-white items-center">
             <Avatar>
               <AvatarImage src="/user1.png" />
             </Avatar>
-            <button className="dark:bg-[#3D3D3D] p-[12px_24px_12px_24px] bg-[#efefef] rounded-[48px]">Share</button>
-            <div className="w-[40px] h-[40px] rounded-full flex items-center justify-center cursor-pointer dark:bg-[#272729] bg-[#efefef]">
+            <button className="bg-[#3D3D3D] p-[12px_24px_12px_24px] rounded-[48px]">Share</button>
+            <div className="w-[40px] h-[40px] rounded-full flex items-center justify-center cursor-pointer bg-[#272729]">
               <FolderPlusIcon size={20} />
             </div>
-            <div className="w-[40px] h-[40px] rounded-full flex items-center justify-center cursor-pointer dark:bg-[#272729] bg-[#efefef]">
+            <div className="w-[40px] h-[40px] rounded-full flex items-center justify-center cursor-pointer bg-[#272729]">
               <FilePlusIcon size={18} />
             </div>
           </div>
