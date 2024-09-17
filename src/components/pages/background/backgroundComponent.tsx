@@ -1,4 +1,3 @@
-import { notify } from "@/hooks/notify/useNotify";
 import { ImageIcon } from "lucide-react";
 import { useRouter } from "next/router";
 import React from "react";

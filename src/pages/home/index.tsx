@@ -7,7 +7,7 @@ import { HomeDock } from "./components/Dock";
 import useLocalStorage from "use-local-storage";
 
 const Home = () => {
-  const [homePageBg, setHomePageBg] = useLocalStorage("home_bg_image", "");
+  const [homePageBg] = useLocalStorage("home_bg_image", "");
   const [background, setBackground] = React.useState("");
 
   React.useEffect(() => {

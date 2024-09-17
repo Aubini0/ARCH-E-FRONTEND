@@ -4,7 +4,7 @@ import React from "react";
 
 interface Props {
   open: boolean;
-  onClose: (value: boolean) => void;
+  onClose: () => void;
 }
 export const ConfirmationModal = ({ open, onClose }: Props) => {
   return (

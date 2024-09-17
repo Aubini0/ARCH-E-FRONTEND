@@ -5,7 +5,7 @@ import { SharedFilesComponent } from "../sharedFiles";
 
 interface Props {
   open: boolean;
-  onClose: (value: boolean) => void;
+  onClose: () => void;
   isBackground?: boolean;
 }
 export const Modal = ({ open, onClose, isBackground }: Props) => {
