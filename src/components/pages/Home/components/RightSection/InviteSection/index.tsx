@@ -12,7 +12,7 @@ const style = {
     borderRadius: "40px",
     background: "#18181B",
     margin: "20.5px 20px 0 0",
-    width: "380px",
+    width: "392px",
   },
   left: {
     display: "flex",
@@ -20,8 +20,9 @@ const style = {
     alignItems: "center",
     alignSelf: "stretch",
     borderRight: "1px solid #3D3D3D",
-    width: "220px",
-    padding: "12px 16px 12px 0",
+    borderLeft: "1px solid #3D3D3D",
+    width: "175px",
+    padding: "12px 16px 12px 16px",
   },
   invite: {
     display: "flex",
@@ -40,11 +41,11 @@ const InviteSection: React.FC<Props> = () => {
   const [isShow, setIsShow] = useState(false);
   return (
     <>
-      <div className="text-white cursor-pointer" style={style.container as React.CSSProperties}>
-        <div onClick={() => setIsShow(!isShow)} style={style.left as React.CSSProperties}>
-          <Avatar>
-            <img src="User2.png" alt="user icon" />
-          </Avatar>
+      <div className="text-white" style={style.container as React.CSSProperties}>
+        <Avatar className="cursor-pointer">
+          <img src="User2.png" alt="user icon" />
+        </Avatar>
+        <div className="cursor-pointer" onClick={() => setIsShow(!isShow)} style={style.left as React.CSSProperties}>
           <div>Aubin’s Room</div>
           <div style={{ transform: isShow ? "" : "rotateX(150deg)" }}>
             <ArrowTopIcon />
