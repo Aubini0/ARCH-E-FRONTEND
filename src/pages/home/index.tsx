@@ -1,17 +1,27 @@
 import Header from "@/pages/home/components/header";
-import React, { useEffect, useState } from "react";
-import backgroundImage from "@/assets/images/home-background.png";
+import React from "react";
 import DateTimeSection from "@/pages/home/components/DateTimeSection";
 import RightSection from "@/pages/home/components/RightSection";
+import styles from "./home-styles.module.css";
+import { HomeDock } from "./components/Dock";
+import useLocalStorage from "use-local-storage";
 
 const Home = () => {
-    return (
-        <div style={{backgroundColor: 'white', backgroundImage: `url(${backgroundImage.src})`, height: '100vh', backgroundRepeat: 'no-repeat', backgroundSize: 'auto', backgroundPosition: 'left top'}}>
-            <Header/>
-            <DateTimeSection/>
-            <RightSection />
-        </div>
-    )
+  const [homePageBg] = useLocalStorage("home_bg_image", "");
+  const [background, setBackground] = React.useState("");
+
+  React.useEffect(() => {
+    const bg = homePageBg ? homePageBg : "/home-background.png";
+    setBackground(bg);
+  }, [homePageBg]);
+  return (
+    <div style={{ background: `url(${background})`, backgroundSize: "cover" }} className={styles.homeMain}>
+      <Header />
+      <DateTimeSection />
+      <RightSection />
+      <HomeDock />
+    </div>
+  );
 };
 
 export default Home;
