@@ -43,7 +43,7 @@ const InviteSection: React.FC<Props> = () => {
       <div className="text-white cursor-pointer" style={style.container as React.CSSProperties}>
         <div onClick={() => setIsShow(!isShow)} style={style.left as React.CSSProperties}>
           <Avatar>
-            <img src="/user2.png" alt="user icon" />
+            <img src="User2.png" alt="user icon" />
           </Avatar>
           <div>Aubin’s Room</div>
           <div style={{ transform: isShow ? "" : "rotateX(150deg)" }}>
