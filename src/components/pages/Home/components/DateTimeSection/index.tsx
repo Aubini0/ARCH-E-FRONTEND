@@ -1,9 +1,9 @@
 import React from "react";
-import Clock from "@/pages/home/components/Clock";
-import Calendar from "@/pages/home/components/Calendar";
 import {PlusIconWhite} from "@/components/icons/PlusIconWhite";
-import StopWatch from "@/pages/home/components/Stopwatch";
 import { NotebookPen } from "lucide-react";
+import Clock from "../Clock";
+import Calendar from "../Calendar";
+import StopWatch from "../Stopwatch";
 
 const style = {
     container: {

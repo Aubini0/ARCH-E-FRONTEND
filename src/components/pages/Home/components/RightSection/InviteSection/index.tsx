@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import ChooseRoom from "@/pages/home/components/ChooseRoom";
 import { ArrowTopIcon } from "@/components/icons/ArrowTopIcon";
+import ChooseRoom from "../../ChooseRoom";
 
 const style = {
   container: {

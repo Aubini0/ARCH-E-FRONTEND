@@ -1,6 +1,6 @@
 import React from "react";
-import InviteSection from "@/pages/home/components/RightSection/InviteSection";
-import { ChatBadge } from "./ChatBadge";
+import ChatBadge from "./ChatBadge";
+import InviteSection from "./InviteSection";
 
 const style = {
   container: {

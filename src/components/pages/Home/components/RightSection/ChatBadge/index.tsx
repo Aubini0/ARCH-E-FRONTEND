@@ -2,7 +2,7 @@ import React from "react";
 import { BellIcon, NotebookPen, VideoIcon } from "lucide-react";
 import { Dock, DockIcon, DockItem, DockLabel } from "../../Dock/dockContext";
 
-export const ChatBadge = () => {
+const ChatBadge = () => {
   const floatingIcons = [
     { title: "Notes", icon: <NotebookPen size={25} color="white" /> },
     { title: "Video Call", icon: <VideoIcon size={30} color="white" /> },
@@ -25,3 +25,5 @@ export const ChatBadge = () => {
     </div>
   );
 };
+
+export default ChatBadge;

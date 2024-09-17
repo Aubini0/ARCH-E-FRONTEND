@@ -1,10 +1,10 @@
-import Header from "@/pages/home/components/header";
 import React from "react";
-import DateTimeSection from "@/pages/home/components/DateTimeSection";
-import RightSection from "@/pages/home/components/RightSection";
 import styles from "./home-styles.module.css";
-import { HomeDock } from "./components/Dock";
 import useLocalStorage from "use-local-storage";
+import Header from "@/components/pages/Home/components/header";
+import DateTimeSection from "@/components/pages/Home/components/DateTimeSection";
+import RightSection from "@/components/pages/Home/components/RightSection";
+import { HomeDock } from "@/components/pages/Home/components/Dock";
 
 const Home = () => {
   const [homePageBg] = useLocalStorage("home_bg_image", "");

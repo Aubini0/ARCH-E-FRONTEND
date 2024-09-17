@@ -1,5 +1,4 @@
 import SearchToolbar from "@/components/ui/searchbar";
-import AvatarGroup from "@/pages/home/components/RightSection/ChatBadge/avatarGroup";
 import { FileIcon, FilePlusIcon, FolderPlusIcon, XIcon } from "lucide-react";
 import React from "react";
 import ImageUpload from "./fileUploader";

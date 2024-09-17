@@ -1,7 +1,7 @@
 import {ClockIcon} from "@/components/icons/ClockIcon";
 import {CoffeeIcon} from "@/components/icons/CoffeeIcon";
 import React, {useState} from "react";
-import TabCountTime from "@/pages/home/components/Stopwatch/TabCountTime";
+import TabCountTime from "./TabCountTime";
 
 const style = {
     border: {
