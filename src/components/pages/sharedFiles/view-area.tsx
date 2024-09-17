@@ -28,7 +28,7 @@ export const FilesAreaView = () => {
           </div>
           <div className="flex gap-4 text-white items-center">
             <Avatar>
-              <AvatarImage src="/user1.png" />
+              <AvatarImage src="user2.png" />
             </Avatar>
             <button className="bg-[#3D3D3D] p-[12px_24px_12px_24px] rounded-[48px]">Share</button>
             <div className="w-[40px] h-[40px] rounded-full flex items-center justify-center cursor-pointer bg-[#272729]">
