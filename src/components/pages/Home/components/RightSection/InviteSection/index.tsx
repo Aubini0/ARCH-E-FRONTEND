@@ -3,7 +3,6 @@ import { ArrowTopIcon } from "@/components/icons/ArrowTopIcon";
 import ChooseRoom from "../../ChooseRoom";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
 
-
 const style = {
   container: {
     display: "flex",
@@ -44,7 +43,7 @@ const InviteSection: React.FC<Props> = () => {
       <div className="text-white cursor-pointer" style={style.container as React.CSSProperties}>
         <div onClick={() => setIsShow(!isShow)} style={style.left as React.CSSProperties}>
           <Avatar>
-            <AvatarImage src="user2.png" />
+            <img src="/user2.png" alt="user icon" />
           </Avatar>
           <div>Aubin’s Room</div>
           <div style={{ transform: isShow ? "" : "rotateX(150deg)" }}>
