@@ -12,7 +12,7 @@ const style = {
     borderRadius: "40px",
     background: "#18181B",
     margin: "20.5px 20px 0 0",
-    width: "400px",
+    width: "380px",
   },
   left: {
     display: "flex",
@@ -20,8 +20,8 @@ const style = {
     alignItems: "center",
     alignSelf: "stretch",
     borderRight: "1px solid #3D3D3D",
-    width: "240px",
-    padding: "12px 16px",
+    width: "220px",
+    padding: "12px 16px 12px 0",
   },
   invite: {
     display: "flex",
