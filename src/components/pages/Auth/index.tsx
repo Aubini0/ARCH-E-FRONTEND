@@ -3,31 +3,28 @@ import { FC, useMemo, useState } from "react";
 import Login from "./Login";
 import SignUp from "./SignUp";
 import { cn } from "@/lib/utils";
+import { useRouter } from "next/router";
 
 interface IAuthForm {
   isDrawer?: boolean;
 }
 
 const AuthForm: FC<IAuthForm> = ({ isDrawer = false }) => {
+  const router = useRouter();
   const tabs = [
     {
       name: "Login",
-      element: <Login handleGoToSignUp={() => setTab("signup")} />,
+      element: <Login handleGoToSignUp={() => router.push("/auth/register")} />,
       value: "login",
     },
     {
       name: "Sign Up",
-      element: <SignUp handleGoToLogin={() => setTab("login")} />,
-      value: "signup",
+      element: <SignUp handleGoToLogin={() => router.push("/auth/login")} />,
+      value: "register",
     },
   ];
 
-  const [tab, setTab] = useState(tabs[0].value);
-
-  const currentTab = useMemo(
-    () => tabs.find((tb) => tb.value === tab),
-    [tabs, tab]
-  );
+  const currentTab = useMemo(() => tabs.find((tb) => `/auth/${tb.value}` === router.asPath), [tabs]);
 
   return currentTab?.element;
 };

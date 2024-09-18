@@ -78,7 +78,7 @@ const Header: FC<IHeader> = (props) => {
             </Button>
           )}
           {!auth && !loading && (
-            <Button className="h-[40px] md:w-[106px] w-[70px] text-md" onClick={() => dispatch(setSignInModal({ open: true }))}>
+            <Button className="h-[40px] md:w-[106px] w-[70px] text-md" onClick={() => router.push("/auth/login")}>
               Login
             </Button>
           )}
