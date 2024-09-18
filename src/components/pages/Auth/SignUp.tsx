@@ -104,7 +104,7 @@ const SignUp: FC<ISignUp> = ({ handleGoToLogin, onSignUp }) => {
   };
 
   return (
-    <div className="flex lg:min-w-[900px] my-5 gap-24">
+    <div className="flex md:min-w-[900px] my-5 gap-24">
       <div className="flex-1 mt-auto mb-10 relative aspect-square w-fit h-fit rounded-3xl overflow-hidden">
         <Image src={"/images/auth-banner.png"} fill alt="auth banner" className="object-cover" />
       </div>
