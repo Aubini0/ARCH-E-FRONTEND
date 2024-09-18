@@ -1,8 +1,10 @@
 import AuthPersist from "@/components/shared/AuthPersist";
+import DesktopOnly from "@/components/shared/DesktopOnly";
 import Modals from "@/components/shared/Modals";
 import { ThemeProvider } from "@/components/shared/ThemeProvider";
 import { Toaster } from "@/components/ui/toaster";
 import { comicSans, inter, montserrat, onest, poppins } from "@/fonts/google";
+import useDeviceIndicator from "@/hooks/useDeviceIndicator";
 import { cn } from "@/lib/utils";
 import { store } from "@/store";
 import "@/styles/globals.css";
@@ -16,6 +18,12 @@ import { Provider } from "react-redux";
 const queryClient = new QueryClient();
 
 export default function App({ Component, pageProps }: AppProps) {
+  // const { isPhone } = useDeviceIndicator();
+
+  // if (isPhone) {
+  //   return <DesktopOnly />;
+  // }
+
   return (
     <Provider store={store}>
       <QueryClientProvider client={queryClient}>

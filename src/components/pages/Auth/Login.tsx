@@ -65,6 +65,7 @@ const Login: FC<ILogin> = ({ onLogin, handleGoToSignUp }) => {
               loading: false,
             })
           );
+          router.replace("/");
           onLogin && onLogin();
           queryClient.resetQueries();
         }

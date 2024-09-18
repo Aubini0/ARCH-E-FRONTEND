@@ -20,6 +20,8 @@ import useDeviceIndicator from "@/hooks/useDeviceIndicator";
 import logoImg from "@/assets/images/logo.png";
 import Image from "next/image";
 import Link from "next/link";
+import { Dialog, DialogContent, DialogOverlay, DialogTrigger } from "@/components/ui/dialog";
+import ProfileModal from "../ProfileModal";
 
 interface IHeader extends React.HTMLAttributes<HTMLDivElement> {}
 
@@ -84,8 +86,8 @@ const Header: FC<IHeader> = (props) => {
           )}
 
           {auth && (
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
+            <Dialog>
+              <DialogTrigger asChild>
                 <Avatar
                   isBordered
                   className="ring-0 w-[42px] h-[42px] text-lg ring-offset-0 cursor-pointer bg-off-white dark:bg-secondary border border-gray-300 dark:border-none"
@@ -93,21 +95,13 @@ const Header: FC<IHeader> = (props) => {
                   name={user?.full_name[0]}
                   src={user?.profilePic}
                 />
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="w-56 mt-3 dark:text-white">
-                <DropdownMenuGroup>
-                  <DropdownMenuItem
-                    onClick={() => {
-                      dispatch(logout());
-                      router.replace("/");
-                    }}
-                  >
-                    <LogOut className="mr-2 h-4 w-4" />
-                    <span>Logout</span>
-                  </DropdownMenuItem>
-                </DropdownMenuGroup>
-              </DropdownMenuContent>
-            </DropdownMenu>
+              </DialogTrigger>
+              <DialogOverlay className="bg-white/30">
+                <DialogContent className="!p-0 !outline-none w-auto bg-transparent !border-none">
+                  <ProfileModal />
+                </DialogContent>
+              </DialogOverlay>
+            </Dialog>
           )}
           {!auth && loading && <Skeleton className="w-[80px] h-[30px] bg-slate-200 dark:bg-secondary" />}
         </div>
