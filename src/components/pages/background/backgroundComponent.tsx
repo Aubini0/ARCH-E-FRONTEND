@@ -36,16 +36,17 @@ export const BackgroundComponent = ({ onClose, setHomePageBg }: Props) => {
       reader.readAsDataURL(file);
     }
   };
+  const [isMount, setIsMount] = React.useState(false);
+  React.useEffect(() => {
+    setIsMount(true);
+    return () => setIsMount(false);
+  }, []);
   return (
     <main className="px-[32px] py-[24px] h-full overflow-auto">
       <section className="mb-[40px]">
         <div className="flex items-center justify-between">
           <p className="font-[500] text-[24px] text-white">Background</p>
-          <button
-            onClick={handleSave}
-            disabled={activeBg == -1}
-            className={`${activeBg == -1 ? "text-[#6f726f]" : "text-white"} bg-[#3D3D3D] p-[12px_24px_12px_24px] rounded-[48px]`}
-          >
+          <button onClick={handleSave} disabled={activeBg == -1} className={`${activeBg == -1 ? "text-[#6f726f]" : "text-white"} bg-[#3D3D3D] p-[12px_24px_12px_24px] rounded-[48px]`}>
             Save
           </button>
         </div>
@@ -74,7 +75,7 @@ export const BackgroundComponent = ({ onClose, setHomePageBg }: Props) => {
           />
         </div>
         <div className="grid grid-cols-4 gap-6 w-full">
-          {Array.from({ length: 8 })?.map((_, idx) => (
+          {isMount && Array.from({ length: 8 })?.map((_, idx) => (
             <div
               onClick={() => handleChangeBg(idx)}
               style={{ background: `url(/backgroundImages/${idx + 1}.jpg)` }}
