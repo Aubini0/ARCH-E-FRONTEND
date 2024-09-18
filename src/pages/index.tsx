@@ -8,6 +8,7 @@ import { HomeDock } from "@/components/pages/Home/components/Dock";
 
 const Home = () => {
   const [homePageBg, setHomePageBg] = useLocalStorage("home_bg_image", "");
+  const [hideTimer, setHideTimer] = useLocalStorage("timer_hidden", "false");
   const [background, setBackground] = React.useState("");
 
   React.useEffect(() => {
@@ -18,9 +19,9 @@ const Home = () => {
     <div style={{ background: `url(${background})`, backgroundSize: "cover" }} className={styles.homeMain}>
       <div style={{ zoom: "67%" }}>
         <Header />
-        <DateTimeSection />
+        <DateTimeSection hideTimer={hideTimer} />
         <RightSection />
-        <HomeDock setHomePageBg={setHomePageBg} />
+        <HomeDock setHideTimer={setHideTimer} setHomePageBg={setHomePageBg} />
       </div>
     </div>
   );
