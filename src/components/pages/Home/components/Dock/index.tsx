@@ -45,7 +45,7 @@ const data = [
 export function HomeDock({ setHomePageBg }: Props) {
   const router = useRouter();
   const [isOpen, setIsOpen] = React.useState({ isOpen: false, key: "" });
-  const closeModal = () => setIsOpen({ isOpen: false, key: "" });
+  const closeModal = () => setIsOpen({ ...isOpen, isOpen: false });
   const handleClick = (route: string) => {
     if (route == "/shared-files" || route == "/background") {
       const key = route == "/shared-files" ? "files" : "background";
