@@ -8,6 +8,8 @@ import React from "react";
 import { Controller, useForm } from "react-hook-form";
 import { z } from "zod";
 import { CiCamera } from "react-icons/ci";
+import { useDispatch } from "react-redux";
+import { logout } from "@/redux/auth/authSlice";
 
 const formSchema = z.object({
   name: z.string({ required_error: "Name is required" }),
@@ -22,6 +24,8 @@ const ProfileModal = () => {
   });
 
   const onSubmit = () => {};
+
+  const dispatch = useDispatch();
 
   return (
     <div
@@ -66,7 +70,7 @@ const ProfileModal = () => {
             <Button type="submit" className="w-full">
               Save profile
             </Button>
-            <Button type="submit" variant={"ghost"} className="w-full bg-transparent border-none text-[#FF3838] outline-none hover:!bg-transparent">
+            <Button type="button" onClick={() => dispatch(logout())} variant={"ghost"} className="w-full bg-transparent border-none text-[#FF3838] outline-none hover:!bg-transparent">
               Log Out
             </Button>
           </div>
