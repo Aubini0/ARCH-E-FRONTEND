@@ -28,7 +28,7 @@ const data = [
   {
     title: "Search",
     icon: <Search className="text-white" />,
-    href: "/",
+    href: "/arche-chat",
   },
   // {
   //   title: "File Management",
