@@ -15,9 +15,9 @@ interface Props {}
 const RightSection: React.FC<Props> = () => {
   return (
     <>
-      <div className="absolute top-[20px] left-[50%] transform translate-x-[-50%]">
+      {/* <div className="absolute top-[20px] left-[50%] transform translate-x-[-50%]">
         <ChatBadge />
-      </div>
+      </div> */}
       <div style={style.container as React.CSSProperties}>
         <InviteSection />
       </div>

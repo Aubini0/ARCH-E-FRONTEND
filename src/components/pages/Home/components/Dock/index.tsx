@@ -19,21 +19,21 @@ const data = [
     icon: <AlarmClock className="text-white" />,
     href: "#",
   },
-  {
-    title: "TV",
-    icon: <Tv className="text-white" />,
-    href: "#",
-  },
+  // {
+  //   title: "TV",
+  //   icon: <Tv className="text-white" />,
+  //   href: "#",
+  // },
   {
     title: "Search",
     icon: <Search className="text-white" />,
     href: "/",
   },
-  {
-    title: "File Management",
-    icon: <Folder className="text-white" />,
-    href: "/shared-files",
-  },
+  // {
+  //   title: "File Management",
+  //   icon: <Folder className="text-white" />,
+  //   href: "/shared-files",
+  // },
   {
     title: "Background",
     icon: <Images size={40} className="text-white" />,
