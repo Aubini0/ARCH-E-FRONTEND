@@ -25,19 +25,13 @@ interface ISignUp {
   onSignUp?: () => void;
 }
 
-const formSchema = z
-  .object({
-    email: z.string().regex(emailRegex, { message: "Invalid email" }),
-    full_name: z.string({ required_error: "Full Name is required" }),
-    password: z.string({ required_error: "Password is required" }).regex(passwordRegex, {
-      message: "Password should contain at least 6 characters",
-    }),
-    confirm_password: z.string().optional(),
-  })
-  .refine((data) => data.confirm_password === data.password, {
-    message: "Confirm password does not match",
-    path: ["confirm_password"],
-  });
+const formSchema = z.object({
+  email: z.string().regex(emailRegex, { message: "Invalid email" }),
+  full_name: z.string({ required_error: "Full Name is required" }),
+  password: z.string({ required_error: "Password is required" }).regex(passwordRegex, {
+    message: "Password should contain at least 6 characters",
+  }),
+});
 
 type FormType = z.infer<typeof formSchema>;
 
