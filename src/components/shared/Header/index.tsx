@@ -96,6 +96,7 @@ const Header: FC<IHeader> = (props) => {
                   src={user?.profilePic}
                 />
               </DialogTrigger>
+              {/*  */}
               <DialogOverlay className="bg-white/30">
                 <DialogContent className="!p-0 !outline-none w-auto bg-transparent !border-none">
                   <ProfileModal />
