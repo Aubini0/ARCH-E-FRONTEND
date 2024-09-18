@@ -125,7 +125,7 @@ const Login: FC<ILogin> = ({ onLogin, handleGoToSignUp }) => {
             <div className="w-full">
               <p className="text-gray-600 dark:text-white font-medium text-sm">
                 Don&apos;t have an account?{" "}
-                <button onClick={() => handleGoToSignUp && handleGoToSignUp()} className="outline-none border-none text-primary font-semibold">
+                <button type="button" onClick={() => handleGoToSignUp && handleGoToSignUp()} className="outline-none border-none text-primary font-semibold">
                   Sign Up
                 </button>
               </p>
