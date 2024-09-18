@@ -70,6 +70,7 @@ const SignUp: FC<ISignUp> = ({ handleGoToLogin, onSignUp }) => {
                 loading: false,
               })
             );
+            router.replace("/");
             onSignUp && onSignUp();
             // handleGoToLogin && handleGoToLogin();
           }
