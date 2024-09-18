@@ -1,29 +1,29 @@
-import Queries from "@/components/pages/Queries";
-import { useGetSessionId } from "@/hooks/api/auth";
-import { useAppSelector } from "@/store/hooks";
-import { useRouter } from "next/router";
-import React, { useEffect, useState } from "react";
-import { toast } from "react-hot-toast";
+import React from "react";
+import styles from "@/styles/home-styles.module.css";
+import useLocalStorage from "use-local-storage";
+import Header from "@/components/pages/Home/components/header";
+import DateTimeSection from "@/components/pages/Home/components/DateTimeSection";
+import RightSection from "@/components/pages/Home/components/RightSection";
+import { HomeDock } from "@/components/pages/Home/components/Dock";
 
 const Home = () => {
-  const { mutateAsync: getSessionId } = useGetSessionId();
-  const router = useRouter();
+  const [homePageBg, setHomePageBg] = useLocalStorage("home_bg_image", "");
+  const [background, setBackground] = React.useState("");
 
-  const handleGetSessionid = async () => {
-    try {
-      localStorage.removeItem("queries");
-      const res = await getSessionId();
-      router.replace(`/sessions/${res.data.session_id}`);
-    } catch (error) {
-      toast.error("Something went wrong, please try again later");
-    }
-  };
-
-  useEffect(() => {
-    handleGetSessionid();
-  }, []);
-
-  return <Queries session_id={undefined} />;
+  React.useEffect(() => {
+    const bg = homePageBg ? homePageBg : "/home-background.png";
+    setBackground(bg);
+  }, [homePageBg]);
+  return (
+    <div style={{ background: `url(${background})`, backgroundSize: "cover" }} className={styles.homeMain}>
+      <div style={{ zoom: "67%" }}>
+        <Header />
+        <DateTimeSection />
+        <RightSection />
+        <HomeDock setHomePageBg={setHomePageBg} />
+      </div>
+    </div>
+  );
 };
 
 export default Home;

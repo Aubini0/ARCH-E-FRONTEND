@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { ArrowTopIcon } from "@/components/icons/ArrowTopIcon";
 import ChooseRoom from "../../ChooseRoom";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
+import { Dialog, DialogContent, DialogOverlay, DialogTrigger } from "@/components/ui/dialog";
+import ProfileModal from "@/components/shared/ProfileModal";
 
 const style = {
   container: {
@@ -42,9 +44,17 @@ const InviteSection: React.FC<Props> = () => {
   return (
     <>
       <div className="text-white" style={style.container as React.CSSProperties}>
-        <Avatar className="cursor-pointer">
-          <img src="User2.png" alt="user icon" />
-        </Avatar>
+        <Dialog>
+          <DialogTrigger asChild>
+            <Avatar className="cursor-pointer">
+              <img src="User2.png" alt="user icon" />
+            </Avatar>
+          </DialogTrigger>
+          {/*  */}
+          <DialogContent className="!p-0 !outline-none w-auto bg-transparent !border-none">
+            <ProfileModal />
+          </DialogContent>
+        </Dialog>
         <div className="cursor-pointer" onClick={() => setIsShow(!isShow)} style={style.left as React.CSSProperties}>
           <div>Aubin’s Room</div>
           <div style={{ transform: isShow ? "" : "rotateX(150deg)" }}>
