@@ -7,6 +7,7 @@ import React from "react";
 
 interface Props {
   setHomePageBg?: (value: string) => void;
+  setHideTimer: (value: any) => void;
 }
 const data = [
   {
@@ -15,9 +16,9 @@ const data = [
     href: "#",
   },
   {
-    title: "Alaram",
+    title: "Timer",
     icon: <AlarmClock className="text-white" />,
-    href: "#",
+    href: "/timer",
   },
   // {
   //   title: "TV",
@@ -42,7 +43,7 @@ const data = [
   },
 ];
 
-export function HomeDock({ setHomePageBg }: Props) {
+export function HomeDock({ setHomePageBg, setHideTimer }: Props) {
   const router = useRouter();
   const [isOpen, setIsOpen] = React.useState({ isOpen: false, key: "" });
   const closeModal = () => setIsOpen({ ...isOpen, isOpen: false });
@@ -50,6 +51,8 @@ export function HomeDock({ setHomePageBg }: Props) {
     if (route == "/shared-files" || route == "/background") {
       const key = route == "/shared-files" ? "files" : "background";
       setIsOpen({ isOpen: true, key: key });
+    } else if (route == "/timer") {
+      setHideTimer((pre: string) => (pre == "true" ? "false" : "true"));
     } else {
       router.push(route);
     }
