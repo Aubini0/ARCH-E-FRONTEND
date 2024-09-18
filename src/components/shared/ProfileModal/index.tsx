@@ -10,6 +10,7 @@ import { z } from "zod";
 import { CiCamera } from "react-icons/ci";
 import { useDispatch } from "react-redux";
 import { logout } from "@/redux/auth/authSlice";
+import { useRouter } from "next/router";
 
 const formSchema = z.object({
   name: z.string({ required_error: "Name is required" }),
@@ -22,6 +23,8 @@ const ProfileModal = () => {
   const { control, handleSubmit, reset, getValues } = useForm<FormType>({
     resolver: zodResolver(formSchema),
   });
+
+  const router = useRouter();
 
   const onSubmit = () => {};
 
@@ -70,7 +73,15 @@ const ProfileModal = () => {
             <Button type="submit" className="w-full">
               Save profile
             </Button>
-            <Button type="button" onClick={() => dispatch(logout())} variant={"ghost"} className="w-full bg-transparent border-none text-[#FF3838] outline-none hover:!bg-transparent">
+            <Button
+              type="button"
+              onClick={() => {
+                dispatch(logout());
+                router.push("/auth/login");
+              }}
+              variant={"ghost"}
+              className="w-full bg-transparent border-none text-[#FF3838] outline-none hover:!bg-transparent"
+            >
               Log Out
             </Button>
           </div>

@@ -142,7 +142,7 @@ const SignUp: FC<ISignUp> = ({ handleGoToLogin, onSignUp }) => {
                 )}
               />
             </div>
-            <div>
+            {/* <div>
               <Controller
                 control={control}
                 name="confirm_password"
@@ -150,7 +150,7 @@ const SignUp: FC<ISignUp> = ({ handleGoToLogin, onSignUp }) => {
                   <AnimatedInput {...field} error={fieldState.error} autoComplete="off" label="Confirm Password" id="new" type={passwordVisible ? "text" : "password"} placeholder="*******" />
                 )}
               />
-            </div>
+            </div> */}
             <div className="flex flex-col !mt-6 gap-6">
               <Button type="submit" isLoading={isLoading} className="w-full">
                 Sign Up
