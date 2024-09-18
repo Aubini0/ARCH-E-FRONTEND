@@ -35,7 +35,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
   ({ className, label, inputPrefix, inputSuffix, inputPrefixClassName, inputSuffixClassName, inputContainerClassName, labelClassName, error, id, disabled, ...props }, ref) => {
     return (
       <Fragment>
-        {label !== undefined && <label className={cn("dark:text-white text-black font-inter text-[15px] font-medium leading-[18px]", { "text-red-400": error }, labelClassName)}>{label}</label>}{" "}
+        {label !== undefined && <label className={cn("dark:text-[#848585] text-black font-inter text-xs font-medium leading-[16px]", { "text-red-400": error }, labelClassName)}>{label}</label>}{" "}
         <div
           className={cn(
             "flex w-full rounded-lg dark:bg-secondary dark:border-[#3D3D3D] border border-gray-300 mt-2 overflow-hidden",

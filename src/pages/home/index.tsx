@@ -1,5 +1,5 @@
 import React from "react";
-import styles from "./home-styles.module.css";
+import styles from "@/styles/home-styles.module.css";
 import useLocalStorage from "use-local-storage";
 import Header from "@/components/pages/Home/components/header";
 import DateTimeSection from "@/components/pages/Home/components/DateTimeSection";
@@ -17,7 +17,7 @@ const Home = () => {
   }, [homePageBg]);
   return (
     <div style={{ background: `url(${background})`, backgroundSize: "cover" }} className={styles.homeMain}>
-      <div style={{zoom: "67%"}}>
+      <div style={{ zoom: "67%" }}>
         <Header />
         <DateTimeSection hideTimer={hideTimer} />
         <RightSection />

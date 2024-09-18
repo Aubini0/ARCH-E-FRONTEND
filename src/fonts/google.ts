@@ -1,4 +1,4 @@
-import { Comic_Neue, Inter, Montserrat, Onest } from "next/font/google";
+import { Comic_Neue, Inter, Montserrat, Onest, Poppins } from "next/font/google";
 
 export const onest = Onest({
   subsets: ["latin"],
@@ -26,4 +26,11 @@ export const inter = Inter({
   display: "swap",
   weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
   variable: "--font-inter",
+});
+
+export const poppins = Poppins({
+  subsets: ["latin"],
+  display: "swap",
+  weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
+  variable: "--font-poppins",
 });

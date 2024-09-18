@@ -2,7 +2,7 @@ import AuthPersist from "@/components/shared/AuthPersist";
 import Modals from "@/components/shared/Modals";
 import { ThemeProvider } from "@/components/shared/ThemeProvider";
 import { Toaster } from "@/components/ui/toaster";
-import { comicSans, inter, montserrat, onest } from "@/fonts/google";
+import { comicSans, inter, montserrat, onest, poppins } from "@/fonts/google";
 import { cn } from "@/lib/utils";
 import { store } from "@/store";
 import "@/styles/globals.css";
@@ -32,7 +32,7 @@ export default function App({ Component, pageProps }: AppProps) {
         <AuthPersist>
           <ThemeProvider attribute="class" defaultTheme="dark" disableTransitionOnChange>
             <NextUIProvider>
-              <div suppressHydrationWarning className={cn(onest.variable, montserrat.variable, comicSans.variable, inter.variable)}>
+              <div suppressHydrationWarning className={cn(onest.variable, montserrat.variable, comicSans.variable, inter.variable, poppins.variable)}>
                 <Component {...pageProps} />
               </div>
               <Modals />
