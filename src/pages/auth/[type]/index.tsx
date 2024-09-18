@@ -4,7 +4,7 @@ import React from "react";
 
 const Auth = () => {
   return (
-    <div className="w-screen min-h-screen bg-off-white dark:bg-secondary flex items-center justify-center">
+    <div className="w-screen min-h-screen bg-white dark:bg-dark-background flex items-center justify-center">
       <AuthForm />
     </div>
   );

@@ -18,11 +18,7 @@ import { Provider } from "react-redux";
 const queryClient = new QueryClient();
 
 export default function App({ Component, pageProps }: AppProps) {
-  // const { isPhone } = useDeviceIndicator();
-
-  // if (isPhone) {
-  //   return <DesktopOnly />;
-  // }
+  const { isPhone } = useDeviceIndicator();
 
   return (
     <Provider store={store}>
@@ -40,12 +36,18 @@ export default function App({ Component, pageProps }: AppProps) {
         <AuthPersist>
           <ThemeProvider attribute="class" defaultTheme="dark" disableTransitionOnChange>
             <NextUIProvider>
-              <div suppressHydrationWarning className={cn(onest.variable, montserrat.variable, comicSans.variable, inter.variable, poppins.variable)}>
-                <Component {...pageProps} />
-              </div>
-              <Modals />
-              <ReactHotToastToaster />
-              <Toaster />
+              {!isPhone ? (
+                <>
+                  <div suppressHydrationWarning className={cn(onest.variable, montserrat.variable, comicSans.variable, inter.variable, poppins.variable)}>
+                    <Component {...pageProps} />
+                  </div>
+                  <Modals />
+                  <ReactHotToastToaster />
+                  <Toaster />
+                </>
+              ) : (
+                <DesktopOnly />
+              )}
             </NextUIProvider>
           </ThemeProvider>
         </AuthPersist>

@@ -25,19 +25,13 @@ interface ISignUp {
   onSignUp?: () => void;
 }
 
-const formSchema = z
-  .object({
-    email: z.string().regex(emailRegex, { message: "Invalid email" }),
-    full_name: z.string({ required_error: "Full Name is required" }),
-    password: z.string({ required_error: "Password is required" }).regex(passwordRegex, {
-      message: "Password should contain at least 6 characters",
-    }),
-    confirm_password: z.string().optional(),
-  })
-  .refine((data) => data.confirm_password === data.password, {
-    message: "Confirm password does not match",
-    path: ["confirm_password"],
-  });
+const formSchema = z.object({
+  email: z.string().regex(emailRegex, { message: "Invalid email" }),
+  full_name: z.string({ required_error: "Full Name is required" }),
+  password: z.string({ required_error: "Password is required" }).regex(passwordRegex, {
+    message: "Password should contain at least 6 characters",
+  }),
+});
 
 type FormType = z.infer<typeof formSchema>;
 
@@ -104,8 +98,8 @@ const SignUp: FC<ISignUp> = ({ handleGoToLogin, onSignUp }) => {
   };
 
   return (
-    <div className="flex lg:min-w-[800px] my-5">
-      <div className="flex-1 relative xl:min-h-[500px] rounded-3xl overflow-hidden">
+    <div className="flex md:min-w-[900px] my-5 gap-24">
+      <div className="flex-1 mt-auto mb-10 relative aspect-square w-fit h-fit rounded-3xl overflow-hidden">
         <Image src={"/images/auth-banner.png"} fill alt="auth banner" className="object-cover" />
       </div>
       <div
@@ -113,7 +107,7 @@ const SignUp: FC<ISignUp> = ({ handleGoToLogin, onSignUp }) => {
           "text-black flex-1 flex flex-col justify-center bg-white border border-gray-200 dark:border-transparent dark:bg-dark-background dark:text-white w-full md:w-[400px] rounded-3xl font-poppins py-10"
         )}
       >
-        <div className="flex flex-col items-center justify-center mb-10">
+        <div className="flex flex-col items-center justify-center mb-4">
           <Image onClick={() => router.push("/")} src={theme === "dark" ? "/images/logo.png" : "/images/logo-light.png"} alt="Logo Image" width={50} height={50} className="cursor-pointer" />
           <h4 className="font-medium font-poppins text-[20px] mt-4">Welcome To Arche</h4>
         </div>
