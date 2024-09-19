@@ -1,6 +1,8 @@
 import { ImageIcon } from "lucide-react";
 import React from "react";
 import useLocalStorage from "use-local-storage";
+import LazyLoad from "react-lazyload";
+import Image from "next/image";
 
 interface Props {
   onClose: () => void;
@@ -36,11 +38,7 @@ export const BackgroundComponent = ({ onClose, setHomePageBg }: Props) => {
       reader.readAsDataURL(file);
     }
   };
-  const [isMount, setIsMount] = React.useState(false);
-  React.useEffect(() => {
-    setIsMount(true);
-    return () => setIsMount(false);
-  }, []);
+
   return (
     <main className="px-[32px] py-[24px] h-full overflow-auto">
       <section className="mb-[40px]">
@@ -75,13 +73,17 @@ export const BackgroundComponent = ({ onClose, setHomePageBg }: Props) => {
           />
         </div>
         <div className="grid grid-cols-4 gap-6 w-full">
-          {isMount && Array.from({ length: 8 })?.map((_, idx) => (
-            <div
-              onClick={() => handleChangeBg(idx)}
-              style={{ background: `url(/backgroundImages/${idx + 1}.jpg)` }}
-              key={idx}
-              className={`${activeBg == idx && "border-[2px]"} h-[122px] cursor-pointer w-full rounded-[16px]`}
-            />
+          {Array.from({ length: 8 })?.map((_, idx) => (
+            <LazyLoad key={idx} once>
+              <Image
+                width={100}
+                height={122}
+                onClick={() => handleChangeBg(idx)}
+                className={`${activeBg == idx && "border-[2px]"} h-[122px] cursor-pointer w-full rounded-[16px]`}
+                src={`/backgroundImages/${idx + 1}.jpg`}
+                alt={`Background ${idx + 1}`}
+              />
+            </LazyLoad>
           ))}
         </div>
       </section>
