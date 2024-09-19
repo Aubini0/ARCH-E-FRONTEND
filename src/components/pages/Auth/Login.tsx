@@ -105,7 +105,7 @@ const Login: FC<ILogin> = ({ onLogin, handleGoToSignUp }) => {
               <Controller
                 control={control}
                 name="email"
-                render={({ field, fieldState }) => <AnimatedInput {...field} error={fieldState.error} autoComplete="off" label="Email" id="email" type="email" placeholder="nickboston@example.com" />}
+                render={({ field, fieldState }) => <AnimatedInput {...field} error={fieldState.error} autoComplete="off" label="Email" id="email" type="email" placeholder="Enter your email" />}
               />
             </div>
             <div>
@@ -113,7 +113,22 @@ const Login: FC<ILogin> = ({ onLogin, handleGoToSignUp }) => {
                 control={control}
                 name="password"
                 render={({ field, fieldState: { error } }) => {
-                  return <AnimatedInput {...field} autoComplete="off" label="Password" id="new-password" type={passwordVisible ? "text" : "password"} error={error} placeholder="********" />;
+                  return (
+                    <AnimatedInput
+                      {...field}
+                      autoComplete="off"
+                      label="Password"
+                      id="new-password"
+                      type={passwordVisible ? "text" : "password"}
+                      error={error}
+                      placeholder="Enter your password"
+                      inputSuffix={
+                        <div onClick={() => setPasswordVisible((pv) => !pv)}>
+                          {passwordVisible ? <FaRegEye className="text-gray-200 text-lg" /> : <FaRegEyeSlash className="text-gray-200 text-lg" />}
+                        </div>
+                      }
+                    />
+                  );
                 }}
               />
             </div>

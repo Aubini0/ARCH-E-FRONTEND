@@ -117,14 +117,14 @@ const SignUp: FC<ISignUp> = ({ handleGoToLogin, onSignUp }) => {
               <Controller
                 control={control}
                 name="full_name"
-                render={({ field, fieldState }) => <AnimatedInput {...field} error={fieldState.error} label="Name" id="name" placeholder="Nick Boston" />}
+                render={({ field, fieldState }) => <AnimatedInput {...field} error={fieldState.error} label="Name" id="name" placeholder="Enter your name" />}
               />
             </div>
             <div>
               <Controller
                 control={control}
                 name="email"
-                render={({ field, fieldState }) => <AnimatedInput {...field} error={fieldState.error} label="Email" id="email" placeholder="nickboston@example.com" />}
+                render={({ field, fieldState }) => <AnimatedInput {...field} error={fieldState.error} label="Email" id="email" placeholder="Enter your email" />}
               />
             </div>
             <div>
@@ -132,7 +132,20 @@ const SignUp: FC<ISignUp> = ({ handleGoToLogin, onSignUp }) => {
                 control={control}
                 name="password"
                 render={({ field, fieldState }) => (
-                  <AnimatedInput {...field} error={fieldState.error} autoComplete="off" label="Password" id="new" type={passwordVisible ? "text" : "password"} placeholder="*******" />
+                  <AnimatedInput
+                    {...field}
+                    error={fieldState.error}
+                    autoComplete="off"
+                    label="Password"
+                    id="new"
+                    type={passwordVisible ? "text" : "password"}
+                    placeholder="Enter your password"
+                    inputSuffix={
+                      <div onClick={() => setPasswordVisible((pv) => !pv)}>
+                        {passwordVisible ? <FaRegEye className="text-gray-200 text-lg" /> : <FaRegEyeSlash className="text-gray-200 text-lg" />}
+                      </div>
+                    }
+                  />
                 )}
               />
             </div>
