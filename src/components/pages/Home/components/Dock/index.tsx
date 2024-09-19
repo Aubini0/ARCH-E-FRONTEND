@@ -4,10 +4,12 @@ import { Dock, DockIcon, DockItem, DockLabel } from "./dockContext";
 import { useRouter } from "next/router";
 import { Modal } from "@/components/pages/Home/modal";
 import React from "react";
+import { PiNotepad } from "react-icons/pi";
 
 interface Props {
   setHomePageBg?: (value: string) => void;
   setHideTimer: (value: any) => void;
+  addNote: () => void;
 }
 const data = [
   {
@@ -26,6 +28,11 @@ const data = [
   //   href: "#",
   // },
   {
+    title: "Add New Note",
+    icon: <PiNotepad className="text-white text-2xl" />,
+    href: "/add-new-note",
+  },
+  {
     title: "Search",
     icon: <Search className="text-white" />,
     href: "/arche-chat",
@@ -43,7 +50,7 @@ const data = [
   },
 ];
 
-export function HomeDock({ setHomePageBg, setHideTimer }: Props) {
+export function HomeDock({ setHomePageBg, setHideTimer, addNote }: Props) {
   const router = useRouter();
   const [isOpen, setIsOpen] = React.useState({ isOpen: false, key: "" });
   const closeModal = () => setIsOpen({ ...isOpen, isOpen: false });
@@ -53,6 +60,8 @@ export function HomeDock({ setHomePageBg, setHideTimer }: Props) {
       setIsOpen({ isOpen: true, key: key });
     } else if (route == "/timer") {
       setHideTimer((pre: string) => (pre == "true" ? "false" : "true"));
+    } else if (route == "/add-new-note") {
+      addNote();
     } else {
       router.push(route);
     }

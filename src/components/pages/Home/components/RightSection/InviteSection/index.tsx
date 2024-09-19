@@ -58,7 +58,7 @@ const InviteSection: React.FC<Props> = () => {
           </DialogContent>
         </Dialog>
         <div className="cursor-pointer" onClick={() => setIsShow(!isShow)} style={style.left as React.CSSProperties}>
-          <div className="whitespace-nowrap">{user?.full_name}’s Room</div>
+          <div className="whitespace-nowrap">{user?.full_name.split(" ")[0]}’s Room</div>
           <div style={{ transform: isShow ? "" : "rotateX(150deg)" }}>
             <ArrowTopIcon />
           </div>
