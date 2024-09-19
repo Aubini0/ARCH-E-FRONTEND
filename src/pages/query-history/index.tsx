@@ -15,6 +15,7 @@ import { useDebounce } from "use-debounce";
 import { useToast } from "@/components/ui/use-toast";
 import useDeviceIndicator from "@/hooks/useDeviceIndicator";
 import { addTimezoneUTC } from "@/lib/utils";
+import withAuth from "@/hoc/WithAuth";
 
 const QueryHistory = () => {
   const { toast } = useToast();
@@ -139,4 +140,4 @@ const QueryHistory = () => {
   );
 };
 
-export default QueryHistory;
+export default withAuth(QueryHistory);

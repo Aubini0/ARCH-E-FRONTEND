@@ -5,6 +5,7 @@ import Header from "@/components/pages/Home/components/header";
 import DateTimeSection from "@/components/pages/Home/components/DateTimeSection";
 import RightSection from "@/components/pages/Home/components/RightSection";
 import { HomeDock } from "@/components/pages/Home/components/Dock";
+import withAuth from "@/hoc/WithAuth";
 
 const Home = () => {
   const [homePageBg, setHomePageBg] = useLocalStorage("home_bg_image", "");
@@ -27,4 +28,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default withAuth(Home);
