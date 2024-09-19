@@ -20,6 +20,8 @@ const queryClient = new QueryClient();
 export default function App({ Component, pageProps }: AppProps) {
   const { isPhone } = useDeviceIndicator();
 
+  console.log("isPhone", isPhone);
+
   return (
     <Provider store={store}>
       <QueryClientProvider client={queryClient}>
@@ -36,7 +38,9 @@ export default function App({ Component, pageProps }: AppProps) {
         <AuthPersist>
           <ThemeProvider attribute="class" defaultTheme="dark" disableTransitionOnChange>
             <NextUIProvider>
-              {!isPhone ? (
+              {isPhone ? (
+                <DesktopOnly />
+              ) : (
                 <>
                   <div suppressHydrationWarning className={cn(onest.variable, montserrat.variable, comicSans.variable, inter.variable, poppins.variable)}>
                     <Component {...pageProps} />
@@ -45,8 +49,6 @@ export default function App({ Component, pageProps }: AppProps) {
                   <ReactHotToastToaster />
                   <Toaster />
                 </>
-              ) : (
-                <DesktopOnly />
               )}
             </NextUIProvider>
           </ThemeProvider>
