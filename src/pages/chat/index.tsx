@@ -1,5 +1,6 @@
 import MainLayout from "@/components/layouts/MainLayout";
 import { ChatLayout } from "@/components/pages/Chat/chat-layout";
+import withAuth from "@/hoc/WithAuth";
 import React from "react";
 
 const Chat = () => {
@@ -10,4 +11,4 @@ const Chat = () => {
   );
 };
 
-export default Chat;
+export default withAuth(Chat);

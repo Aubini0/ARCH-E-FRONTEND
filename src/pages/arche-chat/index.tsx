@@ -1,4 +1,5 @@
 import Queries from "@/components/pages/Queries";
+import withAuth from "@/hoc/WithAuth";
 import { useGetSessionId } from "@/hooks/api/auth";
 import { useAppSelector } from "@/store/hooks";
 import { useRouter } from "next/router";
@@ -26,4 +27,4 @@ const Home = () => {
   return <Queries session_id={undefined} />;
 };
 
-export default Home;
+export default withAuth(Home);

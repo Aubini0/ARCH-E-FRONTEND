@@ -20,8 +20,6 @@ const queryClient = new QueryClient();
 export default function App({ Component, pageProps }: AppProps) {
   const { isPhone } = useDeviceIndicator();
 
-  console.log("isPhone", isPhone);
-
   return (
     <Provider store={store}>
       <QueryClientProvider client={queryClient}>

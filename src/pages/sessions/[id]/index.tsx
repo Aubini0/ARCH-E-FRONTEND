@@ -1,4 +1,5 @@
 import Queries from "@/components/pages/Queries";
+import withAuth from "@/hoc/WithAuth";
 import { useRouter } from "next/router";
 import React from "react";
 
@@ -8,4 +9,4 @@ const SessionPage = () => {
   return <Queries session_id={session_id} />;
 };
 
-export default SessionPage;
+export default withAuth(SessionPage);
