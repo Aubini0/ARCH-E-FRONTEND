@@ -9,7 +9,7 @@ import withAuth from "@/hoc/WithAuth";
 import Notes from "@/components/shared/Notes";
 import { v4 as uuidv4 } from "uuid";
 
-const scaleFactor = 0.68;
+const scaleFactor = 0.8;
 
 const gridPositions = [
   { x: -200 * scaleFactor, y: 100 * scaleFactor },
@@ -59,6 +59,11 @@ const Home = () => {
     setNotes(newNotes);
   };
 
+  const handleDeleteNote = (id: string) => {
+    // const newNotes = notes.filter((note) => note.id !== id);
+    // setNotes(newNotes);
+  };
+
   // const handleNoteClick = (id: string) => {
   //   const newNotes = notes.map((note) => {
   //     if (note.id === id) {
@@ -81,7 +86,7 @@ const Home = () => {
         <DateTimeSection hideTimer={hideTimer} />
         <RightSection />
         <HomeDock addNote={addNote} setHideTimer={setHideTimer} setHomePageBg={setHomePageBg} />
-        <Notes handlePositionChange={handlePositionChange} notes={notes} />
+        <Notes handlePositionChange={handlePositionChange} handleDeleteNote={handleDeleteNote} notes={notes} />
       </div>
     </div>
   );
