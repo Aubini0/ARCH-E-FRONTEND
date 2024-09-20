@@ -22,8 +22,8 @@ function Button({ children, onClick, disabled, ariaLabel }: { children: React.Re
     </button>
   );
 }
-
-export default function SearchToolbar(data: InputHTMLAttributes) {
+interface MyInputProps extends InputHTMLAttributes<HTMLInputElement> {}
+export default function SearchToolbar(data: MyInputProps) {
   const { placeholder, ...props } = data;
   const [isOpen, setIsOpen] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
