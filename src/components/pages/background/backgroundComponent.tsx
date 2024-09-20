@@ -5,6 +5,7 @@ import SearchToolbar from "@/components/ui/searchbar";
 import axios from "axios";
 import { useDebounce } from "use-debounce";
 import { ImageIcon } from "lucide-react";
+import { Spinner } from "@nextui-org/react";
 
 interface Props {
   onClose: () => void;
@@ -21,9 +22,14 @@ export const BackgroundComponent = ({ onClose, setHomePageBg }: Props) => {
 
   React.useEffect(() => {
     const handleSearch = async (value: string) => {
-      const response = await axios.get(`https://api.unsplash.com/search/photos?query=${value}&per_page=12&orientation=landscape&page=1&client_id=${UNSPLASH_ACCESS_KEY}`);
-      const dataToFill = response?.data?.results?.map((item: { urls: any }) => item?.urls?.full);
-      setImages(dataToFill);
+      try {
+        setLoading(true);
+        const response = await axios.get(`https://api.unsplash.com/search/photos?query=${value}&per_page=12&orientation=landscape&page=1&client_id=${UNSPLASH_ACCESS_KEY}`);
+        const dataToFill = response?.data?.results?.map((item: { urls: any }) => item?.urls?.full);
+        setImages(dataToFill);
+      } finally {
+        setLoading(false);
+      }
     };
     if (debouncedValue) {
       handleSearch(debouncedValue);
@@ -35,11 +41,7 @@ export const BackgroundComponent = ({ onClose, setHomePageBg }: Props) => {
   };
   const handleSave = () => {
     if (setHomePageBg) {
-      if (activeBg < 8) {
-        setHomePageBg(`/backgroundImages/${activeBg + 1}.jpg`);
-      } else {
-        setHomePageBg("/home-background.png");
-      }
+      setHomePageBg(images[activeBg]);
     }
     onClose();
   };
@@ -61,15 +63,20 @@ export const BackgroundComponent = ({ onClose, setHomePageBg }: Props) => {
         <div className="grid grid-cols-4 gap-6 w-full">
           {images?.length ? (
             images?.map((item, idx) => (
-              <LazyLoad key={idx} onContentVisible={() => {setLoading(false)}}>
-                <Image
-                  width={100}
-                  height={122}
-                  onClick={() => handleChangeBg(idx)}
-                  className={`${activeBg == idx && "border-[2px]"} h-[122px] cursor-pointer w-full rounded-[16px]`}
-                  src={item}
-                  alt={`Background image`}
-                />
+              <LazyLoad
+                key={idx}
+                onContentVisible={() => {
+                  setLoading(false);
+                }}
+              >
+                  <Image
+                    width={100}
+                    height={122}
+                    onClick={() => handleChangeBg(idx)}
+                    className={`${activeBg == idx && "border-[2px]"} h-[122px] cursor-pointer w-full rounded-[16px]`}
+                    src={item}
+                    alt={`Background image`}
+                  />
               </LazyLoad>
             ))
           ) : (
