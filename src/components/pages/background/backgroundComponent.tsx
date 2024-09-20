@@ -16,7 +16,7 @@ export const BackgroundComponent = ({ onClose, setHomePageBg }: Props) => {
   // const UNSPLASH_SECRET_KEY = "6B8yoTQ-uvy_6b_m370_g-iHj1_VdyeHLiAq_MsK6hw";
   const [activeBg, setActiveBg] = React.useState(-1);
   const [images, setImages] = React.useState([]);
-  const [laoding, setLoading] = React.useState(false);
+  const [loading, setLoading] = React.useState(false);
   const [searchVal, setSearchVal] = React.useState("");
   const [debouncedValue] = useDebounce(searchVal, 1000);
 
@@ -56,31 +56,23 @@ export const BackgroundComponent = ({ onClose, setHomePageBg }: Props) => {
           </button>
         </div>
       </section>
-      <section className="mb-10">
+      <section className="mb-20">
         <SearchToolbar onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSearchVal(e?.target?.value)} placeholder="Search images 'sky' " />
       </section>
       <section>
         <div className="grid grid-cols-4 gap-6 w-full">
-          {images?.length ? (
+          {!loading && images?.length ? (
             images?.map((item, idx) => (
-              <LazyLoad
-                key={idx}
-                onContentVisible={() => {
-                  setLoading(false);
-                }}
-              >
-                {/* {!laoding ? ( */}
-                  <Image
-                    width={100}
-                    height={122}
-                    onClick={() => handleChangeBg(idx)}
-                    className={`${activeBg == idx && "border-[2px]"} h-[122px] cursor-pointer w-full rounded-[16px]`}
-                    src={item}
-                    alt={`Background image`}
-                  />
-                {/* ) : (
-                  <Spinner size="lg" />
-                )} */}
+              <LazyLoad key={idx}>
+                <Image
+                  width={100}
+                  height={122}
+                  onClick={() => handleChangeBg(idx)}
+                  className={`${activeBg == idx && "border-[2px]"} h-[122px] text-white cursor-pointer w-full rounded-[16px]`}
+                  src={item}
+                  onLoad={()=> setLoading(false)}
+                  alt={`Background image`}
+                />
               </LazyLoad>
             ))
           ) : (
@@ -88,10 +80,16 @@ export const BackgroundComponent = ({ onClose, setHomePageBg }: Props) => {
           )}
         </div>
       </section>
-      {!images?.length && (
+      {(!images?.length || loading) && (
         <section className="flex justify-center flex-col items-center w-full h-[calc(100%-300px)]">
-          <ImageIcon size={200} />
-          <p className="font-bold text-[20px] mt-1 text-white text-center">Choose the image for your background</p>
+          {loading ? (
+            <Spinner size="lg" />
+          ) : (
+            <>
+              <ImageIcon size={200} />
+              <p className="font-bold text-[20px] mt-1 text-white text-center">Choose the image for your background</p>
+            </>
+          )}
         </section>
       )}
     </main>
