@@ -86,7 +86,7 @@ export const BackgroundComponent = ({ onClose, setHomePageBg }: Props) => {
             <Spinner size="lg" />
           ) : (
             <>
-              <ImageIcon size={200} />
+              <ImageIcon size={200} color="#fff" />
               <p className="font-bold text-[20px] mt-1 text-white text-center">Choose the image for your background</p>
             </>
           )}
