@@ -1,9 +1,9 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { ArrowTopIcon } from "@/components/icons/ArrowTopIcon";
 import ChooseRoom from "../../ChooseRoom";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { Dialog, DialogContent, DialogOverlay, DialogTrigger } from "@/components/ui/dialog";
-import ProfileModal from "@/components/shared/ProfileModal";
+import EditProfileModal from "@/components/shared/EditProfileModal";
 import { useAppSelector } from "@/store/hooks";
 
 const style = {
@@ -43,18 +43,26 @@ interface Props {}
 const InviteSection: React.FC<Props> = () => {
   const [isShow, setIsShow] = useState(false);
   const { user } = useAppSelector((state) => state.auth);
+  const [editProfileOpen, setEditProfileOpen] = useState(false);
+
+  const [image, setImage] = useState(user?.profilePic || "/images/user.png");
+
+  useEffect(() => {
+    setImage(user?.profilePic || "/images/user.png");
+  }, [user]);
+
   return (
     <>
       <div className="text-white" style={style.container as React.CSSProperties}>
-        <Dialog>
+        <Dialog open={editProfileOpen} onOpenChange={setEditProfileOpen}>
           <DialogTrigger asChild>
             <Avatar className="cursor-pointer">
-              <img src="User2.png" alt="user icon" />
+              <AvatarImage src={image} alt={user?.full_name} width={6} height={6} />
             </Avatar>
           </DialogTrigger>
           {/*  */}
           <DialogContent className="!p-0 !outline-none w-auto bg-transparent !border-none">
-            <ProfileModal />
+            <EditProfileModal handleClose={() => setEditProfileOpen(false)} />
           </DialogContent>
         </Dialog>
         <div className="cursor-pointer" onClick={() => setIsShow(!isShow)} style={style.left as React.CSSProperties}>

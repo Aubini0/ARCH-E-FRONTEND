@@ -72,3 +72,15 @@ export const useVerifyAccess = (queryOptions: UseQueryOptions<any, AxiosError<AP
     },
   });
 };
+
+export const useEditProfile = (props?: UseMutationOptions<any, AxiosError<APIError>, FormData>): UseMutationResult<any, AxiosError<APIError>, FormData> => {
+  const mutation = useMutation<any, AxiosError<APIError>, FormData>({
+    ...props,
+    mutationFn: async (payload) => {
+      const response = await http.put("/auth/user/profile", payload);
+      return response.data;
+    },
+  });
+
+  return mutation;
+};
