@@ -21,7 +21,7 @@ import logoImg from "@/assets/images/logo.png";
 import Image from "next/image";
 import Link from "next/link";
 import { Dialog, DialogContent, DialogOverlay, DialogTrigger } from "@/components/ui/dialog";
-import ProfileModal from "../ProfileModal";
+import EditProfileModal from "../EditProfileModal";
 
 interface IHeader extends React.HTMLAttributes<HTMLDivElement> {}
 
@@ -33,6 +33,7 @@ const Header: FC<IHeader> = (props) => {
   const { theme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
   const { isPhone } = useDeviceIndicator();
+  const [editProfileOpen, setEditProfileOpen] = useState(false);
 
   useEffect(() => {
     setMounted(true);
@@ -86,7 +87,7 @@ const Header: FC<IHeader> = (props) => {
           )}
 
           {auth && (
-            <Dialog>
+            <Dialog open={editProfileOpen} onOpenChange={setEditProfileOpen}>
               <DialogTrigger asChild>
                 <Avatar
                   isBordered
@@ -99,7 +100,7 @@ const Header: FC<IHeader> = (props) => {
               {/*  */}
               <DialogOverlay className="bg-white/30">
                 <DialogContent className="!p-0 !outline-none w-auto bg-transparent !border-none">
-                  <ProfileModal />
+                  <EditProfileModal handleClose={() => setEditProfileOpen(false)} />
                 </DialogContent>
               </DialogOverlay>
             </Dialog>
