@@ -1,5 +1,5 @@
 "use client";
-import React, { useRef, useState } from "react";
+import React, { InputHTMLAttributes, useRef, useState } from "react";
 import { motion, MotionConfig } from "framer-motion";
 import { ArrowLeft, Search, User } from "lucide-react";
 
@@ -23,7 +23,8 @@ function Button({ children, onClick, disabled, ariaLabel }: { children: React.Re
   );
 }
 
-export default function SearchToolbar() {
+export default function SearchToolbar(data: InputHTMLAttributes) {
+  const { placeholder, ...props } = data;
   const [isOpen, setIsOpen] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -54,7 +55,12 @@ export default function SearchToolbar() {
                     <ArrowLeft className="h-5 w-5" />
                   </Button>
                   <div className="relative w-full">
-                    <input className="h-9 w-full rounded-lg border border-[#848585] bg-transparent p-2 text-white placeholder-zinc-500 focus:outline-none" autoFocus placeholder="Search files" />
+                    <input
+                      {...props}
+                      className="h-9 w-full rounded-lg border border-[#848585] bg-transparent p-2 text-white placeholder-zinc-500 focus:outline-none"
+                      autoFocus
+                      placeholder={placeholder || "Search files"}
+                    />
                     <div className="absolute right-1 top-0 flex h-full items-center justify-center"></div>
                   </div>
                 </div>
