@@ -24,7 +24,7 @@ const RightSection: React.FC<Props> = () => {
       {/* <div className="absolute top-[20px] left-[50%] transform translate-x-[-50%]">
         <ChatBadge />
       </div> */}
-      <div style={style.container as React.CSSProperties}>
+      <div style={{ ...(style.container as React.CSSProperties), zoom: "67%" }}>
         {auth && <InviteSection />}
         {!auth && (
           <Button onClick={() => router.push("/auth/login")} className="text-base mt-5 mr-5 w-[130px]">

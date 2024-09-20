@@ -69,6 +69,7 @@ export const BackgroundComponent = ({ onClose, setHomePageBg }: Props) => {
                   setLoading(false);
                 }}
               >
+                {/* {!laoding ? ( */}
                   <Image
                     width={100}
                     height={122}
@@ -77,6 +78,9 @@ export const BackgroundComponent = ({ onClose, setHomePageBg }: Props) => {
                     src={item}
                     alt={`Background image`}
                   />
+                {/* ) : (
+                  <Spinner size="lg" />
+                )} */}
               </LazyLoad>
             ))
           ) : (
