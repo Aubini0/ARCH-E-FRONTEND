@@ -31,16 +31,16 @@ const data = [
     icon: <PiNotepad className="text-white text-2xl" />,
     href: "/add-new-note",
   },
-  {
-    title: "Search",
-    icon: <Search className="text-white" />,
-    href: "/search",
-  },
-  {
-    title: "File Management",
-    icon: <Folder className="text-white" />,
-    href: "/shared-files",
-  },
+  // {
+  //   title: "Search",
+  //   icon: <Search className="text-white" />,
+  //   href: "/search",
+  // },
+  // {
+  //   title: "File Management",
+  //   icon: <Folder className="text-white" />,
+  //   href: "/shared-files",
+  // },
   // {
   //   title: "File Management",
   //   icon: <Folder className="text-white" />,

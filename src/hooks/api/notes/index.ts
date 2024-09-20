@@ -1,7 +1,7 @@
 import http from "@/lib/http";
 import { APIError, APIResponse, ICreateNote, INote } from "@/types/common";
 import { AxiosError } from "axios";
-import { UseMutationOptions, UseMutationResult, useMutation } from "react-query";
+import { UseMutationOptions, UseMutationResult, UseQueryOptions, UseQueryResult, useMutation, useQuery } from "react-query";
 
 export const useCreateNote = (props?: UseMutationOptions<APIResponse<INote>, AxiosError<APIError>, ICreateNote>): UseMutationResult<APIResponse<INote>, AxiosError<APIError>, ICreateNote> => {
   const mutation = useMutation<APIResponse<INote>, AxiosError<APIError>, ICreateNote>({
@@ -39,4 +39,18 @@ export const useUpdateNote = (
   });
 
   return mutation;
+};
+
+export const useGetNotes = (
+  props?: UseQueryOptions<[{ data: INote[] }, number], AxiosError<APIError>, [{ data: INote[] }, number], string>
+): UseQueryResult<[{ data: INote[] }, number], AxiosError<APIError>> => {
+  const query = useQuery<[{ data: INote[] }, number], AxiosError<APIError>, any, string>({
+    ...props,
+    queryFn: async () => {
+      const response = await http.get(`/notes`);
+      return response.data;
+    },
+  });
+
+  return query;
 };
