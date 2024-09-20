@@ -51,7 +51,7 @@ const style = {
 
 const DateTimeSection = ({ hideTimer }: { hideTimer: string }) => {
   return (
-    <div style={style.container as React.CSSProperties}>
+    <div style={{ ...(style.container as React.CSSProperties), zoom: "67%" }}>
       <div>
         <Clock />
       </div>

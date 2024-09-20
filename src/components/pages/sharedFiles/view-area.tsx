@@ -31,12 +31,18 @@ export const FilesAreaView = () => {
               <img src="User2.png" alt="user icon" />
             </Avatar>
             <button className="bg-[#3D3D3D] p-[12px_24px_12px_24px] rounded-[48px]">Share</button>
-            <div className="w-[40px] h-[40px] rounded-full flex items-center justify-center cursor-pointer bg-[#272729]">
-              <FolderPlusIcon size={20} />
-            </div>
-            <div className="w-[40px] h-[40px] rounded-full flex items-center justify-center cursor-pointer bg-[#272729]">
-              <FilePlusIcon size={18} />
-            </div>
+            <label className="relative w-[40px] h-[40px] rounded-full flex items-center justify-center cursor-pointer bg-[#272729]">
+              <div>
+                <FolderPlusIcon size={20} />
+              </div>
+              <input id="dropzone-file" accept="image/png, image/jpeg" type="file" className="hidden" />
+            </label>
+            <label className="relative w-[40px] h-[40px] rounded-full flex items-center justify-center cursor-pointer bg-[#272729]">
+              <div>
+                <FilePlusIcon size={18} />
+              </div>
+              <input id="dropzone-file" accept="image/png, image/jpeg" type="file" className="hidden" />
+            </label>
           </div>
         </div>
       </section>
