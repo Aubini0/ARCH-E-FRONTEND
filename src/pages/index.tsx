@@ -7,22 +7,20 @@ import RightSection from "@/components/pages/Home/components/RightSection";
 import { HomeDock } from "@/components/pages/Home/components/Dock";
 import withAuth from "@/hoc/WithAuth";
 import Notes from "@/components/shared/Notes";
-import { v4 as uuidv4 } from "uuid";
 import { useDropzone } from "react-dropzone";
 import { cn } from "@/lib/utils";
 import { ContextMenu, ContextMenuTrigger } from "@/components/ui/context-menu";
 import { useCreateNote, useDeleteNote, useGetNotes, useUpdateNote } from "@/hooks/api/notes";
-import { toast } from "react-hot-toast";
 import { ICreateNote, INote } from "@/types/common";
 
 const scaleFactor = 0.8;
 
 const gridPositions = [
-  { x: -200 * scaleFactor, y: 100 * scaleFactor },
-  { x: -30 * scaleFactor, y: 20 * scaleFactor },
-  { x: -30 * scaleFactor, y: -560 * scaleFactor },
-  { x: -360 * scaleFactor, y: -810 * scaleFactor },
-  { x: -360 * scaleFactor, y: -730 * scaleFactor },
+  { x: 0 * scaleFactor, y: 0 * scaleFactor },
+  { x: 150 * scaleFactor, y: -170 * scaleFactor },
+  { x: 150 * scaleFactor, y: 170 * scaleFactor },
+  { x: -150 * scaleFactor, y: -170 * scaleFactor },
+  { x: -150 * scaleFactor, y: 170 * scaleFactor },
 ];
 
 const defaultNotes: any[] = [];

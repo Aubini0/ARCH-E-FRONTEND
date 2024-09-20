@@ -43,7 +43,7 @@ const Note: FC<INote> = ({ handlePositionChange, note, handleDeleteNote, handleU
         onFocus={() => setClicked(true)}
         onBlur={() => setClicked(false)}
         tabIndex={0}
-        className="__notes_drag relative w-[200px] bg-[#FDF7BB] border border-[#D1D1D0] h-[200px] p-5 cursor-grab"
+        className="__notes_drag absolute w-[200px] bg-[#FDF7BB] border border-[#D1D1D0] h-[200px] p-5 cursor-grab"
         style={{ zoom: "100%", zIndex: note.zIndex }}
       >
         <textarea

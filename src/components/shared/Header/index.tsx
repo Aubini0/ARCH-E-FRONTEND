@@ -17,9 +17,6 @@ import { cn } from "@/lib/utils";
 import QueryHistory from "./QueryHistory";
 import { useRouter } from "next/router";
 import useDeviceIndicator from "@/hooks/useDeviceIndicator";
-import logoImg from "@/assets/images/logo.png";
-import Image from "next/image";
-import Link from "next/link";
 import { Dialog, DialogContent, DialogOverlay, DialogTrigger } from "@/components/ui/dialog";
 import EditProfileModal from "../EditProfileModal";
 
@@ -71,7 +68,7 @@ const Header: FC<IHeader> = (props) => {
             </Link>
           )} */}
           {!isPhone && auth && <QueryHistory />}
-          {mounted && (
+          {/* {mounted && (
             <Button
               onClick={() => (theme === "dark" ? setTheme("light") : setTheme("dark"))}
               className="w-[42px] bg-transparent dark:bg-transparent dark:hover:bg-secondary border-transparent hover:border-gray-300 h-[40px] p-0"
@@ -79,7 +76,7 @@ const Header: FC<IHeader> = (props) => {
               {theme === "light" && <FiMoon className="text-xl" />}
               {theme === "dark" && <AiOutlineSun className="text-xl" />}
             </Button>
-          )}
+          )} */}
           {!auth && !loading && (
             <Button className="h-[40px] md:w-[106px] w-[70px] text-md" onClick={() => router.push("/auth/login")}>
               Login

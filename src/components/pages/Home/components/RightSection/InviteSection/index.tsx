@@ -5,6 +5,7 @@ import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { Dialog, DialogContent, DialogOverlay, DialogTrigger } from "@/components/ui/dialog";
 import EditProfileModal from "@/components/shared/EditProfileModal";
 import { useAppSelector } from "@/store/hooks";
+import { AvatarFallback } from "@radix-ui/react-avatar";
 
 const style = {
   container: {
@@ -15,14 +16,14 @@ const style = {
     borderRadius: "40px",
     background: "#18181B",
     margin: "20.5px 20px 0 0",
-    minWidth: "392px",
+    minWidth: "250px",
   },
   left: {
     display: "flex",
     justifyContent: "space-between",
     alignItems: "center",
     alignSelf: "stretch",
-    borderRight: "1px solid #3D3D3D",
+    // borderRight: "1px solid #3D3D3D",
     borderLeft: "1px solid #3D3D3D",
     minWidth: "175px",
     padding: "12px 16px 12px 16px",
@@ -45,10 +46,10 @@ const InviteSection: React.FC<Props> = () => {
   const { user } = useAppSelector((state) => state.auth);
   const [editProfileOpen, setEditProfileOpen] = useState(false);
 
-  const [image, setImage] = useState(user?.profilePic || "/images/user.png");
+  const [image, setImage] = useState(user?.profilePic || undefined);
 
   useEffect(() => {
-    setImage(user?.profilePic || "/images/user.png");
+    setImage(user?.profilePic || undefined);
   }, [user]);
 
   return (
@@ -57,7 +58,8 @@ const InviteSection: React.FC<Props> = () => {
         <Dialog open={editProfileOpen} onOpenChange={setEditProfileOpen}>
           <DialogTrigger asChild>
             <Avatar className="cursor-pointer">
-              <AvatarImage src={image} alt={user?.full_name} width={6} height={6} />
+              <AvatarImage src={image} alt={user?.full_name} />
+              <AvatarFallback className="flex items-center justify-center w-full h-full text-lg bg-secondary">{user?.full_name[0]}</AvatarFallback>
             </Avatar>
           </DialogTrigger>
           {/*  */}
@@ -71,7 +73,7 @@ const InviteSection: React.FC<Props> = () => {
             <ArrowTopIcon />
           </div>
         </div>
-        <div style={style.invite as React.CSSProperties}>Invite</div>
+        {/* <div style={style.invite as React.CSSProperties}>Invite</div> */}
       </div>
       {isShow ? <ChooseRoom /> : <></>}
     </>

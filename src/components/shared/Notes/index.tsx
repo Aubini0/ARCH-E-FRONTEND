@@ -21,7 +21,7 @@ interface INotes {
 
 const Notes: FC<INotes> = ({ notes, handlePositionChange, handleDeleteNote, handleUpdateNoteOnServer, status }) => {
   return (
-    <div className="fixed right-12 top-44">
+    <div className="fixed right-[25vw] top-[40vh]">
       {notes.length > 0 &&
         notes.map((note) => <Note handleDeleteNote={handleDeleteNote} note={note} handlePositionChange={handlePositionChange} handleUpdateNoteOnServer={handleUpdateNoteOnServer} key={note.id} />)}
       {/* {status === "loading" && <Skeleton className="bg-[#FDF7BB] dark:bg-[#FDF7BB] w-[200px] h-[200px]" />} */}
