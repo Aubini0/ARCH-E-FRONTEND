@@ -139,7 +139,7 @@ const EditProfileModal: FC<IEditProfileModal> = ({ handleClose }) => {
               control={control}
               name="email"
               render={({ field, fieldState: { error } }) => {
-                return <AnimatedInput {...field} autoComplete="off" label="Email" type={"text"} error={error} placeholder="Enter your email" />;
+                return <AnimatedInput readOnly {...field} autoComplete="off" label="Email" type={"text"} error={error} placeholder="Enter your email" />;
               }}
             />
           </div>
