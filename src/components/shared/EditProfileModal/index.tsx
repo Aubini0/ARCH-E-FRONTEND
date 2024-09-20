@@ -117,14 +117,14 @@ const EditProfileModal: FC<IEditProfileModal> = ({ handleClose }) => {
       <div className="flex flex-col items-center justify-center mb-10">
         <div className="cursor-pointer mx-auto w-[80px] h-[80px] min-w-[80px] min-h-[80px] relative">
           <div className="w-full h-full max-w-full max-h-full overflow-hidden relative">
-            <Avatar onClick={() => open()} className="w-full h-full">
+            <Avatar className="w-full h-full">
               <AvatarImage src={croppedImage ? URL.createObjectURL(croppedImage) : user?.profilePic} alt={user?.full_name} />
               <AvatarFallback className="flex items-center justify-center w-full h-full text-lg bg-secondary">{user?.full_name[0]}</AvatarFallback>
             </Avatar>
             <ImageCropper setCroppedImage={setCroppedImage} dialogOpen={isDialogOpen} setDialogOpen={setDialogOpen} selectedFile={selectedFile} setSelectedFile={setSelectedFile} />
             <input type="file" {...getInputProps()} className="hidden" />
           </div>
-          <div className="absolute rounded-full z-50 -right-0 -bottom-0 bg-secondary flex items-center justify-center w-[24px] h-[24px]">
+          <div onClick={() => open()} className="absolute rounded-full z-50 -right-0 -bottom-0 bg-secondary flex items-center justify-center w-[24px] h-[24px]">
             <CiCamera />
           </div>
         </div>
