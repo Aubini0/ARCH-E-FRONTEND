@@ -12,6 +12,7 @@ export const FilesUploadArea = () => {
   const [isActiveMenu, setActiveMenu] = React.useState({ space: true, share: true });
   const [isOpenNewSpace, setIsOpenNewSpace] = React.useState({ key: "", data: "" });
   const [isOpenConfirmModal, setIsOpenConfirmModal] = React.useState({ isOpen: false, data: "" });
+  const [activeSpace, setActiveSpace] = React.useState(-1);
   const [isHovered, setIsHovered] = React.useState(-1);
   const handleMenu = (key: string) => {
     if (isActiveMenu[key as keyof typeof isActiveMenu]) {
@@ -51,9 +52,10 @@ export const FilesUploadArea = () => {
             {spaces?.map((item, idx) => {
               return (
                 <div
+                  onClick={()=> setActiveSpace(idx)}
                   onMouseEnter={() => setIsHovered(idx)}
                   onMouseLeave={() => setIsHovered(-1)}
-                  className="h-[56px] cursor-pointer justify-between hover:bg-[#27272A] text-white rounded-[8px] px-[15px] flex items-center gap-4 py-[20px]"
+                  className={`${activeSpace == idx && "bg-[#27272A]"} h-[56px] mb-[1px] cursor-pointer justify-between hover:bg-[#27272A] text-white rounded-[8px] px-[15px] flex items-center gap-4 py-[20px]`}
                   key={idx}
                 >
                   <div className="flex gap-2">

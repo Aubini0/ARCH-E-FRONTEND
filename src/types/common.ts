@@ -110,3 +110,14 @@ export interface ISessionInHistory {
   session_id: string;
   session_name: string;
 }
+
+export interface ICreateNote {
+  text: string;
+  x_position: number;
+  y_position: number;
+  z_position: number;
+}
+
+export interface INote extends ICreateNote {
+  note_id: string;
+}

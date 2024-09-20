@@ -1,5 +1,4 @@
-import { AlarmClock, CalendarDays, Folder, HomeIcon, Images, Search, Tv } from "lucide-react";
-
+import { AlarmClock, Folder, HomeIcon, Images, Search } from "lucide-react";
 import { Dock, DockIcon, DockItem, DockLabel } from "./dockContext";
 import { useRouter } from "next/router";
 import { Modal } from "@/components/pages/Home/modal";
@@ -35,7 +34,12 @@ const data = [
   {
     title: "Search",
     icon: <Search className="text-white" />,
-    href: "/arche-chat",
+    href: "/search",
+  },
+  {
+    title: "File Management",
+    icon: <Folder className="text-white" />,
+    href: "/shared-files",
   },
   // {
   //   title: "File Management",
@@ -67,7 +71,7 @@ export function HomeDock({ setHomePageBg, setHideTimer, addNote }: Props) {
     }
   };
   return (
-    <div className="absolute bottom-[16px] left-1/2 max-w-full -translate-x-1/2">
+    <div style={{ zoom: "67%" }} className="absolute bottom-[16px] left-1/2 max-w-full -translate-x-1/2">
       <Dock className="items-end relative gap-[24px] bg-[#191919]">
         {data.map((item, idx) => {
           return (
