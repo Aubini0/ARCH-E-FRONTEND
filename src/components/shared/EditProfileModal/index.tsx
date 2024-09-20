@@ -18,6 +18,7 @@ import { useEditProfile } from "@/hooks/api/auth";
 import { toast } from "react-hot-toast";
 import { AxiosError } from "axios";
 import { useQueryClient } from "react-query";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 const formSchema = z.object({
   name: z.string({ required_error: "Name is required" }),
@@ -114,9 +115,12 @@ const EditProfileModal: FC<IEditProfileModal> = ({ handleClose }) => {
         </Button>
       </div>
       <div className="flex flex-col items-center justify-center mb-10">
-        <div className="cursor-pointer mx-auto w-[80px] h-[80px] min-w-[80px] min-h-[80px] rounded-full relative">
-          <div className="w-full h-full max-w-full max-h-full rounded-full overflow-hidden relative">
-            <Image priority onClick={() => open()} src={croppedImage ? URL.createObjectURL(croppedImage) : user?.profilePic || "/images/user.png"} alt="Logo Image" fill className="object-cover" />
+        <div className="cursor-pointer mx-auto w-[80px] h-[80px] min-w-[80px] min-h-[80px] relative">
+          <div className="w-full h-full max-w-full max-h-full overflow-hidden relative">
+            <Avatar onClick={() => open()} className="w-full h-full">
+              <AvatarImage src={croppedImage ? URL.createObjectURL(croppedImage) : user?.profilePic} alt={user?.full_name} />
+              <AvatarFallback className="flex items-center justify-center w-full h-full text-lg bg-secondary">{user?.full_name[0]}</AvatarFallback>
+            </Avatar>
             <ImageCropper setCroppedImage={setCroppedImage} dialogOpen={isDialogOpen} setDialogOpen={setDialogOpen} selectedFile={selectedFile} setSelectedFile={setSelectedFile} />
             <input type="file" {...getInputProps()} className="hidden" />
           </div>
