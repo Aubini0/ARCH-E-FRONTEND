@@ -62,25 +62,34 @@ interface Props {
   setTime: (value: any) => void;
   running: boolean;
   setRunning: (value: boolean) => void;
+  startTimeRef: any;
 }
 
-const TabCountTime: React.FC<Props> = ({ onChange, onShowSetting, time, setTime, running, setRunning }) => {
-  useEffect(() => {
+const TabCountTime: React.FC<Props> = ({ onChange, onShowSetting, startTimeRef, time, setTime, running, setRunning }) => {
+  React.useEffect(() => {
     let interval: any;
     if (running) {
+      if (startTimeRef.current === null) {
+        startTimeRef.current = Date.now() - time;
+      }
       interval = setInterval(() => {
+        const newTime = Date.now() - startTimeRef.current!;
         onChange &&
           onChange({
             hours: ("0" + Math.floor((time / 1440000) % 60)).slice(-2),
             minutes: ("0" + Math.floor((time / 60000) % 60)).slice(-2),
           });
-        setTime((prevTime: number) => prevTime + 10);
+        setTime(newTime);
       }, 10);
-    } else if (!running) {
+    } else {
       clearInterval(interval);
     }
     return () => clearInterval(interval);
-  }, [running]);
+  }, [running, time]);
+  const handleReset = () => {
+    setTime(0);
+    startTimeRef.current = null;
+  };
   return (
     <>
       <div className="text-white" style={style.clock as React.CSSProperties}>
@@ -88,10 +97,16 @@ const TabCountTime: React.FC<Props> = ({ onChange, onShowSetting, time, setTime,
         <span>{("0" + Math.floor((time / 1000) % 60)).slice(-2)}</span>
       </div>
       <div style={style.action as React.CSSProperties}>
-        <div onClick={() => setTime(0)} style={style.iconCircle as React.CSSProperties}>
+        <div onClick={handleReset} style={style.iconCircle as React.CSSProperties}>
           <ResetIcon />
         </div>
-        <div onClick={() => setRunning(!running)} style={style.actionIcon as React.CSSProperties}>
+        <div
+          onClick={() => {
+            setRunning(!running);
+            startTimeRef.current = null;
+          }}
+          style={style.actionIcon as React.CSSProperties}
+        >
           {running ? (
             <>
               <PauseIcon />

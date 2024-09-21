@@ -125,6 +125,7 @@ const StopWatch = () => {
   const [hours, setHours] = useState<{ hours: number | string; minutes: number | string }>({ hours: "00", minutes: "00" });
   const [isShowSetting, setIsShowSetting] = useState(false);
 
+  const startTimeRef = React.useRef<number | null>(null);
   const [time, setTime] = useState(0);
   const [running, setRunning] = useState(false);
   const handleClickTab = (tab: number) => {
@@ -132,6 +133,7 @@ const StopWatch = () => {
       setIsTab(tab);
       setRunning(false);
       setTime(0);
+      startTimeRef.current = null;
     }
   };
   return (
@@ -152,7 +154,7 @@ const StopWatch = () => {
               <p style={isTab === 2 ? style.pActive : (style.p as React.CSSProperties)}>Break</p>
             </div>
           </div>
-          <div>{<TabCountTime running={running} setRunning={setRunning} time={time} setTime={setTime} onShowSetting={() => setIsShowSetting(!isShowSetting)} onChange={(e) => setHours(e)} />}</div>
+          <div>{<TabCountTime startTimeRef={startTimeRef} running={running} setRunning={setRunning} time={time} setTime={setTime} onShowSetting={() => setIsShowSetting(!isShowSetting)} onChange={(e) => setHours(e)} />}</div>
         </div>
       </div>
       {isShowSetting ? (
