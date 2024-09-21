@@ -67,14 +67,14 @@ interface Props {
 
 const TabCountTime: React.FC<Props> = ({ onShowSetting, handleReset, startTimeRef, time, setTime, running, setRunning }) => {
   React.useEffect(() => {
+    let startTime: number;
     let interval: any;
     if (running) {
-      if (startTimeRef.current === null) {
-        startTimeRef.current = Date.now() + time;
-      }
-
+      startTime = Date.now();
       interval = setInterval(() => {
-        setTime((prevTime: number) => Math.max(prevTime - 1000, 0));
+        const timeElapsed = Date.now() - startTime;
+        setTime((prevTime: number) => Math.max(prevTime - timeElapsed, 0));
+        startTime = Date.now();
         if (time <= 1000) {
           setRunning(false);
           clearInterval(interval);
