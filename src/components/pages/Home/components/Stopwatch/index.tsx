@@ -115,7 +115,7 @@ const style = {
     outline: "none",
     border: "none",
     background: "transparent",
-    maxWidth: "30px",
+    maxWidth: "24px",
     fontFamily: "Poppins",
     fontSize: "18px",
     fontStyle: "normal",
