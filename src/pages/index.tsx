@@ -12,6 +12,7 @@ import { cn } from "@/lib/utils";
 import { ContextMenu, ContextMenuTrigger } from "@/components/ui/context-menu";
 import { useCreateNote, useDeleteNote, useGetNotes, useUpdateNote } from "@/hooks/api/notes";
 import { ICreateNote, INote } from "@/types/common";
+import TasksList from "@/components/shared/TasksList";
 
 const scaleFactor = 0.8;
 
@@ -31,6 +32,8 @@ const Home = () => {
   const [background, setBackground] = React.useState("");
   const [notes, setNotes] = useState(defaultNotes);
   const [maxZIndex, setMaxZIndex] = useState(0); // To keep track of the highest zIndex
+
+  const [tasksWindowOpen, setTasksWindowOpen] = useState(false);
 
   const { mutateAsync: createNoteMutateAsync } = useCreateNote();
   const { mutateAsync: deleteNoteMutateAsync } = useDeleteNote();
@@ -134,8 +137,9 @@ const Home = () => {
             <Header />
             <DateTimeSection hideTimer={hideTimer} />
             <RightSection />
-            <HomeDock addNote={addNote} setHideTimer={setHideTimer} setHomePageBg={setHomePageBg} />
+            <HomeDock setTasksWindowOpen={setTasksWindowOpen} addNote={addNote} setHideTimer={setHideTimer} setHomePageBg={setHomePageBg} />
             <Notes status={notesStatus} handlePositionChange={handlePositionChange} handleUpdateNoteOnServer={handleUpdateNoteOnServer} handleDeleteNote={handleDeleteNote} notes={notes} />
+            {tasksWindowOpen && <TasksList />}
           </div>
         </div>
       </ContextMenuTrigger>

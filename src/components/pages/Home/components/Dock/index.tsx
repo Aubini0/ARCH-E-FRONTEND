@@ -4,18 +4,15 @@ import { useRouter } from "next/router";
 import { Modal } from "@/components/pages/Home/modal";
 import React from "react";
 import { PiNotepad } from "react-icons/pi";
+import { FaTasks } from "react-icons/fa";
 
 interface Props {
   setHomePageBg?: (value: string) => void;
   setHideTimer: (value: any) => void;
   addNote: () => void;
+  setTasksWindowOpen: (value: boolean) => void;
 }
 const data = [
-  {
-    title: "Home",
-    icon: <HomeIcon className="text-white" />,
-    href: "#",
-  },
   {
     title: "Timer",
     icon: <AlarmClock className="text-white" />,
@@ -30,6 +27,11 @@ const data = [
     title: "Add New Note",
     icon: <PiNotepad className="text-white text-2xl" />,
     href: "/add-new-note",
+  },
+  {
+    title: "Tasks",
+    icon: <FaTasks className="text-white text-2xl" />,
+    href: "/tasks",
   },
   // {
   //   title: "Search",
@@ -54,7 +56,7 @@ const data = [
   },
 ];
 
-export function HomeDock({ setHomePageBg, setHideTimer, addNote }: Props) {
+export function HomeDock({ setHomePageBg, setHideTimer, addNote, setTasksWindowOpen }: Props) {
   const router = useRouter();
   const [isOpen, setIsOpen] = React.useState({ isOpen: false, key: "" });
   const closeModal = () => setIsOpen({ ...isOpen, isOpen: false });
@@ -64,6 +66,8 @@ export function HomeDock({ setHomePageBg, setHideTimer, addNote }: Props) {
       setIsOpen({ isOpen: true, key: key });
     } else if (route == "/timer") {
       setHideTimer((pre: string) => (pre == "true" ? "false" : "true"));
+    } else if (route == "/tasks") {
+      setTasksWindowOpen(true);
     } else if (route == "/add-new-note") {
       addNote();
     } else {
