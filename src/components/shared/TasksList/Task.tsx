@@ -11,10 +11,10 @@ interface ITask {
 
 const Task: FC<ITask> = ({ text }) => {
   return (
-    <div className="w-full bg-secondary p-3 rounded-xl flex items-center gap-3">
-      <Checkbox className="border-zinc-500 border-2" />{" "}
+    <div className="w-full bg-secondary px-3 py-1 rounded-xl flex items-center gap-3">
+      <Checkbox className="border-zinc-500 border-2 data-[state=checked]:bg-green-800 w-[15px] h-[15px]" />
       <div className="flex-1 flex items-center justify-between">
-        <h5>{text}</h5>
+        <h5 className="text-xs">{text}</h5>
         <DropdownMenu>
           <DropdownMenuTrigger>
             <div className="text-xl p-1 rounded-full hover:bg-dark-background cursor-pointer text-zinc-500 duration-100">
