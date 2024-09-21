@@ -22,7 +22,6 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 const formSchema = z.object({
   name: z.string({ required_error: "Name is required" }),
-  email: z.string().regex(emailRegex, { message: "Invalid email" }),
 });
 
 type FormType = z.infer<typeof formSchema>;
@@ -36,6 +35,8 @@ const EditProfileModal: FC<IEditProfileModal> = ({ handleClose }) => {
   const [isDialogOpen, setDialogOpen] = React.useState(false);
 
   const [croppedImage, setCroppedImage] = useState<Blob | null>(null);
+
+  const [edit, setEdit] = useState(false);
 
   const user = useAppSelector((state) => state.auth.user);
 
@@ -65,7 +66,6 @@ const EditProfileModal: FC<IEditProfileModal> = ({ handleClose }) => {
   useEffect(() => {
     reset({
       name: user?.full_name,
-      email: user?.email,
     });
   }, [user]);
 
@@ -90,7 +90,6 @@ const EditProfileModal: FC<IEditProfileModal> = ({ handleClose }) => {
       if (croppedImage) {
         formData.append("file", croppedImage);
       }
-      formData.append("email", data.email);
       await editProfile(formData);
       handleClose();
       queryClient.refetchQueries({ queryKey: "current_user" });
@@ -110,47 +109,64 @@ const EditProfileModal: FC<IEditProfileModal> = ({ handleClose }) => {
       )}
     >
       <div className="absolute right-0 top-3">
-        <Button type="submit" variant={"ghost"} className="w-full bg-transparent border-none text-[#0089D0] outline-none hover:!bg-transparent">
+        <Button onClick={() => setEdit(true)} type="submit" variant={"ghost"} className="w-full bg-transparent border-none text-[#0089D0] outline-none hover:!bg-transparent">
           Edit Profile
         </Button>
       </div>
-      <div className="flex flex-col items-center justify-center mb-10">
-        <div className="cursor-pointer mx-auto w-[80px] h-[80px] min-w-[80px] min-h-[80px] relative">
-          <div className="w-full h-full max-w-full max-h-full overflow-hidden relative">
-            <Avatar className="w-full h-full">
-              <AvatarImage src={croppedImage ? URL.createObjectURL(croppedImage) : user?.profilePic} alt={user?.full_name} />
-              <AvatarFallback className="flex items-center justify-center w-full h-full text-lg bg-secondary">{user?.full_name[0]}</AvatarFallback>
-            </Avatar>
-            <ImageCropper setCroppedImage={setCroppedImage} dialogOpen={isDialogOpen} setDialogOpen={setDialogOpen} selectedFile={selectedFile} setSelectedFile={setSelectedFile} />
-            <input type="file" {...getInputProps()} className="hidden" />
-          </div>
-          <div onClick={() => open()} className="absolute rounded-full z-50 -right-0 -bottom-0 bg-secondary flex items-center justify-center w-[24px] h-[24px]">
-            <CiCamera />
+      {edit ? (
+        <div className="flex flex-col items-center justify-center mb-10">
+          <div className="cursor-pointer mx-auto w-[80px] h-[80px] min-w-[80px] min-h-[80px] relative">
+            <div className="w-full h-full max-w-full max-h-full overflow-hidden relative">
+              <Avatar className="w-full h-full">
+                <AvatarImage src={croppedImage ? URL.createObjectURL(croppedImage) : user?.profilePic} alt={user?.full_name} />
+                <AvatarFallback className="flex items-center justify-center w-full h-full text-lg bg-secondary">{user?.full_name[0]}</AvatarFallback>
+              </Avatar>
+              <ImageCropper setCroppedImage={setCroppedImage} dialogOpen={isDialogOpen} setDialogOpen={setDialogOpen} selectedFile={selectedFile} setSelectedFile={setSelectedFile} />
+              <input type="file" {...getInputProps()} className="hidden" />
+            </div>
+            <div onClick={() => open()} className="absolute rounded-full z-50 -right-0 -bottom-0 bg-secondary flex items-center justify-center w-[24px] h-[24px]">
+              <CiCamera />
+            </div>
           </div>
         </div>
-      </div>
+      ) : (
+        <div className="flex flex-col items-center justify-center mb-10">
+          <div className="cursor-pointer mx-auto w-[80px] h-[80px] min-w-[80px] min-h-[80px] relative">
+            <div className="w-full h-full max-w-full max-h-full overflow-hidden relative">
+              <Avatar className="w-full h-full">
+                <AvatarImage src={croppedImage ? URL.createObjectURL(croppedImage) : user?.profilePic} alt={user?.full_name} />
+                <AvatarFallback className="flex items-center justify-center w-full h-full text-lg bg-secondary">{user?.full_name[0]}</AvatarFallback>
+              </Avatar>
+            </div>
+          </div>
+        </div>
+      )}
       <div className="px-10">
         <form className="space-y-4" onSubmit={handleSubmit(onSubmit)}>
-          <div>
-            <Controller
-              control={control}
-              name="name"
-              render={({ field, fieldState }) => <AnimatedInput {...field} error={fieldState.error} autoComplete="off" label="Name" type="text" placeholder="Enter your name" />}
-            />
-          </div>
-          <div>
-            <Controller
-              control={control}
-              name="email"
-              render={({ field, fieldState: { error } }) => {
-                return <AnimatedInput readOnly {...field} autoComplete="off" label="Email" type={"text"} error={error} placeholder="Enter your email" />;
-              }}
-            />
+          {edit ? (
+            <div>
+              <Controller
+                control={control}
+                name="name"
+                render={({ field, fieldState }) => <AnimatedInput {...field} error={fieldState.error} autoComplete="off" label="Name" type="text" placeholder="Enter your name" />}
+              />
+            </div>
+          ) : (
+            <div className="space-y-2">
+              <p className={cn("dark:text-[#848585] text-black font-inter text-xs font-medium leading-[16px]")}>Name</p>
+              <p className={cn("dark:text-white text-black font-inter text-sm font-normal leading-[16px]")}>{user?.full_name}</p>
+            </div>
+          )}
+          <div className="space-y-2">
+            <p className={cn("dark:text-[#848585] text-black font-inter text-xs font-medium leading-[16px]")}>Email</p>
+            <p className={cn("dark:text-white text-black font-inter text-sm font-normal leading-[16px]")}>{user?.email}</p>
           </div>
           <div className="flex flex-col !mt-6 gap-1">
-            <Button isLoading={status === "loading"} type="submit" className="w-full">
-              Save profile
-            </Button>
+            {edit && (
+              <Button isLoading={status === "loading"} type="submit" className="w-full">
+                Save profile
+              </Button>
+            )}
             <Button
               type="button"
               onClick={() => {
