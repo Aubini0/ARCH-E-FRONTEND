@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { ArrowTopIcon } from "@/components/icons/ArrowTopIcon";
 import ChooseRoom from "../../ChooseRoom";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { Dialog, DialogContent, DialogOverlay, DialogTrigger } from "@/components/ui/dialog";
-import ProfileModal from "@/components/shared/ProfileModal";
+import EditProfileModal from "@/components/shared/EditProfileModal";
 import { useAppSelector } from "@/store/hooks";
+import { AvatarFallback } from "@radix-ui/react-avatar";
 
 const style = {
   container: {
@@ -15,14 +16,14 @@ const style = {
     borderRadius: "40px",
     background: "#18181B",
     margin: "20.5px 20px 0 0",
-    minWidth: "392px",
+    minWidth: "250px",
   },
   left: {
     display: "flex",
     justifyContent: "space-between",
     alignItems: "center",
     alignSelf: "stretch",
-    borderRight: "1px solid #3D3D3D",
+    // borderRight: "1px solid #3D3D3D",
     borderLeft: "1px solid #3D3D3D",
     minWidth: "175px",
     padding: "12px 16px 12px 16px",
@@ -43,18 +44,27 @@ interface Props {}
 const InviteSection: React.FC<Props> = () => {
   const [isShow, setIsShow] = useState(false);
   const { user } = useAppSelector((state) => state.auth);
+  const [editProfileOpen, setEditProfileOpen] = useState(false);
+
+  const [image, setImage] = useState(user?.profilePic || undefined);
+
+  useEffect(() => {
+    setImage(user?.profilePic || undefined);
+  }, [user]);
+
   return (
     <>
       <div className="text-white" style={style.container as React.CSSProperties}>
-        <Dialog>
+        <Dialog open={editProfileOpen} onOpenChange={setEditProfileOpen}>
           <DialogTrigger asChild>
             <Avatar className="cursor-pointer">
-              <img src="User2.png" alt="user icon" />
+              <AvatarImage src={image} alt={user?.full_name} />
+              <AvatarFallback className="flex items-center justify-center w-full h-full text-lg bg-secondary">{user?.full_name[0]}</AvatarFallback>
             </Avatar>
           </DialogTrigger>
           {/*  */}
           <DialogContent className="!p-0 !outline-none w-auto bg-transparent !border-none">
-            <ProfileModal />
+            <EditProfileModal handleClose={() => setEditProfileOpen(false)} />
           </DialogContent>
         </Dialog>
         <div className="cursor-pointer" onClick={() => setIsShow(!isShow)} style={style.left as React.CSSProperties}>
@@ -63,7 +73,7 @@ const InviteSection: React.FC<Props> = () => {
             <ArrowTopIcon />
           </div>
         </div>
-        <div style={style.invite as React.CSSProperties}>Invite</div>
+        {/* <div style={style.invite as React.CSSProperties}>Invite</div> */}
       </div>
       {isShow ? <ChooseRoom /> : <></>}
     </>

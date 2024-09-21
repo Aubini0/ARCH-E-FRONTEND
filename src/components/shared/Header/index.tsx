@@ -17,11 +17,8 @@ import { cn } from "@/lib/utils";
 import QueryHistory from "./QueryHistory";
 import { useRouter } from "next/router";
 import useDeviceIndicator from "@/hooks/useDeviceIndicator";
-import logoImg from "@/assets/images/logo.png";
-import Image from "next/image";
-import Link from "next/link";
 import { Dialog, DialogContent, DialogOverlay, DialogTrigger } from "@/components/ui/dialog";
-import ProfileModal from "../ProfileModal";
+import EditProfileModal from "../EditProfileModal";
 
 interface IHeader extends React.HTMLAttributes<HTMLDivElement> {}
 
@@ -33,6 +30,7 @@ const Header: FC<IHeader> = (props) => {
   const { theme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
   const { isPhone } = useDeviceIndicator();
+  const [editProfileOpen, setEditProfileOpen] = useState(false);
 
   useEffect(() => {
     setMounted(true);
@@ -70,7 +68,7 @@ const Header: FC<IHeader> = (props) => {
             </Link>
           )} */}
           {!isPhone && auth && <QueryHistory />}
-          {mounted && (
+          {/* {mounted && (
             <Button
               onClick={() => (theme === "dark" ? setTheme("light") : setTheme("dark"))}
               className="w-[42px] bg-transparent dark:bg-transparent dark:hover:bg-secondary border-transparent hover:border-gray-300 h-[40px] p-0"
@@ -78,7 +76,7 @@ const Header: FC<IHeader> = (props) => {
               {theme === "light" && <FiMoon className="text-xl" />}
               {theme === "dark" && <AiOutlineSun className="text-xl" />}
             </Button>
-          )}
+          )} */}
           {!auth && !loading && (
             <Button className="h-[40px] md:w-[106px] w-[70px] text-md" onClick={() => router.push("/auth/login")}>
               Login
@@ -86,7 +84,7 @@ const Header: FC<IHeader> = (props) => {
           )}
 
           {auth && (
-            <Dialog>
+            <Dialog open={editProfileOpen} onOpenChange={setEditProfileOpen}>
               <DialogTrigger asChild>
                 <Avatar
                   isBordered
@@ -99,7 +97,7 @@ const Header: FC<IHeader> = (props) => {
               {/*  */}
               <DialogOverlay className="bg-white/30">
                 <DialogContent className="!p-0 !outline-none w-auto bg-transparent !border-none">
-                  <ProfileModal />
+                  <EditProfileModal handleClose={() => setEditProfileOpen(false)} />
                 </DialogContent>
               </DialogOverlay>
             </Dialog>
