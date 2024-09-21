@@ -56,40 +56,36 @@ const style = {
 };
 
 interface Props {
-  onChange?: (e: { hours: number | string; minutes: number | string }) => void;
   onShowSetting?: () => void;
   time: number;
   setTime: (value: any) => void;
   running: boolean;
   setRunning: (value: boolean) => void;
   startTimeRef: any;
+  handleReset: () => void;
 }
 
-const TabCountTime: React.FC<Props> = ({ onChange, onShowSetting, startTimeRef, time, setTime, running, setRunning }) => {
+const TabCountTime: React.FC<Props> = ({ onShowSetting, handleReset, startTimeRef, time, setTime, running, setRunning }) => {
   React.useEffect(() => {
     let interval: any;
     if (running) {
       if (startTimeRef.current === null) {
-        startTimeRef.current = Date.now() - time;
+        startTimeRef.current = Date.now() + time;
       }
+
       interval = setInterval(() => {
-        const newTime = Date.now() - startTimeRef.current!;
-        onChange &&
-          onChange({
-            hours: ("0" + Math.floor((time / 1440000) % 60)).slice(-2),
-            minutes: ("0" + Math.floor((time / 60000) % 60)).slice(-2),
-          });
-        setTime(newTime);
-      }, 10);
+        setTime((prevTime: number) => Math.max(prevTime - 1000, 0));
+        if (time <= 1000) {
+          setRunning(false);
+          clearInterval(interval);
+        }
+      }, 1000);
     } else {
       clearInterval(interval);
     }
     return () => clearInterval(interval);
   }, [running, time]);
-  const handleReset = () => {
-    setTime(0);
-    startTimeRef.current = null;
-  };
+
   return (
     <>
       <div className="text-white" style={style.clock as React.CSSProperties}>

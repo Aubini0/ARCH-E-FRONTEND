@@ -2,6 +2,7 @@ import { ClockIcon } from "@/components/icons/ClockIcon";
 import { CoffeeIcon } from "@/components/icons/CoffeeIcon";
 import React, { useState } from "react";
 import TabCountTime from "./TabCountTime";
+import useLocalStorage from "use-local-storage";
 
 const style = {
   border: {
@@ -111,6 +112,10 @@ const style = {
   },
   number: {
     color: "#FFF",
+    outline: "none",
+    border: "none",
+    background: "transparent",
+    maxWidth: "30px",
     fontFamily: "Poppins",
     fontSize: "18px",
     fontStyle: "normal",
@@ -122,8 +127,9 @@ const style = {
 
 const StopWatch = () => {
   const [isTab, setIsTab] = useState(1);
-  const [hours, setHours] = useState<{ hours: number | string; minutes: number | string }>({ hours: "00", minutes: "00" });
   const [isShowSetting, setIsShowSetting] = useState(false);
+  const [localSavedTime, setLocalSavedTime] = useLocalStorage("local_saved_time", '{"minutes": "10", "seconds": "00"}');
+  const [jsonLocalTime, setJsonLocalTime] = useState({ minutes: "10", seconds: "00" });
 
   const startTimeRef = React.useRef<number | null>(null);
   const [time, setTime] = useState(0);
@@ -132,10 +138,30 @@ const StopWatch = () => {
     if (tab != isTab) {
       setIsTab(tab);
       setRunning(false);
-      setTime(0);
+      handleReset();
       startTimeRef.current = null;
     }
   };
+  const handleReset = () => {
+    const totalSeconds = parseInt(jsonLocalTime?.minutes) * 60 + parseInt(jsonLocalTime?.seconds);
+    setTime(totalSeconds * 1000);
+    setJsonLocalTime(jsonLocalTime);
+  };
+  React.useEffect(() => {
+    const parsedTime = localSavedTime ? JSON.parse(localSavedTime) : { minutes: "00", seconds: "00" };
+    const totalSeconds = parseInt(parsedTime?.minutes) * 60 + parseInt(parsedTime?.seconds);
+    setTime(totalSeconds * 1000);
+    setJsonLocalTime(parsedTime);
+  }, [localSavedTime]);
+
+  const handleSaveTimer = (value: string, key: string) => {
+    let numericValue = Math.min(Math.max(parseInt(value, 10), 0), 59);
+    const paddedValue = String(numericValue).padStart(2, "0");
+    const updatedTime = { ...jsonLocalTime, [key]: paddedValue };
+    setJsonLocalTime(updatedTime);
+    setLocalSavedTime(JSON.stringify(updatedTime));
+  };
+
   return (
     <div style={style.border as React.CSSProperties}>
       <div style={style.container as React.CSSProperties}>
@@ -154,19 +180,31 @@ const StopWatch = () => {
               <p style={isTab === 2 ? style.pActive : (style.p as React.CSSProperties)}>Break</p>
             </div>
           </div>
-          <div>{<TabCountTime startTimeRef={startTimeRef} running={running} setRunning={setRunning} time={time} setTime={setTime} onShowSetting={() => setIsShowSetting(!isShowSetting)} onChange={(e) => setHours(e)} />}</div>
+          <div>
+            {
+              <TabCountTime
+                startTimeRef={startTimeRef}
+                running={running}
+                setRunning={setRunning}
+                time={time}
+                setTime={setTime}
+                onShowSetting={() => setIsShowSetting(!isShowSetting)}
+                handleReset={handleReset}
+              />
+            }
+          </div>
         </div>
       </div>
       {isShowSetting ? (
         <>
           <div style={style.clockView as React.CSSProperties}>
             <div style={style.hours as React.CSSProperties}>
-              <div style={style.text as React.CSSProperties}>Hours</div>
-              <div style={style.number as React.CSSProperties}>{hours.hours}</div>
+              <div style={style.text as React.CSSProperties}>Minutes</div>
+              <input max={59} onChange={(e) => handleSaveTimer(e?.target?.value, "minutes")} value={jsonLocalTime?.minutes} type="number" style={style.number as React.CSSProperties} />
             </div>
             <div style={style.hours as React.CSSProperties}>
-              <div style={style.text as React.CSSProperties}>Minutes</div>
-              <div style={style.number as React.CSSProperties}>{hours.minutes}</div>
+              <div style={style.text as React.CSSProperties}>Seconds</div>
+              <input onChange={(e) => handleSaveTimer(e?.target?.value, "seconds")} max={59} type="number" value={jsonLocalTime?.seconds} style={style.number as React.CSSProperties} />
             </div>
           </div>
         </>
