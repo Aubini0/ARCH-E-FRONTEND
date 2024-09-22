@@ -56,31 +56,36 @@ const style = {
 };
 
 interface Props {
-  onChange?: (e: { hours: number | string; minutes: number | string }) => void;
   onShowSetting?: () => void;
   time: number;
   setTime: (value: any) => void;
   running: boolean;
   setRunning: (value: boolean) => void;
+  startTimeRef: any;
+  handleReset: () => void;
 }
 
-const TabCountTime: React.FC<Props> = ({ onChange, onShowSetting, time, setTime, running, setRunning }) => {
-  useEffect(() => {
+const TabCountTime: React.FC<Props> = ({ onShowSetting, handleReset, startTimeRef, time, setTime, running, setRunning }) => {
+  React.useEffect(() => {
+    let startTime: number;
     let interval: any;
     if (running) {
+      startTime = Date.now();
       interval = setInterval(() => {
-        onChange &&
-          onChange({
-            hours: ("0" + Math.floor((time / 1440000) % 60)).slice(-2),
-            minutes: ("0" + Math.floor((time / 60000) % 60)).slice(-2),
-          });
-        setTime((prevTime: number) => prevTime + 10);
-      }, 10);
-    } else if (!running) {
+        const timeElapsed = Date.now() - startTime;
+        setTime((prevTime: number) => Math.max(prevTime - timeElapsed, 0));
+        startTime = Date.now();
+        if (time <= 1000) {
+          setRunning(false);
+          clearInterval(interval);
+        }
+      }, 1000);
+    } else {
       clearInterval(interval);
     }
     return () => clearInterval(interval);
-  }, [running]);
+  }, [running, time]);
+
   return (
     <>
       <div className="text-white" style={style.clock as React.CSSProperties}>
@@ -88,10 +93,16 @@ const TabCountTime: React.FC<Props> = ({ onChange, onShowSetting, time, setTime,
         <span>{("0" + Math.floor((time / 1000) % 60)).slice(-2)}</span>
       </div>
       <div style={style.action as React.CSSProperties}>
-        <div onClick={() => setTime(0)} style={style.iconCircle as React.CSSProperties}>
+        <div onClick={handleReset} style={style.iconCircle as React.CSSProperties}>
           <ResetIcon />
         </div>
-        <div onClick={() => setRunning(!running)} style={style.actionIcon as React.CSSProperties}>
+        <div
+          onClick={() => {
+            setRunning(!running);
+            startTimeRef.current = null;
+          }}
+          style={style.actionIcon as React.CSSProperties}
+        >
           {running ? (
             <>
               <PauseIcon />

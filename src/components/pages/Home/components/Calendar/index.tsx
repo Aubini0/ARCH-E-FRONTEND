@@ -89,9 +89,9 @@ const Calendar = () => {
     <>
       <div style={{ position: "relative" }}>
         <div style={style.container as React.CSSProperties}>
-          <div onClick={() => setIsOpen(!isOpen)} style={style.calendar as React.CSSProperties}>
+          {/* <div onClick={() => setIsOpen(!isOpen)} style={style.calendar as React.CSSProperties}>
             <CalendarIcon />
-          </div>
+          </div> */}
           <div style={style.dayName as React.CSSProperties}>{date?.dayName}</div>
           <div style={style.dayNumber as React.CSSProperties}>{date?.dayNumber}</div>
           <div onClick={() => console.log()} style={style.mounthName as React.CSSProperties}>
