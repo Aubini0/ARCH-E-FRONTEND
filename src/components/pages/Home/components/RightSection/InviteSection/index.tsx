@@ -6,6 +6,8 @@ import { Dialog, DialogContent, DialogOverlay, DialogTrigger } from "@/component
 import EditProfileModal from "@/components/shared/EditProfileModal";
 import { useAppSelector } from "@/store/hooks";
 import { AvatarFallback } from "@radix-ui/react-avatar";
+import { RiFullscreenFill, RiFullscreenExitFill } from "react-icons/ri";
+import { useFullscreen } from "@mantine/hooks";
 
 const style = {
   container: {
@@ -16,35 +18,28 @@ const style = {
     borderRadius: "40px",
     background: "#18181B",
     margin: "20.5px 20px 0 0",
-    minWidth: "250px",
+    minWidth: "320px",
   },
   left: {
     display: "flex",
     justifyContent: "space-between",
     alignItems: "center",
     alignSelf: "stretch",
-    // borderRight: "1px solid #3D3D3D",
+    borderRight: "1px solid #3D3D3D",
     borderLeft: "1px solid #3D3D3D",
     minWidth: "175px",
     padding: "12px 16px 12px 16px",
-  },
-  invite: {
-    display: "flex",
-    padding: "8px 32px",
-    alignItems: "center",
-    gap: "8px",
-    borderRadius: "48px",
-    background: "#383838",
-    cursor: "pointer",
   },
 };
 
 interface Props {}
 
-const InviteSection: React.FC<Props> = () => {
+const InviteSection: React.FC<Props> = ({}) => {
   const [isShow, setIsShow] = useState(false);
   const { user } = useAppSelector((state) => state.auth);
   const [editProfileOpen, setEditProfileOpen] = useState(false);
+
+  const { fullscreen, toggle } = useFullscreen();
 
   const [image, setImage] = useState(user?.profilePic || undefined);
 
@@ -73,7 +68,9 @@ const InviteSection: React.FC<Props> = () => {
             <ArrowTopIcon />
           </div>
         </div>
-        {/* <div style={style.invite as React.CSSProperties}>Invite</div> */}
+        <div onClick={toggle} className="text-white cursor-pointer text-3xl">
+          {!fullscreen ? <RiFullscreenFill /> : <RiFullscreenExitFill />}
+        </div>
       </div>
       {isShow ? <ChooseRoom /> : <></>}
     </>

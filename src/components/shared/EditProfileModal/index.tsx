@@ -104,7 +104,7 @@ const EditProfileModal: FC<IEditProfileModal> = ({ handleClose }) => {
     <div
       {...getRootProps()}
       className={cn(
-        "text-black flex-1 flex flex-col justify-center bg-white border-2 border-gray-200 dark:border-transparent dark:bg-dark-background dark:text-white w-full md:w-[400px] relative rounded-3xl font-poppins py-10",
+        "text-black flex-1 h-[450px] flex flex-col items-stretch justify-center bg-white border-2 border-gray-200 dark:border-transparent dark:bg-dark-background dark:text-white w-full md:w-[400px] relative rounded-3xl font-poppins py-10",
         isDragActive && "border-dashed !border-primary"
       )}
     >

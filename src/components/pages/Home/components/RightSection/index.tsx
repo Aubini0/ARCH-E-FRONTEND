@@ -16,7 +16,7 @@ const style = {
 
 interface Props {}
 
-const RightSection: React.FC<Props> = () => {
+const RightSection: React.FC<Props> = ({}) => {
   const { auth } = useAppSelector((state) => state.auth);
   const router = useRouter();
   return (
