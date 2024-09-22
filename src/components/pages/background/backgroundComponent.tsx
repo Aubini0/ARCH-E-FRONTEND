@@ -6,6 +6,7 @@ import axios from "axios";
 import { useDebounce } from "use-debounce";
 import { ImageIcon } from "lucide-react";
 import { Spinner } from "@nextui-org/react";
+import { ScrollArea } from "@radix-ui/react-scroll-area";
 
 interface Props {
   onClose: () => void;
@@ -13,7 +14,6 @@ interface Props {
 }
 export const BackgroundComponent = ({ onClose, setHomePageBg }: Props) => {
   const UNSPLASH_ACCESS_KEY = "MKSrV9u_V2Ol2ADW0CUVYArKSTIjBRXZJWRk7-oPSfo";
-  // const UNSPLASH_SECRET_KEY = "6B8yoTQ-uvy_6b_m370_g-iHj1_VdyeHLiAq_MsK6hw";
   const [activeBg, setActiveBg] = React.useState(-1);
   const [images, setImages] = React.useState([]);
   const [loading, setLoading] = React.useState(false);
@@ -24,7 +24,7 @@ export const BackgroundComponent = ({ onClose, setHomePageBg }: Props) => {
     const handleSearch = async (value: string) => {
       try {
         setLoading(true);
-        const response = await axios.get(`https://api.unsplash.com/search/photos?query=${value}&per_page=12&orientation=landscape&page=1&client_id=${UNSPLASH_ACCESS_KEY}`);
+        const response = await axios.get(`https://api.unsplash.com/search/photos?query=${value}&per_page=28&orientation=landscape&page=1&client_id=${UNSPLASH_ACCESS_KEY}`);
         const dataToFill = response?.data?.results?.map((item: { urls: any }) => item?.urls?.full);
         setImages(dataToFill);
       } finally {
@@ -47,7 +47,7 @@ export const BackgroundComponent = ({ onClose, setHomePageBg }: Props) => {
   };
 
   return (
-    <main className="px-[32px] py-[24px] h-full overflow-auto">
+    <main className="px-[32px] py-[24px] overflow-hidden h-full">
       <section className="mb-[40px]">
         <div className="flex items-center justify-between">
           <p className="font-[500] text-[24px] text-white">Background</p>
@@ -59,7 +59,7 @@ export const BackgroundComponent = ({ onClose, setHomePageBg }: Props) => {
       <section className="mb-20">
         <SearchToolbar onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSearchVal(e?.target?.value)} placeholder="Search images 'sky' " />
       </section>
-      <section>
+      <ScrollArea className="max-h-[calc(100%-230px)] scrollbar-hide overflow-auto">
         <div className="grid grid-cols-4 gap-6 w-full">
           {!loading && images?.length ? (
             images?.map((item, idx) => (
@@ -70,7 +70,7 @@ export const BackgroundComponent = ({ onClose, setHomePageBg }: Props) => {
                   onClick={() => handleChangeBg(idx)}
                   className={`${activeBg == idx && "border-[2px]"} h-[122px] text-white cursor-pointer w-full rounded-[16px]`}
                   src={item}
-                  onLoad={()=> setLoading(false)}
+                  onLoad={() => setLoading(false)}
                   alt={`Background image`}
                 />
               </LazyLoad>
@@ -79,7 +79,7 @@ export const BackgroundComponent = ({ onClose, setHomePageBg }: Props) => {
             <></>
           )}
         </div>
-      </section>
+      </ScrollArea>
       {(!images?.length || loading) && (
         <section className="flex justify-center flex-col items-center w-full h-[calc(100%-300px)]">
           {loading ? (
