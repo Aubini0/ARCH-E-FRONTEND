@@ -91,7 +91,7 @@ const EditProfileModal: FC<IEditProfileModal> = ({ handleClose }) => {
         formData.append("file", croppedImage);
       }
       await editProfile(formData);
-      handleClose();
+      setEdit(false);
       queryClient.refetchQueries({ queryKey: "current_user" });
     } catch (error) {
       toast.error("Something went wrong");
