@@ -221,3 +221,34 @@ export function getOutput(editor: Editor, format: MinimalTiptapProps["output"]) 
 
   return editor.getText();
 }
+
+export function formatTimeRange(timeObj: { start: string; end: string }) {
+  // Function to convert 24-hour time to 12-hour format
+  function convertTo12Hour(timeStr: string) {
+    let [hours, minutes]: any = timeStr.split(":");
+    hours = parseInt(hours);
+
+    const period = hours >= 12 ? "PM" : "AM";
+    hours = hours % 12 || 12; // Convert to 12-hour format, handling midnight and noon
+
+    return `${hours}:${minutes} ${period}`;
+  }
+
+  const startTime = convertTo12Hour(timeObj.start);
+  const endTime = convertTo12Hour(timeObj.end);
+
+  return `${startTime} - ${endTime}`;
+}
+
+export function createDateObjectFromTimeString(timeStr: string) {
+  // Get the current date
+  const currentDate = new Date();
+
+  // Split the time string into hours, minutes, and seconds
+  const [hours, minutes, seconds] = timeStr.split(":").map(Number);
+
+  // Set the hours, minutes, and seconds of the current date
+  currentDate.setHours(hours, minutes, seconds, 0); // Set milliseconds to 0
+
+  return currentDate;
+}

@@ -10,9 +10,10 @@ interface TimePickerProps {
   date: Date | undefined;
   setDate: (date: Date | undefined) => void;
   showLabel?: false;
+  disabled?: boolean;
 }
 
-export function TimePicker12({ date, setDate, showLabel }: TimePickerProps) {
+export function TimePicker12({ date, setDate, showLabel, disabled }: TimePickerProps) {
   const [period, setPeriod] = React.useState<Period>("PM");
 
   const minuteRef = React.useRef<HTMLInputElement>(null);
@@ -28,7 +29,7 @@ export function TimePicker12({ date, setDate, showLabel }: TimePickerProps) {
             Hours
           </Label>
         )}
-        <TimePickerInput picker="12hours" period={period} date={date} setDate={setDate} ref={hourRef} onRightFocus={() => minuteRef.current?.focus()} />
+        <TimePickerInput disabled={disabled} picker="12hours" period={period} date={date} setDate={setDate} ref={hourRef} onRightFocus={() => minuteRef.current?.focus()} />
       </div>
       <div className="grid gap-1 text-center">
         {showLabel && (
@@ -36,7 +37,16 @@ export function TimePicker12({ date, setDate, showLabel }: TimePickerProps) {
             Minutes
           </Label>
         )}
-        <TimePickerInput picker="minutes" id="minutes12" date={date} setDate={setDate} ref={minuteRef} onLeftFocus={() => hourRef.current?.focus()} onRightFocus={() => periodRef.current?.focus()} />
+        <TimePickerInput
+          disabled={disabled}
+          picker="minutes"
+          id="minutes12"
+          date={date}
+          setDate={setDate}
+          ref={minuteRef}
+          onLeftFocus={() => hourRef.current?.focus()}
+          onRightFocus={() => periodRef.current?.focus()}
+        />
       </div>
       <div className="grid gap-1 text-center">
         {showLabel && (
@@ -44,7 +54,7 @@ export function TimePicker12({ date, setDate, showLabel }: TimePickerProps) {
             Period
           </Label>
         )}
-        <TimePeriodSelect period={period} setPeriod={setPeriod} date={date} setDate={setDate} ref={periodRef} onLeftFocus={() => secondRef.current?.focus()} />
+        <TimePeriodSelect disabled={disabled} period={period} setPeriod={setPeriod} date={date} setDate={setDate} ref={periodRef} onLeftFocus={() => secondRef.current?.focus()} />
       </div>
     </div>
   );

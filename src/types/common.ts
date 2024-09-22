@@ -150,3 +150,17 @@ export interface FormatAction {
   shortcuts: string[];
   value: string;
 }
+
+export interface ITask {
+  text: string;
+  is_done: boolean;
+  order: number;
+  deadline_time: {
+    start: string;
+    end: string;
+  };
+}
+
+export interface IFullTask extends ITask {
+  _id: string;
+}

@@ -14,7 +14,10 @@ export interface TimePickerInputProps extends React.InputHTMLAttributes<HTMLInpu
 }
 
 const TimePickerInput = React.forwardRef<HTMLInputElement, TimePickerInputProps>(
-  ({ className, type = "tel", value, id, name, date = new Date(new Date().setHours(0, 0, 0, 0)), setDate, onChange, onKeyDown, picker, period, onLeftFocus, onRightFocus, ...props }, ref) => {
+  (
+    { className, type = "tel", value, id, name, date = new Date(new Date().setHours(0, 0, 0, 0)), setDate, onChange, onKeyDown, picker, period, onLeftFocus, onRightFocus, disabled, ...props },
+    ref
+  ) => {
     const [flag, setFlag] = React.useState<boolean>(false);
     const [prevIntKey, setPrevIntKey] = React.useState<string>("0");
 
@@ -49,6 +52,7 @@ const TimePickerInput = React.forwardRef<HTMLInputElement, TimePickerInputProps>
     };
 
     const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+      if (disabled) return;
       if (e.key === "Tab") return;
       e.preventDefault();
       if (e.key === "ArrowRight") onRightFocus?.();
@@ -75,8 +79,12 @@ const TimePickerInput = React.forwardRef<HTMLInputElement, TimePickerInputProps>
       <Input
         ref={ref}
         id={id || picker}
+        disabled={disabled}
         name={name || picker}
-        className={cn("w-[48px] text-center font-mono text-base tabular-nums caret-transparent focus:bg-accent focus:text-accent-foreground [&::-webkit-inner-spin-button]:appearance-none", className)}
+        className={cn(
+          "w-[48px] text-center font-mono text-base tabular-nums caret-transparent focus:!bg-white/40 focus:border-white focus:text-white [&::-webkit-inner-spin-button]:appearance-none disabled:pointer-events-none disabled:opacity-50",
+          className
+        )}
         value={value || calculatedValue}
         onChange={(e) => {
           e.preventDefault();

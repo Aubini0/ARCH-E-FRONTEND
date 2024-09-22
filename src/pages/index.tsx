@@ -46,6 +46,7 @@ const Home = () => {
     refetchOnMount: false,
     refetchOnWindowFocus: false,
     refetchOnReconnect: false,
+    retry: false,
     onSuccess: (d) => {
       const updatedNotes =
         d.data?.map((note) => {
