@@ -1,8 +1,16 @@
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import MinimalTiptapEditor from "@/components/ui/tiptap-text-editor";
+import ToolbarButton from "@/components/ui/tiptap-text-editor/toolbar-button";
+import { cn } from "@/lib/utils";
 import { ICreateNote } from "@/types/common";
 import React, { FC, useEffect, useRef, useState } from "react";
 import Draggable from "react-draggable";
+import { useDropzone } from "react-dropzone";
+import { FaImage } from "react-icons/fa";
+import { MdOutlineEmojiEmotions } from "react-icons/md";
 import { TfiTrash } from "react-icons/tfi";
 import { useDebounce } from "use-debounce";
+import Picker from "emoji-picker-react";
 
 interface INote {
   note: {
@@ -22,6 +30,14 @@ const Note: FC<INote> = ({ handlePositionChange, note, handleDeleteNote, handleU
   const [text, setText] = useState(note.text);
   const [value] = useDebounce(text, 1000);
 
+  const [mode, setMode] = useState<"view" | "edit">("view");
+
+  const { open } = useDropzone({
+    accept: {
+      "image/*": [],
+    },
+  });
+
   useEffect(() => {
     handleUpdateNoteOnServer({ x_position: note.position.x, y_position: note.position.y, text: value, z_position: note.zIndex }, note.id);
   }, [value]);
@@ -37,25 +53,66 @@ const Note: FC<INote> = ({ handlePositionChange, note, handleDeleteNote, handleU
       position={{ x: note.position.x, y: note.position.y }}
       handle=".__notes_drag"
       cancel=".__note_delete"
+      disabled={mode === "edit"}
     >
       <div
         onClick={(e) => e.stopPropagation()}
         onFocus={() => setClicked(true)}
-        onBlur={() => setClicked(false)}
+        onDoubleClick={() => {
+          setMode("edit");
+        }}
         tabIndex={0}
-        className="__notes_drag absolute w-[200px] bg-[#FDF7BB] border border-[#D1D1D0] h-[200px] p-5 cursor-grab"
+        // className="__notes_drag absolute w-[275px] bg-[#FDF7BB] border border-[#D1D1D0] h-[275px] p-5 cursor-grab"
+        className="__notes_drag absolute w-[300px] bg-[#FDF7BB] border border-[#D1D1D0] h-[320px] cursor-grab"
         style={{ zoom: "100%", zIndex: note.zIndex }}
       >
-        <textarea
-          ref={ref}
-          className="w-full hide text-xs font-medium placeholder:text-xs hide-scrollbar h-full placeholder:font-medium text-[#848585] border-none outline-none bg-transparent resize-none"
-          placeholder="add text..."
-          value={text}
-          spellCheck={false}
-          onChange={(e) => setText(e.target.value)}
-        ></textarea>
+        {mode === "view" && (
+          <div className="p-5 w-full h-full text-black">
+            <p dangerouslySetInnerHTML={{ __html: text }}></p>
+          </div>
+        )}
+        {mode === "edit" && (
+          <MinimalTiptapEditor
+            containerProps={{
+              onBlur: () => {
+                setClicked(false);
+                // setMode("view");
+              },
+            }}
+            throttleDelay={2000}
+            className={cn("h-full min-h-0 w-full rounded-xl")}
+            editorContentClassName="overflow-auto h-full"
+            output="html"
+            placeholder="Write a note..."
+            immediatelyRender={true}
+            editable={true}
+            injectCSS={true}
+            value={text}
+            onChange={(v) => {
+              setText(v as string);
+            }}
+            editorClassName="focus:outline-none p-5"
+            // moreOptions={
+            //   <>
+            //     <Popover>
+            //       <PopoverTrigger asChild>
+            //         <ToolbarButton>
+            //           <MdOutlineEmojiEmotions className="text-lg" />
+            //         </ToolbarButton>
+            //       </PopoverTrigger>
+            //       <PopoverContent className="!p-0 !bg-transparent !border-none !outline-none">
+            //         <Picker className="w-[350px] h-[350px]" />
+            //       </PopoverContent>
+            //     </Popover>
+            //     <ToolbarButton onClick={() => open()}>
+            //       <FaImage className="text-lg" />
+            //     </ToolbarButton>
+            //   </>
+            // }
+          />
+        )}
 
-        {clicked && (
+        {mode === "edit" && (
           <div
             onMouseDown={(e) => {
               e.stopPropagation();
@@ -64,7 +121,7 @@ const Note: FC<INote> = ({ handlePositionChange, note, handleDeleteNote, handleU
             }}
             className="absolute z-5 __note_delete cursor-pointer top-1 right-1"
           >
-            <TfiTrash className="text-red-500" />
+            <TfiTrash className="text-red-500 text-xl" />
           </div>
         )}
       </div>

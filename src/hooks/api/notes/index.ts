@@ -41,10 +41,8 @@ export const useUpdateNote = (
   return mutation;
 };
 
-export const useGetNotes = (
-  props?: UseQueryOptions<[{ data: INote[] }, number], AxiosError<APIError>, [{ data: INote[] }, number], string>
-): UseQueryResult<[{ data: INote[] }, number], AxiosError<APIError>> => {
-  const query = useQuery<[{ data: INote[] }, number], AxiosError<APIError>, any, string>({
+export const useGetNotes = (props?: UseQueryOptions<APIResponse<INote[]>, AxiosError<APIError>, APIResponse<INote[]>, string>): UseQueryResult<APIResponse<INote[]>, AxiosError<APIError>> => {
+  const query = useQuery<APIResponse<INote[]>, AxiosError<APIError>, any, string>({
     ...props,
     queryFn: async () => {
       const response = await http.get(`/notes`);
