@@ -155,7 +155,7 @@ export interface ITask {
   text: string;
   is_done: boolean;
   order: number;
-  deadline_time: {
+  deadline_time?: {
     start: string;
     end: string;
   };

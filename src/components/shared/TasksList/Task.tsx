@@ -14,7 +14,7 @@ import { CSS } from "@dnd-kit/utilities";
 
 interface ITask extends HTMLAttributes<HTMLDivElement> {
   text: string;
-  time: { start: string; end: string };
+  time?: { start: string; end: string };
   is_done: boolean;
   _id: string;
   index: number;
@@ -88,8 +88,8 @@ const Task: React.FC<ITask> = ({ text, index, setEditingTask, _id, is_done, time
                 onClick={() => {
                   setEditingTask(_id);
                   setText(text);
-                  setFrom(createDateObjectFromTimeString(time.start));
-                  setTo(createDateObjectFromTimeString(time.end));
+                  time?.start && setFrom(createDateObjectFromTimeString(time.start));
+                  time?.end && setTo(createDateObjectFromTimeString(time.end));
                   setMode("edit");
                 }}
               >
@@ -102,7 +102,7 @@ const Task: React.FC<ITask> = ({ text, index, setEditingTask, _id, is_done, time
           </DropdownMenu>
         </div>
       </div>
-      {index !== 1 ? <span className="text-[8px] ml-[28px] text-white -mt-1 block">{formatTimeRange(time)}</span> : <div className="w-full h-[8px]"></div>}
+      {time ? <span className="text-[8px] ml-[28px] text-white -mt-1 block">{formatTimeRange(time)}</span> : <div className="w-full h-[8px]"></div>}
     </div>
   );
 };

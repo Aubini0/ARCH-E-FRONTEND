@@ -62,6 +62,7 @@ export const useMinimalTiptapEditor = ({ value, output = "html", placeholder = "
   const handleBlur = React.useCallback((editor: Editor) => onBlur?.(getOutput(editor, output)), [output, onBlur]);
 
   const editor = useEditor({
+    // @ts-ignore
     extensions: createExtensions(placeholder!),
     editorProps: {
       attributes: {
