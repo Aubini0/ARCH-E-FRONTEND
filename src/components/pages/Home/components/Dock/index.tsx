@@ -10,7 +10,7 @@ interface Props {
   setHomePageBg?: (value: string) => void;
   setHideTimer: (value: any) => void;
   addNote: () => void;
-  setTasksWindowOpen: (value: boolean) => void;
+  setTasksWindowOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 const data = [
   {
@@ -67,7 +67,7 @@ export function HomeDock({ setHomePageBg, setHideTimer, addNote, setTasksWindowO
     } else if (route == "/timer") {
       setHideTimer((pre: string) => (pre == "true" ? "false" : "true"));
     } else if (route == "/tasks") {
-      setTasksWindowOpen(true);
+      setTasksWindowOpen((pv) => !pv);
     } else if (route == "/add-new-note") {
       addNote();
     } else {

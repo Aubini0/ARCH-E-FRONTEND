@@ -33,6 +33,8 @@ const Home = () => {
   const [notes, setNotes] = useState(defaultNotes);
   const [maxZIndex, setMaxZIndex] = useState(0); // To keep track of the highest zIndex
 
+  const [fullScreen, setFullScreen] = useState(false);
+
   const [tasksWindowOpen, setTasksWindowOpen] = useState(false);
 
   const { mutateAsync: createNoteMutateAsync } = useCreateNote();

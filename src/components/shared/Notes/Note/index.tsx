@@ -51,6 +51,7 @@ const Note: FC<INote> = ({ handlePositionChange, note, handleDeleteNote, handleU
           className="w-full hide text-xs font-medium placeholder:text-xs hide-scrollbar h-full placeholder:font-medium text-[#848585] border-none outline-none bg-transparent resize-none"
           placeholder="add text..."
           value={text}
+          spellCheck={false}
           onChange={(e) => setText(e.target.value)}
         ></textarea>
 

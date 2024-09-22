@@ -11,7 +11,7 @@ interface ITask {
 
 const Task: FC<ITask> = ({ text }) => {
   return (
-    <div className="w-full bg-secondary px-3 py-1 rounded-xl flex items-center gap-3">
+    <div className="w-full tasks_cancel_drag bg-secondary px-3 py-1 rounded-xl flex items-center gap-3 cursor-auto">
       <Checkbox className="border-zinc-500 border-2 data-[state=checked]:bg-green-800 w-[15px] h-[15px]" />
       <div className="flex-1 flex items-center justify-between">
         <h5 className="text-xs">{text}</h5>

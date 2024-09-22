@@ -9,19 +9,19 @@ const TasksList = () => {
   const [value, setValue] = useLocalStorage("task_window", { x: 350, y: 50 });
   const [position, setPosition] = useState(value);
   return (
-    <div className="fixed top-0 left-0 right-0 bottom-0">
+    <div className="fixed top-0 left-0 w-0 h-0">
       <Draggable
         onDrag={(e, ui) => {
           setPosition({ x: position.x + ui.deltaX, y: position.y + ui.deltaY });
         }}
-        handle=".tasks_draggable"
+        cancel=".tasks_cancel_drag"
         onStop={(e, ui) => {
           setValue({ x: position.x + ui.deltaX, y: position.y + ui.deltaY });
         }}
         defaultPosition={value}
       >
-        <div className="bg-dark-background rounded-xl max-w-[300px] max-h-[345px] overflow-hidden">
-          <div className="py-5 tasks_draggable cursor-grab flex items-center justify-between px-5">
+        <div className="bg-dark-background rounded-xl w-[300px] h-[345px] overflow-hidden cursor-grab">
+          <div className="py-5 flex items-center justify-between px-5">
             <h4 className="text-white text-base">Daily Tasks</h4>
             {/* <div className="w-[42px] h-[42px] rounded-full border border-white p-1">
               <div className="w-full h-full flex items-center justify-center bg-white rounded-full text-2xl text-black">
