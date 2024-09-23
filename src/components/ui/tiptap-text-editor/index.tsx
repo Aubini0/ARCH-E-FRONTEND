@@ -13,6 +13,7 @@ import { LinkBubbleMenu } from "./bubble-menu/link-bubble-menu";
 import { ImageBubbleMenu } from "./bubble-menu/image-bubble-menu";
 import type { UseMinimalTiptapEditorProps } from "@/hooks/use-minimal-tiptap";
 import { useMinimalTiptapEditor } from "@/hooks/use-minimal-tiptap";
+import { ScrollShadow } from "@nextui-org/react";
 
 export interface MinimalTiptapProps extends Omit<UseMinimalTiptapEditorProps, "onUpdate"> {
   value?: Content;
@@ -54,7 +55,9 @@ export const MinimalTiptapEditor = React.forwardRef<HTMLDivElement, MinimalTipta
 
   return (
     <div {...containerProps} ref={ref} className={cn("flex h-auto min-h-72 w-full flex-col rounded-md border border-input shadow-sm", className, containerProps?.className)}>
-      <EditorContent editor={editor} className={cn("minimal-tiptap-editor text-black hide-scrollbar", editorContentClassName)} />
+      <ScrollShadow size={40} visibility="top" hideScrollBar className="w-full h-full">
+        <EditorContent editor={editor} className={cn("minimal-tiptap-editor text-black hide-scrollbar", editorContentClassName)} />
+      </ScrollShadow>
       <LinkBubbleMenu editor={editor} />
       <ImageBubbleMenu editor={editor} />
       <Toolbar editor={editor} moreOptions={moreOptions} />

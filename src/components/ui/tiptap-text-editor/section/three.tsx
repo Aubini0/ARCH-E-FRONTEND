@@ -8,6 +8,7 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/comp
 import type { toggleVariants } from "@/components/ui/toggle";
 import type { VariantProps } from "class-variance-authority";
 import { MdFormatColorText } from "react-icons/md";
+import { FaCheck } from "react-icons/fa";
 
 interface ColorItem {
   cssVar: string;
@@ -32,7 +33,7 @@ const COLORS: ColorPalette[] = [
       { cssVar: "var(--mt-accent-bold-green)", label: "Bold green" },
       { cssVar: "var(--mt-accent-bold-orange)", label: "Bold orange" },
       { cssVar: "var(--mt-accent-bold-red)", label: "Bold red" },
-      { cssVar: "var(--mt-accent-bold-purple)", label: "Bold purple" },
+      { cssVar: "var(--white)", label: "White" },
     ],
   },
   {
@@ -86,7 +87,7 @@ const MemoizedColorButton = React.memo<{
               onClick(color.cssVar);
             }}
           >
-            {isSelected && <CheckIcon className="absolute inset-0 m-auto size-6" style={{ color: inverse }} />}
+            {isSelected && <FaCheck className="absolute inset-0 m-auto text-white size-4" />}
           </ToggleGroupItem>
         </TooltipTrigger>
         <TooltipContent side="bottom">

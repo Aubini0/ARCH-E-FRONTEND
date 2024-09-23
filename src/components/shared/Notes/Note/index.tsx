@@ -9,6 +9,7 @@ import { useDropzone } from "react-dropzone";
 import { TfiTrash } from "react-icons/tfi";
 import { useDebounce } from "use-debounce";
 import { useClickAway } from "@uidotdev/usehooks";
+import { ScrollShadow } from "@nextui-org/react";
 
 interface INote {
   note: {
@@ -64,13 +65,13 @@ const Note: FC<INote> = ({ handlePositionChange, note, handleDeleteNote, handleU
         }}
         tabIndex={0}
         // className="__notes_drag absolute w-[275px] bg-[#FDF7BB] border border-[#D1D1D0] h-[275px] p-5 cursor-grab"
-        className="__notes_drag absolute w-[300px] bg-[#FDF7BB] border border-[#D1D1D0] h-[320px] cursor-grab"
+        className="__notes_drag absolute w-[250px] bg-[#FDF7BB] border border-[#D1D1D0] h-[275px] cursor-grab"
         style={{ zoom: "100%", zIndex: note.zIndex }}
       >
         {mode === "view" && (
-          <div className="p-5 w-full h-full overflow-y-auto hide-scrollbar text-black">
+          <ScrollShadow size={40} visibility="top" className="p-5 w-full h-full overflow-y-auto hide-scrollbar text-black">
             <p dangerouslySetInnerHTML={{ __html: text || "Add a note..." }} className="note_html"></p>
-          </div>
+          </ScrollShadow>
         )}
         {mode === "edit" && (
           <MinimalTiptapEditor
