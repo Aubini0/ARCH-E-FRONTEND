@@ -55,7 +55,7 @@ export const MinimalTiptapEditor = React.forwardRef<HTMLDivElement, MinimalTipta
 
   return (
     <div {...containerProps} ref={ref} className={cn("flex h-auto min-h-72 w-full flex-col rounded-md border border-input shadow-sm", className, containerProps?.className)}>
-      <ScrollShadow size={40} visibility="top" hideScrollBar className="w-full h-full">
+      <ScrollShadow offset={100} size={100} visibility="top" hideScrollBar className="w-full h-full">
         <EditorContent editor={editor} className={cn("minimal-tiptap-editor text-black hide-scrollbar", editorContentClassName)} />
       </ScrollShadow>
       <LinkBubbleMenu editor={editor} />
