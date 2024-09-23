@@ -156,7 +156,7 @@ const TasksList = () => {
               </div>
               <div className="w-full flex flex-col p-5 pt-0">
                 <div className="flex gap-3 items-center">
-                  <h6 className="text-white">
+                  <h6 className="text-white w-[30px]">
                     {doneCount}/{tasks.length}
                   </h6>
                   <Button className="text-xs px-3 py-0 leading-[10px] h-[30px] !bg-green-800">Completed</Button>
@@ -211,10 +211,8 @@ const TasksList = () => {
                     onCheckedChange={(v) => {
                       if (v) {
                         setDeadline(v as boolean);
-                        if (mode === "add") {
-                          setFromDate(createDateObjectFromTimeString("13:00:00"));
-                          setToDate(createDateObjectFromTimeString("15:00:00"));
-                        }
+                        setFromDate(createDateObjectFromTimeString("13:00:00"));
+                        setToDate(createDateObjectFromTimeString("15:00:00"));
                       } else {
                         setDeadline(v as boolean);
                         setFromDate(undefined);

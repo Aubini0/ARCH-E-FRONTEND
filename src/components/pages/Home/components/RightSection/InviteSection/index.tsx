@@ -8,6 +8,7 @@ import { useAppSelector } from "@/store/hooks";
 import { AvatarFallback } from "@radix-ui/react-avatar";
 import { RiFullscreenFill, RiFullscreenExitFill } from "react-icons/ri";
 import { useFullscreen } from "@mantine/hooks";
+import Image from "next/image";
 
 const style = {
   container: {
@@ -45,6 +46,8 @@ const InviteSection: React.FC<Props> = ({}) => {
 
   useEffect(() => {
     setImage(user?.profilePic || undefined);
+
+    console.log({ newImage: user?.profilePic });
   }, [user]);
 
   return (
@@ -52,10 +55,14 @@ const InviteSection: React.FC<Props> = ({}) => {
       <div className="text-white" style={style.container as React.CSSProperties}>
         <Dialog open={editProfileOpen} onOpenChange={setEditProfileOpen}>
           <DialogTrigger asChild>
-            <Avatar className="cursor-pointer">
-              <AvatarImage src={image} alt={user?.full_name} />
-              <AvatarFallback className="flex items-center justify-center w-full h-full text-lg bg-secondary">{user?.full_name[0]}</AvatarFallback>
-            </Avatar>
+            {!user?.profilePic ? (
+              <Avatar className="cursor-pointer">
+                <AvatarImage src={image} alt={user?.full_name} />
+                <AvatarFallback className="flex items-center justify-center w-full h-full text-lg bg-secondary">{user?.full_name[0]}</AvatarFallback>
+              </Avatar>
+            ) : (
+              <Image src={`${image}?dummy=${Math.random()}`} alt={user.full_name} width={36} height={36} unoptimized className="object-cover cursor-pointer rounded-full w-[36px] h-[36px]" />
+            )}
           </DialogTrigger>
           {/*  */}
           <DialogContent className="!p-0 !outline-none w-auto bg-transparent !border-none">

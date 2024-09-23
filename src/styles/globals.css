@@ -508,17 +508,49 @@ input[type="number"]::-webkit-outer-spin-button {
 }
 
 .note_html ul {
-  padding-left: 10px;
+  padding-left: 20px;
 }
 .note_html ul li {
   list-style-type: disc;
 }
 .note_html ol {
-  padding-left: 10px;
+  padding-left: 20px;
 }
 .note_html ol li {
   list-style-type: decimal;
 }
-.note_html .text-node {
-  min-height: 10px;
+.note_html li {
+  line-height: 1.75rem;
+}
+.note_html .text-node:not(:last-child),
+.note_html .block-node:not(:last-child),
+.note_html .list-node:not(:last-child) {
+  margin-bottom: 0.625rem;
+}
+
+.note_html h1 {
+  margin-bottom: 1rem;
+  margin-top: 46px;
+  font-size: 1.375rem;
+  line-height: 1.75rem;
+  letter-spacing: -0.004375rem;
+}
+.note_html h2 {
+  margin-bottom: 0.875rem;
+  margin-top: 2rem;
+  font-size: 1.1875rem;
+  line-height: 1.75rem;
+  letter-spacing: 0.003125rem;
+}
+.note_html h3 {
+  margin-bottom: 0.75rem;
+  margin-top: 1.5rem;
+  font-size: 1.0625rem;
+  line-height: 1.5rem;
+  letter-spacing: 0.00625rem;
+}
+
+.note_html .heading-node {
+  position: relative;
+  font-weight: 600;
 }
