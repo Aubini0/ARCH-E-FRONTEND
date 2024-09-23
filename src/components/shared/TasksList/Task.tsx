@@ -25,9 +25,10 @@ interface ITask extends HTMLAttributes<HTMLDivElement> {
   setTo: (d: Date) => void;
   refetch: any;
   order: number;
+  setDeadline: (value: boolean) => void;
 }
 
-const Task: React.FC<ITask> = ({ text, index, setEditingTask, _id, is_done, time, setMode, setFrom, setText, setTo, order, refetch, ...props }) => {
+const Task: React.FC<ITask> = ({ text, index, setEditingTask, _id, is_done, time, setMode, setFrom, setText, setTo, order, refetch, setDeadline, ...props }) => {
   const { mutateAsync: editTask } = useUpdateTask();
   const { mutateAsync: deleteTask } = useDeleteTask();
 
@@ -90,6 +91,7 @@ const Task: React.FC<ITask> = ({ text, index, setEditingTask, _id, is_done, time
                   setText(text);
                   time?.start && setFrom(createDateObjectFromTimeString(time.start));
                   time?.end && setTo(createDateObjectFromTimeString(time.end));
+                  setDeadline(time ? true : false);
                   setMode("edit");
                 }}
               >
