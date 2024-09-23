@@ -13,6 +13,7 @@ import { ContextMenu, ContextMenuTrigger } from "@/components/ui/context-menu";
 import { useCreateNote, useDeleteNote, useGetNotes, useUpdateNote } from "@/hooks/api/notes";
 import { ICreateNote, INote } from "@/types/common";
 import TasksList from "@/components/shared/TasksList";
+import MinimalTiptapEditor from "@/components/ui/tiptap-text-editor";
 
 const scaleFactor = 0.8;
 
@@ -33,6 +34,8 @@ const Home = () => {
   const [notes, setNotes] = useState(defaultNotes);
   const [maxZIndex, setMaxZIndex] = useState(0); // To keep track of the highest zIndex
 
+  const [fullScreen, setFullScreen] = useState(false);
+
   const [tasksWindowOpen, setTasksWindowOpen] = useState(false);
 
   const { mutateAsync: createNoteMutateAsync } = useCreateNote();
@@ -43,24 +46,23 @@ const Home = () => {
     refetchOnMount: false,
     refetchOnWindowFocus: false,
     refetchOnReconnect: false,
+    retry: false,
     onSuccess: (d) => {
-      if (d[1] === 200) {
-        const updatedNotes =
-          d[0].data?.map((note) => {
-            return {
-              ...note,
-              position: {
-                x: note.x_position,
-                y: note.y_position,
-              },
-              zIndex: note.z_position,
-              // @ts-ignore
-              id: note._id,
-            };
-          }) || [];
+      const updatedNotes =
+        d.data?.map((note) => {
+          return {
+            ...note,
+            position: {
+              x: note.x_position,
+              y: note.y_position,
+            },
+            zIndex: note.z_position,
+            // @ts-ignore
+            id: note._id,
+          };
+        }) || [];
 
-        setNotes(updatedNotes);
-      }
+      setNotes(updatedNotes);
     },
     queryKey: "notes",
   });
