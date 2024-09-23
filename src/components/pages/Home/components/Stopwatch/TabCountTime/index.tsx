@@ -66,6 +66,13 @@ interface Props {
 }
 
 const TabCountTime: React.FC<Props> = ({ onShowSetting, handleReset, startTimeRef, time, setTime, running, setRunning }) => {
+  const alarmRef = React.useRef<HTMLAudioElement | null>(null);
+  const [_, setIsAlarmPlaying] = React.useState(false);
+  React.useEffect(() => {
+    alarmRef.current = new Audio("alarm.wav");
+    alarmRef.current.loop = true;
+  }, []);
+  const alarm = alarmRef.current;
   React.useEffect(() => {
     let startTime: number;
     let interval: any;
@@ -76,6 +83,8 @@ const TabCountTime: React.FC<Props> = ({ onShowSetting, handleReset, startTimeRe
         setTime((prevTime: number) => Math.max(prevTime - timeElapsed, 0));
         startTime = Date.now();
         if (time <= 1000) {
+          alarm?.play();
+          setIsAlarmPlaying(true);
           setRunning(false);
           clearInterval(interval);
         }
@@ -85,6 +94,16 @@ const TabCountTime: React.FC<Props> = ({ onShowSetting, handleReset, startTimeRe
     }
     return () => clearInterval(interval);
   }, [running, time]);
+
+  const handleAction = () => {
+    if (alarm?.paused) {
+      setRunning(!running);
+      startTimeRef.current = null;
+    } else {
+      alarm?.pause();
+      setIsAlarmPlaying(false);
+    }
+  };
 
   return (
     <>
@@ -96,13 +115,7 @@ const TabCountTime: React.FC<Props> = ({ onShowSetting, handleReset, startTimeRe
         <div onClick={handleReset} style={style.iconCircle as React.CSSProperties}>
           <ResetIcon />
         </div>
-        <div
-          onClick={() => {
-            setRunning(!running);
-            startTimeRef.current = null;
-          }}
-          style={style.actionIcon as React.CSSProperties}
-        >
+        <div onClick={handleAction} style={style.actionIcon as React.CSSProperties}>
           {running ? (
             <>
               <PauseIcon />
@@ -110,8 +123,8 @@ const TabCountTime: React.FC<Props> = ({ onShowSetting, handleReset, startTimeRe
             </>
           ) : (
             <>
-              <PlayIcon />
-              <div style={style.p as React.CSSProperties}>Start</div>
+              {!alarm?.paused ? <PauseIcon /> : <PlayIcon />}
+              <div style={style.p as React.CSSProperties}>{alarm?.paused ? "Start" : "End Alarm"}</div>
             </>
           )}
         </div>
