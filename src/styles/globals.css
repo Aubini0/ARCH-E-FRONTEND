@@ -557,3 +557,8 @@ input[type="number"]::-webkit-outer-spin-button {
   position: relative;
   font-weight: 600;
 }
+.note_html h1:first-child,
+.note_html h2:first-child,
+.note_html h3:first-child {
+  margin-top: 0;
+}

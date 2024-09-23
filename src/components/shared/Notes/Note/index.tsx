@@ -69,7 +69,7 @@ const Note: FC<INote> = ({ handlePositionChange, note, handleDeleteNote, handleU
         style={{ zoom: "100%", zIndex: note.zIndex }}
       >
         {mode === "view" && (
-          <ScrollShadow size={40} visibility="top" className="p-5 w-full h-full overflow-y-auto hide-scrollbar text-black">
+          <ScrollShadow offset={100} size={100} visibility="top" className="p-5 w-full h-full overflow-y-auto hide-scrollbar text-black">
             <p dangerouslySetInnerHTML={{ __html: text || "Add a note..." }} className="note_html"></p>
           </ScrollShadow>
         )}
