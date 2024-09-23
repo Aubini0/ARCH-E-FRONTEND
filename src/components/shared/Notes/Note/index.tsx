@@ -6,11 +6,8 @@ import { ICreateNote } from "@/types/common";
 import React, { FC, useEffect, useRef, useState } from "react";
 import Draggable from "react-draggable";
 import { useDropzone } from "react-dropzone";
-import { FaImage } from "react-icons/fa";
-import { MdOutlineEmojiEmotions } from "react-icons/md";
 import { TfiTrash } from "react-icons/tfi";
 import { useDebounce } from "use-debounce";
-import Picker from "emoji-picker-react";
 import { useClickAway } from "@uidotdev/usehooks";
 
 interface INote {
@@ -71,7 +68,7 @@ const Note: FC<INote> = ({ handlePositionChange, note, handleDeleteNote, handleU
         style={{ zoom: "100%", zIndex: note.zIndex }}
       >
         {mode === "view" && (
-          <div className="p-5 w-full h-full text-black">
+          <div className="p-5 w-full h-full overflow-y-auto hide-scrollbar text-black">
             <p dangerouslySetInnerHTML={{ __html: text || "Add a note..." }} className="note_html"></p>
           </div>
         )}

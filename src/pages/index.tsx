@@ -131,24 +131,21 @@ const Home = () => {
     setBackground(bg);
   }, [homePageBg]);
   return (
-    <ContextMenu>
-      <ContextMenuTrigger asChild>
-        <div {...getRootProps()} style={{ background: `url(${background})`, backgroundSize: "cover" }} className={cn(styles.homeMain)}>
-          <div>
-            <input {...getInputProps()} type="file" className="hidden" />
-            <Header />
-            <DateTimeSection hideTimer={hideTimer} />
-            <RightSection />
-            <HomeDock setTasksWindowOpen={setTasksWindowOpen} addNote={addNote} setHideTimer={setHideTimer} setHomePageBg={setHomePageBg} />
-            <Notes status={notesStatus} handlePositionChange={handlePositionChange} handleUpdateNoteOnServer={handleUpdateNoteOnServer} handleDeleteNote={handleDeleteNote} notes={notes} />
-            {tasksWindowOpen && <TasksList />}
-          </div>
-        </div>
-      </ContextMenuTrigger>
-      {/* <ContextMenu>
-
-      </ContextMenu> */}
-    </ContextMenu>
+    // <ContextMenu>
+    // <ContextMenuTrigger asChild>
+    <div {...getRootProps()} style={{ background: `url(${background})`, backgroundSize: "cover" }} className={cn(styles.homeMain)}>
+      <div>
+        <input {...getInputProps()} type="file" className="hidden" />
+        <Header />
+        <DateTimeSection hideTimer={hideTimer} />
+        <RightSection />
+        <HomeDock setTasksWindowOpen={setTasksWindowOpen} addNote={addNote} setHideTimer={setHideTimer} setHomePageBg={setHomePageBg} />
+        <Notes status={notesStatus} handlePositionChange={handlePositionChange} handleUpdateNoteOnServer={handleUpdateNoteOnServer} handleDeleteNote={handleDeleteNote} notes={notes} />
+        {tasksWindowOpen && <TasksList />}
+      </div>
+    </div>
+    // </ContextMenuTrigger>
+    // </ContextMenu>
   );
 };
 

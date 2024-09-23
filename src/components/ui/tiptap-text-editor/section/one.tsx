@@ -92,7 +92,7 @@ export const SectionOne: React.FC<SectionOneProps> = React.memo(({ editor, activ
         key={label}
         onClick={() => handleStyleChange(level)}
         className={cn("flex flex-row items-center justify-between gap-4", {
-          "bg-accent": level ? editor.isActive("heading", { level }) : editor.isActive("paragraph"),
+          "bg-secondary": level ? editor.isActive("heading", { level }) : editor.isActive("paragraph"),
         })}
         aria-label={label}
       >
