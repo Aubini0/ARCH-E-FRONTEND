@@ -15,7 +15,7 @@ import { ICreateNote, INote } from "@/types/common";
 import TasksList from "@/components/shared/TasksList";
 import MinimalTiptapEditor from "@/components/ui/tiptap-text-editor";
 
-const scaleFactor = 1.5;
+const scaleFactor = 1;
 
 const gridPositions = [
   { x: 0 * scaleFactor, y: 0 * scaleFactor },

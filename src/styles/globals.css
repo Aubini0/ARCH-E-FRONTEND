@@ -143,6 +143,9 @@
     --hljs-name: #5fc0a0;
     --hljs-selector-tag: #e8c785;
     --hljs-number: #b6e7b6;
+
+    --foreground: #000000;
+    --white: #ffffff;
   }
 }
 
