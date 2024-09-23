@@ -10,6 +10,8 @@ import { FaImage } from "react-icons/fa";
 import { MdOutlineEmojiEmotions } from "react-icons/md";
 import { TfiTrash } from "react-icons/tfi";
 import { useDebounce } from "use-debounce";
+import Picker from "emoji-picker-react";
+import { useClickAway } from "@uidotdev/usehooks";
 
 interface INote {
   note: {
@@ -24,7 +26,6 @@ interface INote {
 }
 
 const Note: FC<INote> = ({ handlePositionChange, note, handleDeleteNote, handleUpdateNoteOnServer }) => {
-  const [clicked, setClicked] = useState(false);
   const ref = useRef<HTMLTextAreaElement>(null);
   const [text, setText] = useState(note.text);
   const [value] = useDebounce(text, 1000);
@@ -35,6 +36,11 @@ const Note: FC<INote> = ({ handlePositionChange, note, handleDeleteNote, handleU
     accept: {
       "image/*": [],
     },
+  });
+
+  const clickoutref = useClickAway<any>(() => {
+    console.log("clicked outside");
+    setMode("view");
   });
 
   useEffect(() => {
@@ -56,7 +62,6 @@ const Note: FC<INote> = ({ handlePositionChange, note, handleDeleteNote, handleU
     >
       <div
         onClick={(e) => e.stopPropagation()}
-        onFocus={() => setClicked(true)}
         onDoubleClick={() => {
           setMode("edit");
         }}
@@ -67,17 +72,12 @@ const Note: FC<INote> = ({ handlePositionChange, note, handleDeleteNote, handleU
       >
         {mode === "view" && (
           <div className="p-5 w-full h-full text-black">
-            <p dangerouslySetInnerHTML={{ __html: text }}></p>
+            <p dangerouslySetInnerHTML={{ __html: text || "Add a note..." }} className="note_html"></p>
           </div>
         )}
         {mode === "edit" && (
           <MinimalTiptapEditor
-            containerProps={{
-              onBlur: () => {
-                setClicked(false);
-                // setMode("view");
-              },
-            }}
+            ref={clickoutref}
             throttleDelay={2000}
             className={cn("h-full min-h-0 w-full rounded-xl")}
             editorContentClassName="overflow-auto h-full"

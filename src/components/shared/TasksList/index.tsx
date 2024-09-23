@@ -42,9 +42,9 @@ const TasksList = () => {
     },
   });
 
-  const doneCount = useMemo(() => {
-    return tasks.reduce((acc, task) => (task.is_done ? 1 : 0), 0);
-  }, [tasks]);
+  const doneCount = tasks.reduce((acc, task) => {
+    return acc + (task.is_done ? 1 : 0);
+  }, 0);
 
   const [editingTask, setEditingTask] = useState<string | null>(null);
 
@@ -60,6 +60,10 @@ const TasksList = () => {
       if (mode === "add") {
         if (!taskText) {
           setMode("view");
+          setTaskText("");
+          setFromDate(undefined);
+          setToDate(undefined);
+          setDeadline(false);
           return;
         }
         const validated = validateDate();
@@ -86,6 +90,10 @@ const TasksList = () => {
       } else {
         if (!taskText || !editingTask) {
           setMode("view");
+          setTaskText("");
+          setFromDate(undefined);
+          setToDate(undefined);
+          setDeadline(false);
           return;
         }
         setCreateEditLoading(true);
@@ -158,6 +166,7 @@ const TasksList = () => {
                     tasks.map((task, index) => (
                       <Task
                         refetch={refetch}
+                        setDeadline={setDeadline}
                         setFrom={setFromDate}
                         setTo={setToDate}
                         setText={setTaskText}
@@ -217,7 +226,7 @@ const TasksList = () => {
                 <TimePicker12 disabled={!fromDate} date={fromDate} setDate={setFromDate} />
               </div>
               <div className="mt-3">
-                <TimePicker12 disabled={!fromDate} date={toDate} setDate={setToDate} />
+                <TimePicker12 disabled={!toDate} date={toDate} setDate={setToDate} />
               </div>
             </div>
           )}
