@@ -59,7 +59,7 @@ export const BackgroundComponent = ({ onClose, setHomePageBg }: Props) => {
       <section className="mb-20">
         <SearchToolbar onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSearchVal(e?.target?.value)} placeholder="Search images 'sky' " />
       </section>
-      <ScrollArea className="max-h-[calc(100%-230px)] scrollbar-hide overflow-auto">
+      <ScrollArea className="max-h-[calc(100%-230px)] scrollbar-hide overflow-auto ">
         <div className="grid grid-cols-4 gap-6 w-full">
           {!loading && images?.length ? (
             images?.map((item, idx) => (
