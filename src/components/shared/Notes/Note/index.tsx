@@ -10,7 +10,6 @@ import { FaImage } from "react-icons/fa";
 import { MdOutlineEmojiEmotions } from "react-icons/md";
 import { TfiTrash } from "react-icons/tfi";
 import { useDebounce } from "use-debounce";
-import Picker from "emoji-picker-react";
 
 interface INote {
   note: {
