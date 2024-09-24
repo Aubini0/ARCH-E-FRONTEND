@@ -106,7 +106,7 @@ const Task: React.FC<ITask> = ({ text, index, setEditingTask, _id, is_done, time
           </DropdownMenu>
         </div>
       </div>
-      {time ? <span className="text-[8px] ml-[28px] text-white -mt-1 block">{formatTimeRange(time)}</span> : <div className="w-full h-[8px]"></div>}
+      {time ? <span className="text-[8px] ml-[28px] text-white mt-0 block">{formatTimeRange(time)}</span> : <div className="w-full h-[8px]"></div>}
     </div>
   );
 };
