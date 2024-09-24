@@ -14,11 +14,12 @@ import { CSS } from "@dnd-kit/utilities";
 
 interface ITask extends HTMLAttributes<HTMLDivElement> {
   text: string;
-  time?: { start: string; end: string };
+  time?: { start: string; end: string } | null;
   is_done: boolean;
   _id: string;
   index: number;
   setEditingTask: React.Dispatch<React.SetStateAction<string | null>>;
+  setEditingDone: (value: boolean) => void;
   setMode: (mode: "add" | "edit" | "view") => void;
   setText: (d: string) => void;
   setFrom: (d: Date) => void;
@@ -28,7 +29,7 @@ interface ITask extends HTMLAttributes<HTMLDivElement> {
   setDeadline: (value: boolean) => void;
 }
 
-const Task: React.FC<ITask> = ({ text, index, setEditingTask, _id, is_done, time, setMode, setFrom, setText, setTo, order, refetch, setDeadline, ...props }) => {
+const Task: React.FC<ITask> = ({ text, index, setEditingTask, _id, is_done, time, setMode, setFrom, setText, setTo, order, refetch, setDeadline, setEditingDone, ...props }) => {
   const { mutateAsync: editTask } = useUpdateTask();
   const { mutateAsync: deleteTask } = useDeleteTask();
 
@@ -92,6 +93,7 @@ const Task: React.FC<ITask> = ({ text, index, setEditingTask, _id, is_done, time
                   time?.start && setFrom(createDateObjectFromTimeString(time.start));
                   time?.end && setTo(createDateObjectFromTimeString(time.end));
                   setDeadline(time ? true : false);
+                  setEditingDone(is_done);
                   setMode("edit");
                 }}
               >
