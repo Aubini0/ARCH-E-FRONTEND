@@ -71,6 +71,7 @@ const TabCountTime: React.FC<Props> = ({ onShowSetting, handleReset, startTimeRe
   React.useEffect(() => {
     alarmRef.current = new Audio("alarm.wav");
     alarmRef.current.loop = true;
+    return () => alarmRef.current?.pause();
   }, []);
   const alarm = alarmRef.current;
   React.useEffect(() => {
