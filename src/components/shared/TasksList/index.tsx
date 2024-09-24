@@ -21,6 +21,7 @@ const TasksList = () => {
   const [fromDate, setFromDate] = useState<Date | undefined>(undefined);
   const [toDate, setToDate] = useState<Date | undefined>(undefined);
   const [value, setValue] = useLocalStorage("task_window", { x: 350, y: 50 });
+  const [editingDone, setEditingDone] = useState(false);
   const [position, setPosition] = useState(value);
   const [mode, setMode] = useState<"add" | "edit" | "view">("view");
   const [createEditLoading, setCreateEditLoading] = useState(false);
@@ -40,6 +41,7 @@ const TasksList = () => {
     onError: () => {
       setTasks([]);
     },
+    retry: false,
   });
 
   const doneCount = tasks.reduce((acc, task) => {
@@ -76,7 +78,7 @@ const TasksList = () => {
                 start: moment(fromDate).format("HH:MM") + ":00",
                 end: moment(toDate).format("HH:MM") + ":00",
               }
-            : undefined,
+            : null,
           is_done: false,
           order: tasks.length + 1,
         });
@@ -108,8 +110,8 @@ const TasksList = () => {
                   start: moment(fromDate).format("HH:MM") + ":00",
                   end: moment(toDate).format("HH:MM") + ":00",
                 }
-              : undefined,
-            is_done: false,
+              : null,
+            is_done: editingDone,
             order: tasks.length + 1,
           },
         });
@@ -120,6 +122,7 @@ const TasksList = () => {
         setFromDate(undefined);
         setToDate(undefined);
         setDeadline(false);
+        setEditingDone(false);
         refetch();
       }
     } catch (error) {
@@ -177,6 +180,7 @@ const TasksList = () => {
                         setEditingTask={setEditingTask}
                         index={index}
                         order={task.order}
+                        setEditingDone={setEditingDone}
                         text={task.text}
                         key={index}
                       />

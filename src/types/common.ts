@@ -158,7 +158,7 @@ export interface ITask {
   deadline_time?: {
     start: string;
     end: string;
-  };
+  } | null;
 }
 
 export interface IFullTask extends ITask {
