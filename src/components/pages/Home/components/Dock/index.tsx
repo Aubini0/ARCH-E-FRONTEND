@@ -33,11 +33,11 @@ const data = [
     icon: <FaTasks className="text-white text-2xl" />,
     href: "/tasks",
   },
-  // {
-  //   title: "Search",
-  //   icon: <Search className="text-white" />,
-  //   href: "/search",
-  // },
+  {
+    title: "Search",
+    icon: <Search className="text-white" />,
+    href: "/arche-chat",
+  },
   // {
   //   title: "File Management",
   //   icon: <Folder className="text-white" />,

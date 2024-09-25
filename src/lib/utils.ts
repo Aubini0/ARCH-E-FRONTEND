@@ -222,7 +222,7 @@ export function getOutput(editor: Editor, format: MinimalTiptapProps["output"]) 
   return editor.getText();
 }
 
-export function formatTimeRange(timeObj: { start: string; end: string }) {
+export function formatTimeRange(timeObj: { start?: string; end?: string }) {
   // Function to convert 24-hour time to 12-hour format
   function convertTo12Hour(timeStr: string) {
     let [hours, minutes]: any = timeStr.split(":");
@@ -234,8 +234,8 @@ export function formatTimeRange(timeObj: { start: string; end: string }) {
     return `${hours}:${minutes} ${period}`;
   }
 
-  const startTime = convertTo12Hour(timeObj.start);
-  const endTime = convertTo12Hour(timeObj.end);
+  const startTime = convertTo12Hour(timeObj.start || "");
+  const endTime = convertTo12Hour(timeObj.end || "");
 
   return `${startTime} - ${endTime}`;
 }

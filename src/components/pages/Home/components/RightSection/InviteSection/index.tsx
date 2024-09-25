@@ -17,7 +17,6 @@ const style = {
     alignItems: "center",
     gap: "16px",
     borderRadius: "40px",
-    background: "#18181B",
     margin: "20.5px 20px 0 0",
     minWidth: "320px",
   },
@@ -52,7 +51,7 @@ const InviteSection: React.FC<Props> = ({}) => {
 
   return (
     <>
-      <div className="text-white" style={style.container as React.CSSProperties}>
+      <div className="text-white dark:!bg-secondary/30 bg-secondary/30" style={style.container as React.CSSProperties}>
         <Dialog open={editProfileOpen} onOpenChange={setEditProfileOpen}>
           <DialogTrigger asChild>
             {!user?.profilePic ? (

@@ -370,7 +370,7 @@ const Query: FC<IQueryComponent> = ({ query, fetchBot, index, mode, totalQueries
                           <VscShare className="text-xl" />
                           <span className="text-[10px]">Share</span>
                         </div> */}
-              <Button onClick={() => handleClickEdit(query?.id, index)} className="flex-col cursor-pointer w-9 h-9 flex items-center justify-center rounded-md">
+              <Button onClick={() => handleClickEdit(query?.id, index)} className="flex-col cursor-pointer w-9 h-9 flex items-center justify-center rounded-md dark:bg-secondary/30">
                 <FaRegEdit className="text-xl -mt-0.5 -mr-1" />
               </Button>
               {/* <div

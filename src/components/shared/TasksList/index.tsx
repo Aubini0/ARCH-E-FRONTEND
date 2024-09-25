@@ -75,10 +75,10 @@ const TasksList = () => {
           text: taskText,
           deadline_time: deadline
             ? {
-                start: moment(fromDate).format("HH:MM") + ":00",
-                end: moment(toDate).format("HH:MM") + ":00",
+                start: deadline ? moment(fromDate).format("HH:MM") + ":00" : undefined,
+                end: deadline ? moment(toDate).format("HH:MM") + ":00" : undefined,
               }
-            : null,
+            : undefined,
           is_done: false,
           order: tasks.length + 1,
         });
@@ -105,12 +105,10 @@ const TasksList = () => {
           id: editingTask,
           data: {
             text: taskText,
-            deadline_time: deadline
-              ? {
-                  start: moment(fromDate).format("HH:MM") + ":00",
-                  end: moment(toDate).format("HH:MM") + ":00",
-                }
-              : null,
+            deadline_time: {
+              start: deadline ? moment(fromDate).format("HH:MM") + ":00" : undefined,
+              end: deadline ? moment(toDate).format("HH:MM") + ":00" : undefined,
+            },
             is_done: editingDone,
             order: tasks.length + 1,
           },

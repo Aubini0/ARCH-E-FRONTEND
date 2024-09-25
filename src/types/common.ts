@@ -155,10 +155,12 @@ export interface ITask {
   text: string;
   is_done: boolean;
   order: number;
-  deadline_time?: {
-    start: string;
-    end: string;
-  } | null;
+  deadline_time:
+    | {
+        start?: string;
+        end?: string;
+      }
+    | undefined;
 }
 
 export interface IFullTask extends ITask {

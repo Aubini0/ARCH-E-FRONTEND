@@ -11,16 +11,19 @@ import { useAppSelector } from "@/store/hooks";
 import MusicCard from "@/components/shared/MusicCard";
 import { IQuery } from "@/types/common";
 import Query from "@/components/shared/Query";
-import { IoClose } from "react-icons/io5";
+import { IoClose, IoSearch } from "react-icons/io5";
 import useLocalStorage from "@/hooks/useLocalStorage";
 import { useGetUserId } from "@/hooks/api/auth";
 import { useQueriesInSession } from "@/hooks/api/query";
 import Image from "next/image";
 import { TbPlaneTilt } from "react-icons/tb";
-import { MdOutlineSchool } from "react-icons/md";
+import { MdClose, MdOutlineSchool } from "react-icons/md";
 import { SendIcon } from "@/components/icons/sendIcon";
 import { useRouter } from "next/router";
 import { FaCircleArrowRight } from "react-icons/fa6";
+import { Input } from "@/components/ui/input";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import { FiSearch } from "react-icons/fi";
 
 const forYouMobile = [
   {
@@ -50,7 +53,7 @@ interface IQueries {
 const Queries: FC<IQueries> = ({ session_id }) => {
   const router = useRouter();
   const { isPhone } = useDeviceIndicator();
-  const [_, setSearchValue] = useState("");
+  const [searchValue, setSearchValue] = useState("");
   const [queries, setQueries] = useState<IQuery[]>([]);
   const scrollAreaRef = useRef<HTMLDivElement>(null);
   const { user, auth, loading: authLoading } = useAppSelector((state) => state.auth);
@@ -61,6 +64,7 @@ const Queries: FC<IQueries> = ({ session_id }) => {
   const [disabled, setDisabled] = useState(true);
   const [socketConnected, setSocketConnected] = useState(false);
   const [queriesLoading, setQueriesLoading] = useState(true);
+  const passedQuery = router.query.passed_query;
 
   const isQueryRunning = queries[queries.length - 1]?.completed === false;
 
@@ -98,8 +102,6 @@ const Queries: FC<IQueries> = ({ session_id }) => {
   useEffect(() => {
     refetchSession();
   }, [session_id]);
-
-  console.log(queries);
 
   const [userId, setUserId] = useLocalStorage<string | undefined>("user_id", undefined);
 
@@ -145,14 +147,25 @@ const Queries: FC<IQueries> = ({ session_id }) => {
     }
   }, [authLoading, auth]);
 
+  useEffect(() => {
+    if (!disabled) {
+      if (passedQuery) {
+        fetchBot(decodeURIComponent(passedQuery as string));
+      }
+    }
+  }, [disabled]);
+
   const fetchBot = async (query: string) => {
+    console.log({ disabled, query });
     if (disabled) {
       return;
     }
     if (!query) return;
     const id = mode === "add" ? nanoid() : editingQuery!.id;
 
-    if (mode === "add") {
+    console.log({ mode });
+
+    if (mode === "add" && !passedQuery) {
       setQueries((prev) => [
         ...prev,
         {
@@ -197,6 +210,8 @@ const Queries: FC<IQueries> = ({ session_id }) => {
     chatSocketRef.current?.send(JSON.stringify({ user_msg: query, action: false }));
   };
 
+  console.log(queries);
+
   const updateQueries = (data: any, editingQuery: IQuery | null) => {
     setQueries((prevQueries) => {
       const updatedQueries = [...prevQueries];
@@ -207,11 +222,37 @@ const Queries: FC<IQueries> = ({ session_id }) => {
       } else {
         const latestId = updatedQueries[updatedQueries.length - 1]?.id;
         currentQueryIndex = updatedQueries.findIndex((q) => q.id === latestId);
+
+        console.log({ currentQueryIndex });
+
+        if (currentQueryIndex === -1 && passedQuery) {
+          setQueries((prev) => [
+            ...prev,
+            {
+              id: nanoid(),
+              query: (passedQuery as string) || "",
+              response: "",
+              completed: false,
+              recommendations: [],
+              videos: [],
+              videosFetched: false,
+              web_links: [],
+              rating: 0,
+              ratingGiven: false,
+            },
+          ]);
+          currentQueryIndex = 0;
+        }
       }
 
       if (currentQueryIndex !== -1) {
         if (data.clear) {
           updatedQueries[currentQueryIndex].completed = true;
+
+          if (passedQuery) {
+            const url = new URL(`${window.location.origin}${router.asPath}`);
+            router.replace(url);
+          }
           if (!auth) {
             localStorage.setItem("queries", JSON.stringify(updatedQueries));
           }
@@ -294,7 +335,7 @@ const Queries: FC<IQueries> = ({ session_id }) => {
         chat_socket.close();
       }
     };
-  }, [userId, auth, authLoading, user, session_id]);
+  }, [userId, auth, authLoading, user, session_id, passedQuery]);
 
   const handleStopQuery = () => {
     console.log("handleStopQuery");
@@ -326,234 +367,177 @@ const Queries: FC<IQueries> = ({ session_id }) => {
     });
   };
 
+  useEffect(() => {
+    if (passedQuery) {
+      setSearchValue(passedQuery as string);
+    } else {
+      setSearchValue("");
+    }
+  }, [passedQuery]);
+
+  const [backgroundImage] = useLocalStorage("home_bg_image", "/backgroundImages/1.png");
+
   return (
-    <MainLayout emailTrigger={false} bottomTab={auth} className="font-onest hide-scrollbar max-h-screen min-h-screen h-full w-full overflow-hidden">
-      <div className={cn("flex-col flex items-center w-full justify-center safe-area safe-area-max")}>
-        {isPlay && (
-          <div className={cn("w-full max-h-full h-full duration-300 flex items-center justify-center safe-area")}>
-            <MusicCard className="mx-auto mb-[108px]" />
-          </div>
-        )}
-        <div
-          className={cn(
-            "flex items-center duration-300 w-full gap-3 md:gap-8 flex-col md:py-5 py-5 mx-auto px-5 relative z-10",
-            queries.length > 0 || isPlay ? "fixed bottom-0 left-0" : "fixed bottom-[52px] md:bottom-auto",
-            queries.length === 0 && !isPlay ? "pb-5" : "pb-0",
-            queries.length > 0 ? "justify-end" : "justify-center",
-            isPhone ? "safe-area" : queries.length === 0 ? "safe-area" : ""
+    <MainLayout
+      style={{ background: `url(${backgroundImage})`, backgroundSize: "cover" }}
+      emailTrigger={false}
+      header={false}
+      bottomTab={auth}
+      className="font-onest hide-scrollbar max-h-screen min-h-screen h-full w-full overflow-hidden"
+    >
+      <div className="bg-black/60 flex flex-col h-full w-full">
+        <div className={cn("bg-transparent pb-3 relative w-full", !passedQuery && queries.length === 0 && "h-full")}>
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger className={"block !border-none absolute right-28 top-1 h-full duration-300"}>
+                <div
+                  onClick={() => router.push("/")}
+                  className="cursor-pointer rounded-lg h-[40px] w-[40px] flex items-center justify-center duration-100 dark:bg-transparent dark:hover:bg-secondary/30 aspect-square"
+                >
+                  <FiSearch />
+                </div>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>New Search</p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger className={"block !border-none absolute right-12 top-1 h-full duration-300"}>
+                <div
+                  onClick={() => router.push("/")}
+                  className="cursor-pointer rounded-lg h-[40px] w-[40px] flex items-center justify-center duration-100 dark:bg-transparent dark:hover:bg-secondary/30 aspect-square"
+                >
+                  <MdClose />
+                </div>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>Exit</p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              fetchBot(searchValue);
+              setSearchValue("");
+            }}
+            className="lg:max-w-[500px] mt-[30px] mb-2 mx-auto px-0 max-w-full w-full"
+          >
+            <Input
+              placeholder="Ask me a question..."
+              inputContainerClassName="w-full h-[40px] dark:!bg-secondary/30 rounded-full"
+              value={searchValue}
+              onChange={(e) => setSearchValue(e.target.value)}
+              className="!text-white dark:!text-white dark:placeholder:!text-white"
+              inputSuffix={
+                <div
+                  onClick={() => {
+                    if (!disabled || mode !== "edit") {
+                      fetchBot(searchValue);
+                      setSearchValue("");
+                    }
+                  }}
+                >
+                  <FiSearch />
+                </div>
+              }
+            />
+          </form>
+        </div>
+        <div className={cn("flex-col flex items-center w-full justify-center safe-area safe-area-max")}>
+          {isPlay && (
+            <div className={cn("w-full max-h-full h-full duration-300 flex items-center justify-center safe-area")}>
+              <MusicCard className="mx-auto mb-[108px]" />
+            </div>
           )}
-        >
-          {queries.length === 0 && !isPlay && !queriesLoading && (
+          {!isPhone && (
             <>
-              {/* <div className="h-[160px] flex justify-center">
-                <HomeIcon width={200} height={200} />
-              </div> */}
-              <div className="block md:hidden"></div>
-              <div className="container w-full flex flex-col items-center justify-between">
-                <h2 className="lg:max-w-[800px] text-[28px] md:text-[32px] font-semibold text-center w-full">
-                  Smart Search personalized to <span className="text-primary">you.</span>
-                </h2>
-              </div>
-              {/* hidden this for you for now  */}
-              <div className="w-full hidden">
-                <p className="text-[#848585] text-sm font-medium">For You</p>
-                <div className="flex flex-col gap-3 mt-2">
-                  {forYouMobile.map((fy, i) => (
-                    <div
-                      onClick={() => fetchBot(fy.title)}
-                      key={i}
-                      className="w-full flex items-center gap-3 border border-[#3D3D3D] p-3 rounded-2xl duration-100 hover:bg-gray-100 dark:hover:bg-white/10 cursor-pointer"
-                    >
-                      <Image src={fy.image} width={64} height={64} className="rounded-lg object-cover min-w-[64px] min-h-[64px]" alt="for you" />
-                      <div>
-                        <p className="text-sm font-semibold text-black dark:text-white">{fy.title}</p>
-                        <div className="flex items-center text-[#848585] gap-1 mt-1">
-                          {fy.icon}
-                          <p className="text-xs font-medium">{fy.category}</p>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-              {/* <div className="lg:max-w-[800px] w-full gap-5 items-center  hidden md:flex">
-                <div className="flex-1">
-                  <p className="text-[#848585] text-sm font-medium">Trending</p>
-                  <div className="flex flex-col gap-3 mt-2">
-                    {trendingDesktop.map((tr, i) => (
-                      <div
-                        onClick={() => fetchBot(tr.title)}
+              {queries.length > 0 && !isPlay && !queriesLoading && (
+                <div className={cn("container lg:px-0 lg:mx-0 lg:max-w-none w-full max-h-full h-full duration-300 flex flex-col items-center safe-area")}>
+                  <ScrollShadow ref={scrollAreaRef} hideScrollBar className="flex-1 safe-area divide-y-2 dark:divide-secondary w-full">
+                    {queries.map((q, i) => (
+                      <Query
+                        setRating={handleSetRating}
+                        query={q}
+                        editingQuery={editingQuery}
+                        fetchBot={fetchBot}
+                        index={i}
+                        mode={mode}
+                        setEditingQuery={setEditingQuery}
+                        setMode={setMode}
+                        totalQueries={queries.length}
                         key={i}
-                        className="w-full flex items-center gap-3 border border-[#3D3D3D] p-3 rounded-2xl duration-100 hover:bg-gray-100 dark:hover:bg-white/10 cursor-pointer"
-                      >
-                        <Image
-                          src={tr.image}
-                          width={64}
-                          height={64}
-                          className="rounded-lg object-cover min-w-[64px] min-h-[64px]"
-                          alt="trending"
-                        />
-                        <div>
-                          <p className="text-sm font-semibold text-black dark:text-white">
-                            {tr.title}
-                          </p>
-                          <div className="flex items-center text-[#848585] gap-1 mt-1">
-                            {tr.icon}
-                            <p className="text-xs font-medium">{tr.category}</p>
-                          </div>
-                        </div>
-                      </div>
+                      />
                     ))}
-                  </div>
+                  </ScrollShadow>
                 </div>
-                <div className="flex-1">
-                  <p className="text-[#848585] text-sm font-medium">For You</p>
-                  <div className="flex flex-col gap-3 mt-2">
-                    {forYouDesktop.map((fy, i) => (
-                      <div
-                        onClick={() => fetchBot(fy.title)}
-                        key={i}
-                        className="w-full flex items-center gap-3 border border-[#3D3D3D] p-3 rounded-2xl duration-100 hover:bg-gray-100 dark:hover:bg-white/10 cursor-pointer"
-                      >
-                        <Image
-                          src={fy.image}
-                          width={64}
-                          height={64}
-                          className="rounded-lg object-cover min-w-[64px] min-h-[64px]"
-                          alt="for you"
-                        />
-                        <div>
-                          <p className="text-sm font-semibold text-black dark:text-white">
-                            {fy.title}
-                          </p>
-                          <div className="flex items-center text-[#848585] gap-1 mt-1">
-                            {fy.icon}
-                            <p className="text-xs font-medium">{fy.category}</p>
-                          </div>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </div> */}
+              )}
             </>
           )}
-          {/* this is for desktop */}
-          {!queriesLoading && (
-            <div className="lg:max-w-[800px] px-0 max-w-full w-full">
-              <PlaceholdersAndVanishInput
-                isQueryExcuted={queries.length > 0 || isPlay}
-                disabled={disabled || mode === "edit"}
-                onChange={(e) => {
-                  setSearchValue(e.target.value);
-                }}
-                onSubmit={(v) => {
-                  console.log("is query running", isQueryRunning);
-                  if (!isQueryRunning) {
-                    if (v) {
-                      fetchBot(v);
-                      setSearchValue("");
-                    }
-                  } else {
-                    handleStopQuery();
-                  }
-                }}
-                focused={mode === "edit" && isPhone}
-                placeholder={isPlay ? "What do you like to play?" : "What do you want to know?"}
-                icon={<FaCircleArrowRight />}
-                className="duration-300 -z-1"
-              />
-              {/* <div className="mx-auto w-[60px] mt-12 h-[60px] rounded-full flex items-center justify-center shadow-sm bg-secondary">
-              <FaHeadphonesAlt className="text-[30px]" />
-            </div> */}
-            </div>
-          )}
         </div>
-        {!isPhone && (
-          <>
-            {queries.length > 0 && !isPlay && !queriesLoading && (
-              <div className={cn("container lg:px-0 lg:mx-0 lg:max-w-none w-full max-h-full h-full duration-300 flex flex-col items-center safe-area")}>
-                <ScrollShadow ref={scrollAreaRef} hideScrollBar className="flex-1 safe-area divide-y-2 dark:divide-secondary w-full">
-                  {queries.map((q, i) => (
-                    <Query
-                      setRating={handleSetRating}
-                      query={q}
-                      editingQuery={editingQuery}
-                      fetchBot={fetchBot}
-                      index={i}
-                      mode={mode}
-                      setEditingQuery={setEditingQuery}
-                      setMode={setMode}
-                      totalQueries={queries.length}
-                      key={i}
-                    />
-                  ))}
-                </ScrollShadow>
+
+        {isPhone && !queriesLoading && (
+          <Drawer
+            open={queries.length > 0}
+            onOpenChange={(open) => {
+              if (!open) {
+                setQueries([]);
+                router.push("/");
+              }
+            }}
+          >
+            <DrawerContent swapper={false} className="min-h-[95%] h-[95%] max-h-[95%] border-none outline-none ring-0 pt-0">
+              <div className="border-b-2 border-gray-400 dark:border-secondary flex items-center justify-center relative h-[60px] px-3">
+                <div onClick={() => setQueries([])} className="absolute right-5 top-4.5">
+                  <IoClose className="text-3xl" />
+                </div>
               </div>
-            )}
-          </>
+              <ScrollShadow ref={scrollAreaRef} hideScrollBar className="flex-1 divide-y-2 p-5 dark:divide-secondary w-full">
+                {queries.map((q, i) => (
+                  <Query
+                    setRating={handleSetRating}
+                    query={q}
+                    editingQuery={editingQuery}
+                    fetchBot={fetchBot}
+                    index={i}
+                    mode={mode}
+                    setEditingQuery={setEditingQuery}
+                    setMode={setMode}
+                    totalQueries={queries.length}
+                    key={i}
+                  />
+                ))}
+              </ScrollShadow>
+              <div className="px-5 pb-3">
+                <PlaceholdersAndVanishInput
+                  isQueryExcuted={queries.length > 0 || isPlay}
+                  disabled={disabled || mode === "edit"}
+                  onChange={(e) => {
+                    setSearchValue(e.target.value);
+                  }}
+                  onSubmit={(v) => {
+                    console.log("is query running", isQueryRunning);
+                    if (!isQueryRunning) {
+                      if (v) {
+                        fetchBot(v);
+                        setSearchValue("");
+                      }
+                    } else {
+                      handleStopQuery();
+                    }
+                  }}
+                  focused={mode === "edit" && isPhone}
+                  placeholder={isPlay ? "What do you like to play?" : "What do you want to know?"}
+                  icon={<FaCircleArrowRight />}
+                  className="duration-300 -z-1"
+                />
+              </div>
+            </DrawerContent>
+          </Drawer>
         )}
       </div>
-
-      {isPhone && !queriesLoading && (
-        <Drawer
-          open={queries.length > 0}
-          onOpenChange={(open) => {
-            if (!open) {
-              setQueries([]);
-              router.push("/");
-            }
-          }}
-        >
-          <DrawerContent swapper={false} className="min-h-[95%] h-[95%] max-h-[95%] border-none outline-none ring-0 pt-0">
-            <div className="border-b-2 border-gray-400 dark:border-secondary flex items-center justify-center relative h-[60px] px-3">
-              <div onClick={() => setQueries([])} className="absolute right-5 top-4.5">
-                <IoClose className="text-3xl" />
-              </div>
-            </div>
-            <ScrollShadow ref={scrollAreaRef} hideScrollBar className="flex-1 divide-y-2 p-5 dark:divide-secondary w-full">
-              {queries.map((q, i) => (
-                <Query
-                  setRating={handleSetRating}
-                  query={q}
-                  editingQuery={editingQuery}
-                  fetchBot={fetchBot}
-                  index={i}
-                  mode={mode}
-                  setEditingQuery={setEditingQuery}
-                  setMode={setMode}
-                  totalQueries={queries.length}
-                  key={i}
-                />
-              ))}
-            </ScrollShadow>
-            <div className="px-5 pb-3">
-              <PlaceholdersAndVanishInput
-                isQueryExcuted={queries.length > 0 || isPlay}
-                disabled={disabled || mode === "edit"}
-                onChange={(e) => {
-                  setSearchValue(e.target.value);
-                }}
-                onSubmit={(v) => {
-                  console.log("is query running", isQueryRunning);
-                  if (!isQueryRunning) {
-                    if (v) {
-                      fetchBot(v);
-                      setSearchValue("");
-                    }
-                  } else {
-                    handleStopQuery();
-                  }
-                }}
-                focused={mode === "edit" && isPhone}
-                placeholder={isPlay ? "What do you like to play?" : "What do you want to know?"}
-                icon={<FaCircleArrowRight />}
-                className="duration-300 -z-1"
-              />
-            </div>
-          </DrawerContent>
-        </Drawer>
-      )}
     </MainLayout>
   );
 };
