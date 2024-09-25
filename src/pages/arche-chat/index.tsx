@@ -9,12 +9,13 @@ import { toast } from "react-hot-toast";
 const Home = () => {
   const { mutateAsync: getSessionId } = useGetSessionId();
   const router = useRouter();
+  const passed_query = router.query.passed_query;
 
   const handleGetSessionid = async () => {
     try {
       localStorage.removeItem("queries");
       const res = await getSessionId();
-      router.replace(`/sessions/${res.data.session_id}`);
+      router.replace(`/sessions/${res.data.session_id}${passed_query ? `?passed_query=${passed_query}` : ""}`);
     } catch (error) {
       toast.error("Something went wrong, please try again later");
     }

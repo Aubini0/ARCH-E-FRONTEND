@@ -154,7 +154,7 @@ const EditProfileModal: FC<IEditProfileModal> = ({ handleClose }) => {
           ) : (
             <div className="space-y-2">
               <p className={cn("dark:text-[#848585] text-black font-inter text-xs font-medium leading-[16px]")}>Name</p>
-              <p className={cn("dark:text-white text-black font-inter text-sm font-normal leading-[16px]")}>{user?.full_name}</p>
+              <p className={cn("dark:text-white text-black font-inter text-sm font-normal leading-[16px] h-[40px] flex items-center")}><span>{user?.full_name}</span></p>
             </div>
           )}
           <div className="space-y-2">
@@ -162,10 +162,12 @@ const EditProfileModal: FC<IEditProfileModal> = ({ handleClose }) => {
             <p className={cn("dark:text-white text-black font-inter text-sm font-normal leading-[16px]")}>{user?.email}</p>
           </div>
           <div className="flex flex-col !mt-6 gap-1">
-            {edit && (
+            {edit ? (
               <Button isLoading={status === "loading"} type="submit" className="w-full">
                 Save profile
               </Button>
+            ) : (
+              <div className="w-full h-[40px]"></div>
             )}
             <Button
               type="button"

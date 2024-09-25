@@ -14,6 +14,10 @@ import { useCreateNote, useDeleteNote, useGetNotes, useUpdateNote } from "@/hook
 import { ICreateNote, INote } from "@/types/common";
 import TasksList from "@/components/shared/TasksList";
 import MinimalTiptapEditor from "@/components/ui/tiptap-text-editor";
+import { Input } from "@/components/ui/input";
+import { IoSearch } from "react-icons/io5";
+import { FiSearch } from "react-icons/fi";
+import { useRouter } from "next/router";
 
 const scaleFactor = 1;
 
@@ -33,6 +37,7 @@ const Home = () => {
   const [background, setBackground] = React.useState("");
   const [notes, setNotes] = useState(defaultNotes);
   const [maxZIndex, setMaxZIndex] = useState(0); // To keep track of the highest zIndex
+  const router = useRouter();
 
   const [fullScreen, setFullScreen] = useState(false);
 
@@ -41,9 +46,10 @@ const Home = () => {
   const { mutateAsync: createNoteMutateAsync } = useCreateNote();
   const { mutateAsync: deleteNoteMutateAsync } = useDeleteNote();
   const { mutateAsync: updateNoteMutateAsync } = useUpdateNote();
+  const [searchText, setSearchText] = useState("");
 
   const { status: notesStatus, data } = useGetNotes({
-    refetchOnMount: false,
+    refetchOnMount: true,
     refetchOnWindowFocus: false,
     refetchOnReconnect: false,
     retry: false,
@@ -137,6 +143,22 @@ const Home = () => {
       <div>
         <input {...getInputProps()} type="file" className="hidden" />
         <Header />
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            router.push(`/arche-chat?passed_query=${encodeURIComponent(searchText)}`);
+          }}
+          className="fixed top-[50px] left-[50%] translate-x-[-50%] translate-y-[-50%]"
+        >
+          <Input
+            placeholder="Ask me a question..."
+            inputContainerClassName="w-[500px] h-[40px] dark:!bg-secondary/30 rounded-full"
+            value={searchText}
+            onChange={(e) => setSearchText(e.target.value)}
+            className="!text-white dark:!text-white dark:placeholder:!text-white"
+            inputSuffix={<FiSearch />}
+          />
+        </form>
         <DateTimeSection hideTimer={hideTimer} />
         <RightSection />
         <HomeDock setTasksWindowOpen={setTasksWindowOpen} addNote={addNote} setHideTimer={setHideTimer} setHomePageBg={setHomePageBg} />

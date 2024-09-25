@@ -67,7 +67,7 @@ const Header: FC<IHeader> = (props) => {
               <IoChatbubbleEllipses className="text-xl" />
             </Link>
           )} */}
-          {!isPhone && auth && <QueryHistory />}
+          {/* {!isPhone && auth && <QueryHistory />} */}
           {/* {mounted && (
             <Button
               onClick={() => (theme === "dark" ? setTheme("light") : setTheme("dark"))}
@@ -83,7 +83,7 @@ const Header: FC<IHeader> = (props) => {
             </Button>
           )}
 
-          {auth && (
+          {/* {auth && (
             <Dialog open={editProfileOpen} onOpenChange={setEditProfileOpen}>
               <DialogTrigger asChild>
                 <Avatar
@@ -94,14 +94,13 @@ const Header: FC<IHeader> = (props) => {
                   src={user?.profilePic}
                 />
               </DialogTrigger>
-              {/*  */}
               <DialogOverlay className="bg-white/30">
                 <DialogContent className="!p-0 !outline-none w-auto bg-transparent !border-none">
                   <EditProfileModal handleClose={() => setEditProfileOpen(false)} />
                 </DialogContent>
               </DialogOverlay>
             </Dialog>
-          )}
+          )} */}
           {!auth && loading && <Skeleton className="w-[80px] h-[30px] bg-slate-200 dark:bg-secondary" />}
         </div>
       </div>

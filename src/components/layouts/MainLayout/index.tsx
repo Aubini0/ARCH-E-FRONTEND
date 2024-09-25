@@ -16,7 +16,7 @@ interface IMainLayout extends HTMLAttributes<HTMLDivElement> {
 const MainLayout: FC<IMainLayout> = ({ header = true, children, headerProps, bottomTab = true, emailTrigger = false, ...props }) => {
   const { isPhone } = useDeviceIndicator();
   return (
-    <main {...props} className={cn("w-full h-full", props.className)}>
+    <main {...props} style={props.style} className={cn("w-full h-full", props.className)}>
       {header && <Header {...headerProps} />}
       {children}
       {bottomTab && isPhone && <MobileBottomTabs />}

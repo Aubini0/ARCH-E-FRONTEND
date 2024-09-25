@@ -11,10 +11,11 @@ import { TbAdjustmentsHorizontal } from "react-icons/tb";
 import { TfiTrash } from "react-icons/tfi";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
+import { CiSettings } from "react-icons/ci";
 
 interface ITask extends HTMLAttributes<HTMLDivElement> {
   text: string;
-  time?: { start: string; end: string } | null;
+  time: { start?: string; end?: string } | undefined;
   is_done: boolean;
   _id: string;
   index: number;
@@ -66,8 +67,8 @@ const Task: React.FC<ITask> = ({ text, index, setEditingTask, _id, is_done, time
   const style = { transform: CSS.Transform.toString(transform), transition };
 
   return (
-    <div {...props} ref={setNodeRef} {...attributes} {...listeners} className="w-full tasks_cancel_drag bg-secondary px-3 py-1 rounded-xl cursor-auto" style={style}>
-      <div className="flex items-center gap-3">
+    <div {...props} ref={setNodeRef} {...attributes} {...listeners} className="w-full tasks_cancel_drag bg-secondary px-3 py-[11px] rounded-xl cursor-auto" style={style}>
+      <div className="flex items-start gap-3">
         <Checkbox
           checked={is_done}
           onCheckedChange={(v) => {
@@ -75,14 +76,14 @@ const Task: React.FC<ITask> = ({ text, index, setEditingTask, _id, is_done, time
           }}
           className="border-zinc-500 border-2 data-[state=checked]:bg-green-800 w-[15px] h-[15px]"
         />
-        <div className="flex-1 flex items-center justify-between">
+        <div className="flex-1 pl-2 flex items-start justify-between">
           <div>
-            <h5 className="text-xs">{text}</h5>
+            <h5 className="text-[10px]">{text}</h5>
           </div>
           <DropdownMenu>
             <DropdownMenuTrigger>
-              <div className="text-xl p-1 rounded-full hover:bg-dark-background cursor-pointer text-zinc-500 duration-100">
-                <TbAdjustmentsHorizontal />
+              <div className="text-base rounded-full cursor-pointer text-zinc-500 duration-100">
+                <CiSettings />
               </div>
             </DropdownMenuTrigger>
             <DropdownMenuContent>
@@ -106,7 +107,7 @@ const Task: React.FC<ITask> = ({ text, index, setEditingTask, _id, is_done, time
           </DropdownMenu>
         </div>
       </div>
-      {time ? <span className="text-[8px] ml-[28px] text-white mt-0 block">{formatTimeRange(time)}</span> : <div className="w-full h-[8px]"></div>}
+      {time ? <span className="text-[8px]  text-red-400 font-bold mt-1 block">{formatTimeRange(time)}</span> : <></>}
     </div>
   );
 };

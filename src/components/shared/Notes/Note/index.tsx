@@ -28,6 +28,8 @@ const Note: FC<INote> = ({ handlePositionChange, note, handleDeleteNote, handleU
   const [text, setText] = useState(note.text);
   const [value] = useDebounce(text, 1000);
 
+  const scrollRef = useRef<HTMLDivElement>(null);
+
   const [mode, setMode] = useState<"view" | "edit">("view");
 
   const { open } = useDropzone({
@@ -65,11 +67,11 @@ const Note: FC<INote> = ({ handlePositionChange, note, handleDeleteNote, handleU
         }}
         tabIndex={0}
         // className="__notes_drag absolute w-[275px] bg-[#FDF7BB] border border-[#D1D1D0] h-[275px] p-5 cursor-grab"
-        className="__notes_drag absolute w-[250px] bg-[#FDF7BB] border border-[#D1D1D0] h-[275px] cursor-grab"
+        className="__notes_drag absolute w-[235px] bg-[#FDF7BB] border border-[#D1D1D0] h-[260px] cursor-grab rounded-[24px]"
         style={{ zoom: "100%", zIndex: note.zIndex }}
       >
         {mode === "view" && (
-          <ScrollShadow offset={100} size={100} visibility="top" className="p-5 w-full h-full overflow-y-auto hide-scrollbar text-black">
+          <ScrollShadow ref={scrollRef} offset={100} size={20} visibility="top" className="p-5 w-full h-full overflow-y-auto hide-scrollbar rounded-[24px] text-black">
             <p dangerouslySetInnerHTML={{ __html: text || "Add a note..." }} className="note_html"></p>
           </ScrollShadow>
         )}
@@ -77,7 +79,7 @@ const Note: FC<INote> = ({ handlePositionChange, note, handleDeleteNote, handleU
           <MinimalTiptapEditor
             ref={clickoutref}
             throttleDelay={2000}
-            className={cn("h-full min-h-0 w-full rounded-xl")}
+            className={cn("h-full min-h-0 w-full rounded-[24px]")}
             editorContentClassName="overflow-auto h-full"
             output="html"
             placeholder="Write a note..."
@@ -116,7 +118,7 @@ const Note: FC<INote> = ({ handlePositionChange, note, handleDeleteNote, handleU
               handleDeleteNote(note.id);
               console.log("clicked");
             }}
-            className="absolute z-5 __note_delete cursor-pointer top-1 right-1"
+            className="absolute z-5 __note_delete cursor-pointer top-3 right-3"
           >
             <TfiTrash className="text-red-500 text-xl" />
           </div>
