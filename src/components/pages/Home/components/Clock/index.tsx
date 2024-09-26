@@ -3,7 +3,6 @@ import React, { useEffect, useState } from "react";
 const style = {
   clock: {
     alignSelf: "stretch",
-    backdropFilter: "blur(5px)",
     zIndex: 1,
     color: "#FFF",
     textAlign: "center",
