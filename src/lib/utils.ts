@@ -234,10 +234,10 @@ export function formatTimeRange(timeObj: { start?: string; end?: string }) {
     return `${hours}:${minutes} ${period}`;
   }
 
-  const startTime = convertTo12Hour(timeObj.start || "");
-  const endTime = convertTo12Hour(timeObj.end || "");
+  const startTime = timeObj.start ? convertTo12Hour(timeObj.start) : undefined;
+  const endTime = timeObj.end ? convertTo12Hour(timeObj.end || "") : undefined;
 
-  return `${startTime} - ${endTime}`;
+  return `${startTime || ""}${startTime && endTime ? " - " : ""}${endTime || ""}`;
 }
 
 export function createDateObjectFromTimeString(timeStr: string) {
