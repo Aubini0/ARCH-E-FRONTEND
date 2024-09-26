@@ -166,3 +166,17 @@ export interface ITask {
 export interface IFullTask extends ITask {
   _id: string;
 }
+
+export interface FileMetadata {
+  _id: string;
+  file_name: string;
+  user_id: string;
+  file_url: string;
+  file_server_path: string;
+  folder_id: string | null;
+  position_x: number;
+  position_y: number;
+  position_z: number;
+  createdAt: string;
+  updatedAt: string;
+}

@@ -9,15 +9,17 @@ import withAuth from "@/hoc/WithAuth";
 import Notes from "@/components/shared/Notes";
 import { useDropzone } from "react-dropzone";
 import { cn } from "@/lib/utils";
-import { ContextMenu, ContextMenuTrigger } from "@/components/ui/context-menu";
+import { ContextMenu, ContextMenuContent, ContextMenuItem, ContextMenuTrigger } from "@/components/ui/context-menu";
 import { useCreateNote, useDeleteNote, useGetNotes, useUpdateNote } from "@/hooks/api/notes";
 import { ICreateNote, INote } from "@/types/common";
 import TasksList from "@/components/shared/TasksList";
 import MinimalTiptapEditor from "@/components/ui/tiptap-text-editor";
 import { Input } from "@/components/ui/input";
-import { IoSearch } from "react-icons/io5";
+import { IoCloudUploadOutline, IoSearch } from "react-icons/io5";
 import { FiSearch } from "react-icons/fi";
 import { useRouter } from "next/router";
+import { MdCloudUpload } from "react-icons/md";
+import DesktopFiles from "@/components/shared/DesktopFiles";
 
 const scaleFactor = 1;
 
@@ -137,37 +139,38 @@ const Home = () => {
     setBackground(bg);
   }, [homePageBg]);
   return (
-    // <ContextMenu>
-    // <ContextMenuTrigger asChild>
-    <div {...getRootProps()} style={{ background: `url(${background})`, backgroundSize: "cover" }} className={cn(styles.homeMain)}>
-      <div>
-        <input {...getInputProps()} type="file" className="hidden" />
-        <Header />
-        <form
-          onSubmit={(e) => {
-            e.preventDefault();
-            router.push(`/arche-chat?passed_query=${encodeURIComponent(searchText)}`);
-          }}
-          className="fixed top-[50px] left-[50%] translate-x-[-50%] translate-y-[-50%]"
-        >
-          <Input
-            placeholder="Ask me a question..."
-            inputContainerClassName="w-[500px] h-[40px] dark:!bg-secondary/30 rounded-full"
-            value={searchText}
-            onChange={(e) => setSearchText(e.target.value)}
-            className="!text-white dark:!text-white dark:placeholder:!text-white"
-            inputSuffix={<FiSearch />}
-          />
-        </form>
-        <DateTimeSection hideTimer={hideTimer} />
-        <RightSection />
-        <HomeDock setTasksWindowOpen={setTasksWindowOpen} addNote={addNote} setHideTimer={setHideTimer} setHomePageBg={setHomePageBg} />
-        <Notes status={notesStatus} handlePositionChange={handlePositionChange} handleUpdateNoteOnServer={handleUpdateNoteOnServer} handleDeleteNote={handleDeleteNote} notes={notes} />
-        {tasksWindowOpen && <TasksList />}
-      </div>
-    </div>
-    // </ContextMenuTrigger>
-    // </ContextMenu>
+    <ContextMenu>
+      <ContextMenuTrigger asChild>
+        <div {...getRootProps()} style={{ background: `url(${background})`, backgroundSize: "cover" }} className={cn(styles.homeMain)}>
+          <div>
+            <input {...getInputProps()} type="file" className="hidden" />
+            <Header />
+            <form
+              onSubmit={(e) => {
+                e.preventDefault();
+                router.push(`/arche-chat?passed_query=${encodeURIComponent(searchText)}`);
+              }}
+              className="fixed top-[50px] left-[50%] translate-x-[-50%] translate-y-[-50%]"
+            >
+              <Input
+                placeholder="Ask me a question..."
+                inputContainerClassName="w-[500px] h-[40px] dark:!bg-secondary/30 rounded-full"
+                value={searchText}
+                onChange={(e) => setSearchText(e.target.value)}
+                className="!text-white dark:!text-white dark:placeholder:!text-white"
+                inputSuffix={<FiSearch />}
+              />
+            </form>
+            <DateTimeSection hideTimer={hideTimer} />
+            <RightSection />
+            <HomeDock setTasksWindowOpen={setTasksWindowOpen} addNote={addNote} setHideTimer={setHideTimer} setHomePageBg={setHomePageBg} />
+            <Notes status={notesStatus} handlePositionChange={handlePositionChange} handleUpdateNoteOnServer={handleUpdateNoteOnServer} handleDeleteNote={handleDeleteNote} notes={notes} />
+            {tasksWindowOpen && <TasksList />}
+            <DesktopFiles />
+          </div>
+        </div>
+      </ContextMenuTrigger>
+    </ContextMenu>
   );
 };
 
