@@ -4,6 +4,8 @@ import { NotebookPen } from "lucide-react";
 import Clock from "../Clock";
 import Calendar from "../Calendar";
 import StopWatch from "../Stopwatch";
+import useLocalStorage from "use-local-storage";
+import MinimizeClock from "../minimizeClock";
 
 const style = {
   container: {
@@ -13,8 +15,8 @@ const style = {
     alignContent: "flex-start",
     gap: "24px",
     flexWrap: "wrap",
-    marginTop: "92px",
-    marginLeft: "68px",
+    marginTop: "140px",
+    marginLeft: "20px",
   },
   addNoteButton: {
     display: "flex",
@@ -50,20 +52,29 @@ const style = {
 };
 
 const DateTimeSection = ({ hideTimer }: { hideTimer: string }) => {
+  const [minimizeClock, setMinimizeClock] = useLocalStorage("minize_clock", true);
+
   return (
-    <div style={{ ...(style.container as React.CSSProperties), zoom: "67%" }}>
-      <div>
-        <Clock />
+    <>
+      <MinimizeClock onClick={()=> setMinimizeClock(!minimizeClock)} />
+      <div style={{ ...(style.container as React.CSSProperties), zoom: "67%" }}>
+        {minimizeClock && (
+          <>
+            {/* <div>
+              <Clock />
+            </div>
+            <div>
+              <Calendar />
+            </div> */}
+          </>
+        )}
+        {hideTimer != "true" && (
+          <div style={{ zIndex: 1 }}>
+            <StopWatch />
+          </div>
+        )}
       </div>
-      <div>
-        <Calendar />
-      </div>
-      {hideTimer != "true" && (
-        <div style={{zIndex: 1}}>
-          <StopWatch />
-        </div>
-      )}
-    </div>
+    </>
   );
 };
 

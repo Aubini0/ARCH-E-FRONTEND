@@ -19,6 +19,7 @@ import { IoSearch } from "react-icons/io5";
 import { FiSearch } from "react-icons/fi";
 import { useRouter } from "next/router";
 import ZoomableComponent from "@/components/pages/Home/components/zoomable/zoomable";
+import MinimizeClock from "@/components/pages/Home/components/minimizeClock";
 
 const scaleFactor = 1;
 
