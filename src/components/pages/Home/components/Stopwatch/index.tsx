@@ -178,7 +178,7 @@ const StopWatch = () => {
   };
 
   return (
-    <div style={style.border as React.CSSProperties}>
+    <div className="absolute bottom-[16rem]" style={style.border as React.CSSProperties}>
       <div style={style.container as React.CSSProperties}>
         <div style={style.clock as React.CSSProperties}>
           <div style={style.tabs as React.CSSProperties}>

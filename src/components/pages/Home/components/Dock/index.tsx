@@ -86,7 +86,7 @@ export function HomeDock({ setHomePageBg, setHideTimer, addNote, setTasksWindowO
     }
   };
   return (
-    <div style={{ zoom: "67%" }} className="absolute bottom-[16px] left-1/2 max-w-full -translate-x-1/2">
+    <div style={{ zoom: "67%", zIndex: 1 }} className="absolute bottom-[16px] left-1/2 max-w-full -translate-x-1/2">
       <Dock className="items-end relative gap-[24px] bg-[#191919]">
         {data.map((item, idx) => {
           return (

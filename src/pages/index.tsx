@@ -21,6 +21,8 @@ import { useRouter } from "next/router";
 import { MdCloudUpload } from "react-icons/md";
 import DesktopFiles from "@/components/shared/DesktopFiles";
 import DesktopFilesContextProvider from "@/context/DesktopFilesContext";
+import ZoomableComponent from "@/components/pages/Home/components/zoomable/zoomable";
+import MinimizeClock from "@/components/pages/Home/components/minimizeClock";
 
 const scaleFactor = 1;
 
@@ -154,7 +156,7 @@ const Home = () => {
               e.preventDefault();
               router.push(`/arche-chat?passed_query=${encodeURIComponent(searchText)}`);
             }}
-            className="fixed top-[50px] left-[50%] translate-x-[-50%] translate-y-[-50%]"
+            className="fixed top-[50px] left-[50%] translate-x-[-50%] translate-y-[-50%] rounded-full"
           >
             <Input
               placeholder="Ask me a question..."
@@ -165,13 +167,15 @@ const Home = () => {
               inputSuffix={<FiSearch />}
             />
           </form>
-          <DateTimeSection hideTimer={hideTimer} />
-          <RightSection />
-          <HomeDock handleUploadFile={uploadFileFn} setTasksWindowOpen={setTasksWindowOpen} addNote={addNote} setHideTimer={setHideTimer} setHomePageBg={setHomePageBg} />
+        </div>
+        <DateTimeSection hideTimer={hideTimer} />
+        <RightSection />
+        <HomeDock setTasksWindowOpen={setTasksWindowOpen} addNote={addNote} setHideTimer={setHideTimer} setHomePageBg={setHomePageBg} />
+        <ZoomableComponent>
+          <DesktopFiles setUploadFn={setUploadFileFn} />
           <Notes status={notesStatus} handlePositionChange={handlePositionChange} handleUpdateNoteOnServer={handleUpdateNoteOnServer} handleDeleteNote={handleDeleteNote} notes={notes} />
           {tasksWindowOpen && <TasksList />}
-          <DesktopFiles setUploadFn={setUploadFileFn} />
-        </div>
+        </ZoomableComponent>
       </div>
     </DesktopFilesContextProvider>
   );
