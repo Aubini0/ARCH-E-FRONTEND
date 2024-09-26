@@ -144,22 +144,25 @@ const Home = () => {
       <div>
         <input {...getInputProps()} type="file" className="hidden" />
         <Header />
-        <form
-          onSubmit={(e) => {
-            e.preventDefault();
-            router.push(`/arche-chat?passed_query=${encodeURIComponent(searchText)}`);
-          }}
-          className="fixed top-[50px] left-[50%] translate-x-[-50%] translate-y-[-50%]"
-        >
-          <Input
-            placeholder="Ask me a question..."
-            inputContainerClassName="w-[500px] h-[40px] dark:!bg-secondary/30 rounded-full"
-            value={searchText}
-            onChange={(e) => setSearchText(e.target.value)}
-            className="!text-white dark:!text-white dark:placeholder:!text-white"
-            inputSuffix={<FiSearch />}
-          />
-        </form>
+        <div style={{ zIndex: 1 }} className="fixed top-[50px] left-[50%] translate-x-[-50%] translate-y-[-50%]">
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              router.push(`/arche-chat?passed_query=${encodeURIComponent(searchText)}`);
+            }}
+            style={{ backdropFilter: "blur(5px)" }}
+            className="rounded-full"
+          >
+            <Input
+              placeholder="Ask me a question..."
+              inputContainerClassName="w-[500px] h-[40px] dark:!bg-secondary/30 rounded-full"
+              value={searchText}
+              onChange={(e) => setSearchText(e.target.value)}
+              className="!text-white dark:!text-white dark:placeholder:!text-white"
+              inputSuffix={<FiSearch />}
+            />
+          </form>
+        </div>
         <DateTimeSection hideTimer={hideTimer} />
         <RightSection />
         <HomeDock setTasksWindowOpen={setTasksWindowOpen} addNote={addNote} setHideTimer={setHideTimer} setHomePageBg={setHomePageBg} />

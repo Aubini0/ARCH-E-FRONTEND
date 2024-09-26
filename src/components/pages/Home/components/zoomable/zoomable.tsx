@@ -36,7 +36,7 @@ const ZoomableComponent = ({ children }: props) => {
 
   return (
     <>
-      <div className="flex absolute bottom-3 bg-black rounded left-5 items-center">
+      <div style={{zIndex: 1}} className="flex absolute bottom-3 bg-black rounded left-5 items-center">
         <button className="text-white font-bold py-2 px-2 focus:outline-none shadow-md flex items-center justify-center" onClick={handleZoomOut}>
           <MinusIcon size={15} />
         </button>
@@ -51,6 +51,7 @@ const ZoomableComponent = ({ children }: props) => {
       <div
         style={{
           zoom: `${zoomLevel / 100}`,
+          zIndex: 0,
         }}
       >
         {children}
