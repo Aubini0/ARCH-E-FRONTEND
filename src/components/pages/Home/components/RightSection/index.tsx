@@ -20,11 +20,11 @@ const RightSection: React.FC<Props> = ({}) => {
   const { auth } = useAppSelector((state) => state.auth);
   const router = useRouter();
   return (
-    <>
+    <div style={{ ...(style.container as React.CSSProperties), zoom: "67%", zIndex: 1}}>
       {/* <div className="absolute top-[20px] left-[50%] transform translate-x-[-50%]">
         <ChatBadge />
       </div> */}
-      <div style={{ ...(style.container as React.CSSProperties), zoom: "67%" }}>
+      <div style={{backdropFilter: "blur(5px)"}} className="rounded-full">
         {auth && <InviteSection />}
         {!auth && (
           <Button onClick={() => router.push("/auth/login")} className="text-base mt-5 mr-5 w-[130px]">
@@ -32,7 +32,7 @@ const RightSection: React.FC<Props> = ({}) => {
           </Button>
         )}
       </div>
-    </>
+    </div>
   );
 };
 

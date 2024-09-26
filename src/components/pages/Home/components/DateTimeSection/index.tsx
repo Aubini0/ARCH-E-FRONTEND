@@ -59,7 +59,7 @@ const DateTimeSection = ({ hideTimer }: { hideTimer: string }) => {
         <Calendar />
       </div>
       {hideTimer != "true" && (
-        <div>
+        <div style={{zIndex: 1}}>
           <StopWatch />
         </div>
       )}

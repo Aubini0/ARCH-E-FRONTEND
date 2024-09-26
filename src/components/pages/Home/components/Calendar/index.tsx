@@ -87,7 +87,7 @@ const Calendar = () => {
 
   return (
     <>
-      <div style={{ position: "relative" }}>
+      <div style={{ position: "relative", zIndex: 1 }}>
         <div style={style.container as React.CSSProperties}>
           {/* <div onClick={() => setIsOpen(!isOpen)} style={style.calendar as React.CSSProperties}>
             <CalendarIcon />
