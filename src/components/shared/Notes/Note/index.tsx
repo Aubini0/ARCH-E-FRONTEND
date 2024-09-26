@@ -71,7 +71,7 @@ const Note: FC<INote> = ({ handlePositionChange, note, handleDeleteNote, handleU
         style={{ zoom: "100%", zIndex: note.zIndex }}
       >
         {mode === "view" && (
-          <ScrollShadow ref={scrollRef} offset={100} size={20} visibility="top" className="p-5 w-full h-full overflow-y-auto hide-scrollbar rounded-[24px] text-black">
+          <ScrollShadow ref={scrollRef} offset={100} size={70} visibility="top" className="p-5 pt-9 w-full h-full overflow-y-auto hide-scrollbar rounded-[24px] text-black">
             <p dangerouslySetInnerHTML={{ __html: text || "Add a note..." }} className="note_html"></p>
           </ScrollShadow>
         )}
@@ -79,7 +79,7 @@ const Note: FC<INote> = ({ handlePositionChange, note, handleDeleteNote, handleU
           <MinimalTiptapEditor
             ref={clickoutref}
             throttleDelay={2000}
-            className={cn("h-full min-h-0 w-full rounded-[24px]")}
+            className={cn("h-full min-h-0 pt-4 w-full rounded-[24px]")}
             editorContentClassName="overflow-auto h-full"
             output="html"
             placeholder="Write a note..."

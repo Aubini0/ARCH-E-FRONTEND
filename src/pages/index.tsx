@@ -20,6 +20,7 @@ import { FiSearch } from "react-icons/fi";
 import { useRouter } from "next/router";
 import { MdCloudUpload } from "react-icons/md";
 import DesktopFiles from "@/components/shared/DesktopFiles";
+import DesktopFilesContextProvider from "@/context/DesktopFilesContext";
 
 const scaleFactor = 1;
 
@@ -40,6 +41,7 @@ const Home = () => {
   const [notes, setNotes] = useState(defaultNotes);
   const [maxZIndex, setMaxZIndex] = useState(0); // To keep track of the highest zIndex
   const router = useRouter();
+  const [uploadFileFn, setUploadFileFn] = useState<any>();
 
   const [fullScreen, setFullScreen] = useState(false);
 
@@ -138,39 +140,40 @@ const Home = () => {
     const bg = homePageBg ? homePageBg : "/home-background.png";
     setBackground(bg);
   }, [homePageBg]);
+
+  console.log(uploadFileFn);
+
   return (
-    <ContextMenu>
-      <ContextMenuTrigger asChild>
-        <div {...getRootProps()} style={{ background: `url(${background})`, backgroundSize: "cover" }} className={cn(styles.homeMain)}>
-          <div>
-            <input {...getInputProps()} type="file" className="hidden" />
-            <Header />
-            <form
-              onSubmit={(e) => {
-                e.preventDefault();
-                router.push(`/arche-chat?passed_query=${encodeURIComponent(searchText)}`);
-              }}
-              className="fixed top-[50px] left-[50%] translate-x-[-50%] translate-y-[-50%]"
-            >
-              <Input
-                placeholder="Ask me a question..."
-                inputContainerClassName="w-[500px] h-[40px] dark:!bg-secondary/30 rounded-full"
-                value={searchText}
-                onChange={(e) => setSearchText(e.target.value)}
-                className="!text-white dark:!text-white dark:placeholder:!text-white"
-                inputSuffix={<FiSearch />}
-              />
-            </form>
-            <DateTimeSection hideTimer={hideTimer} />
-            <RightSection />
-            <HomeDock setTasksWindowOpen={setTasksWindowOpen} addNote={addNote} setHideTimer={setHideTimer} setHomePageBg={setHomePageBg} />
-            <Notes status={notesStatus} handlePositionChange={handlePositionChange} handleUpdateNoteOnServer={handleUpdateNoteOnServer} handleDeleteNote={handleDeleteNote} notes={notes} />
-            {tasksWindowOpen && <TasksList />}
-            <DesktopFiles />
-          </div>
+    <DesktopFilesContextProvider>
+      <div {...getRootProps()} style={{ background: `url(${background})`, backgroundSize: "cover" }} className={cn(styles.homeMain)}>
+        <div>
+          <input {...getInputProps()} type="file" className="hidden" />
+          <Header />
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              router.push(`/arche-chat?passed_query=${encodeURIComponent(searchText)}`);
+            }}
+            className="fixed top-[50px] left-[50%] translate-x-[-50%] translate-y-[-50%]"
+          >
+            <Input
+              placeholder="Ask me a question..."
+              inputContainerClassName="w-[500px] h-[40px] dark:!bg-secondary/30 rounded-full"
+              value={searchText}
+              onChange={(e) => setSearchText(e.target.value)}
+              className="!text-white dark:!text-white dark:placeholder:!text-white"
+              inputSuffix={<FiSearch />}
+            />
+          </form>
+          <DateTimeSection hideTimer={hideTimer} />
+          <RightSection />
+          <HomeDock handleUploadFile={uploadFileFn} setTasksWindowOpen={setTasksWindowOpen} addNote={addNote} setHideTimer={setHideTimer} setHomePageBg={setHomePageBg} />
+          <Notes status={notesStatus} handlePositionChange={handlePositionChange} handleUpdateNoteOnServer={handleUpdateNoteOnServer} handleDeleteNote={handleDeleteNote} notes={notes} />
+          {tasksWindowOpen && <TasksList />}
+          <DesktopFiles setUploadFn={setUploadFileFn} />
         </div>
-      </ContextMenuTrigger>
-    </ContextMenu>
+      </div>
+    </DesktopFilesContextProvider>
   );
 };
 

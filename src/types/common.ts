@@ -175,6 +175,7 @@ export interface FileMetadata {
   file_server_path: string;
   folder_id: string | null;
   position_x: number;
+  rotation: number;
   position_y: number;
   position_z: number;
   createdAt: string;

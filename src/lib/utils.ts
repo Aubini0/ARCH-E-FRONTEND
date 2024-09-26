@@ -256,7 +256,7 @@ export function createDateObjectFromTimeString(timeStr: string) {
 export function getNextGridPosition(allocatedPositions: { x: number; y: number }[], tolerance = 5) {
   const rows = 10; // 4 rows
   const cols = 4; // 10 columns
-  const itemSize = 60; // Size of each grid item in pixels
+  const itemSize = 260; // Size of each grid item in pixels
   const gap = 12; // Gap between grid items in pixels
   const boxSize = itemSize + gap; // Total size including the gap
 

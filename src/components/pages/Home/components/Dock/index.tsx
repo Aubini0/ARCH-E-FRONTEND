@@ -5,12 +5,15 @@ import { Modal } from "@/components/pages/Home/modal";
 import React from "react";
 import { PiNotepad } from "react-icons/pi";
 import { FaTasks } from "react-icons/fa";
+import { VscNewFile } from "react-icons/vsc";
+import { useDesktopFiles } from "@/context/DesktopFilesContext";
 
 interface Props {
   setHomePageBg?: (value: string) => void;
   setHideTimer: (value: any) => void;
   addNote: () => void;
   setTasksWindowOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  handleUploadFile?: () => void;
 }
 const data = [
   {
@@ -32,6 +35,11 @@ const data = [
     title: "Tasks",
     icon: <FaTasks className="text-white text-2xl" />,
     href: "/tasks",
+  },
+  {
+    title: "Upload Media",
+    icon: <VscNewFile className="text-white text-2xl" />,
+    href: "/upload-file",
   },
   {
     title: "Search",
@@ -56,7 +64,8 @@ const data = [
   },
 ];
 
-export function HomeDock({ setHomePageBg, setHideTimer, addNote, setTasksWindowOpen }: Props) {
+export function HomeDock({ setHomePageBg, setHideTimer, addNote, setTasksWindowOpen, handleUploadFile }: Props) {
+  const { open } = useDesktopFiles();
   const router = useRouter();
   const [isOpen, setIsOpen] = React.useState({ isOpen: false, key: "" });
   const closeModal = () => setIsOpen({ ...isOpen, isOpen: false });
@@ -66,6 +75,8 @@ export function HomeDock({ setHomePageBg, setHideTimer, addNote, setTasksWindowO
       setIsOpen({ isOpen: true, key: key });
     } else if (route == "/timer") {
       setHideTimer((pre: string) => (pre == "true" ? "false" : "true"));
+    } else if (route == "/upload-file") {
+      open();
     } else if (route == "/tasks") {
       setTasksWindowOpen((pv) => !pv);
     } else if (route == "/add-new-note") {

@@ -28,3 +28,20 @@ export const useGetFiles = (
 
   return query;
 };
+
+export const useUpdateFile = (
+  props?: UseMutationOptions<APIResponse<any>, AxiosError<APIError>, { data: FileMetadata; id: string }>
+): UseMutationResult<APIResponse<any>, AxiosError<APIError>, { data: FileMetadata; id: string }> => {
+  const mutation = useMutation<APIResponse<any>, AxiosError<APIError>, { data: FileMetadata; id: string }>({
+    ...props,
+    mutationFn: async (query) => {
+      const response = await http.put(
+        `/file-management/update/file?file_id=${query.id}&file_name=${query.data.file_name}&position_x=${query.data.position_x}&position_y=${query.data.position_y}&rotation=${query.data.rotation}`,
+        query.data
+      );
+      return response.data;
+    },
+  });
+
+  return mutation;
+};
