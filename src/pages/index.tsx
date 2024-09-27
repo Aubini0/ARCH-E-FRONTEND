@@ -13,13 +13,11 @@ import { ContextMenu, ContextMenuTrigger } from "@/components/ui/context-menu";
 import { useCreateNote, useDeleteNote, useGetNotes, useUpdateNote } from "@/hooks/api/notes";
 import { ICreateNote, INote } from "@/types/common";
 import TasksList from "@/components/shared/TasksList";
-import MinimalTiptapEditor from "@/components/ui/tiptap-text-editor";
 import { Input } from "@/components/ui/input";
 import { IoSearch } from "react-icons/io5";
 import { FiSearch } from "react-icons/fi";
 import { useRouter } from "next/router";
 import ZoomableComponent from "@/components/pages/Home/components/zoomable/zoomable";
-import MinimizeClock from "@/components/pages/Home/components/minimizeClock";
 
 const scaleFactor = 1;
 
@@ -141,7 +139,8 @@ const Home = () => {
   return (
     // <ContextMenu>
     // <ContextMenuTrigger asChild>
-    <div {...getRootProps()} style={{ background: `url(${background})`, backgroundSize: "cover" }} className={cn(styles.homeMain)}>
+    <div {...getRootProps()} style={{ backgroundSize: "cover" }} className={cn(styles.homeMain)}>
+      <div className="h-full absolute w-full dark:bg-grid-small-white [mask-image:radial-gradient(40vw_circle_at_center,white,transparent)] bg-grid-small-black"></div>
       <div>
         <input {...getInputProps()} type="file" className="hidden" />
         <Header />
@@ -159,7 +158,7 @@ const Home = () => {
               inputContainerClassName="w-[500px] h-[40px] dark:!bg-secondary/30 rounded-full"
               value={searchText}
               onChange={(e) => setSearchText(e.target.value)}
-              className="!text-white dark:!text-white dark:placeholder:!text-white"
+              className="!text-white dark:!text-white dark:placeholder:!text-white placeholder:text-white"
               inputSuffix={<FiSearch />}
             />
           </form>
