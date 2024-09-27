@@ -17,6 +17,8 @@ const style = {
     display: "flex",
     flexDirection: "column",
     alignItems: "flex-start",
+    border: "1px solid #2D2D2D",
+    borderRadius: '16px',
     gap: "8px",
     flex: "1 0 0",
   },
@@ -87,6 +89,7 @@ const style = {
     alignItems: "center",
     gap: "8px",
     alignSelf: "stretch",
+    border: "1px solid #2D2D2D",
     borderRadius: "11px",
     background: "rgba(24, 24, 27, 0.35)",
     backdropFilter: "blur(5px)",
@@ -180,7 +183,7 @@ const StopWatch = () => {
 
   return (
     <Draggable defaultPosition={{ x: 0, y: 0 }} scale={1}>
-      <div className="cursor-grab absolute bottom-[16rem]" style={style.border as React.CSSProperties}>
+      <div className="cursor-grab absolute bottom-[16rem] " style={style.border as React.CSSProperties}>
         <div style={style.container as React.CSSProperties}>
           <div style={style.clock as React.CSSProperties}>
             <div style={style.tabs as React.CSSProperties}>
