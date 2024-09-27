@@ -71,7 +71,7 @@ export const BackgroundComponent = ({ onClose, setHomePageBg }: Props) => {
                   className={`${activeBg == idx && "border-[2px]"} h-[122px] text-white cursor-pointer w-full rounded-[16px]`}
                   src={item}
                   onError={(e: any) => {
-                    e.target.onerror = null;
+                    e.target.src = item;
                   }}
                   onLoad={() => setLoading(false)}
                   alt={`Background image`}
