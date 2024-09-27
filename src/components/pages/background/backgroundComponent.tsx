@@ -72,7 +72,6 @@ export const BackgroundComponent = ({ onClose, setHomePageBg }: Props) => {
                   src={item}
                   onError={(e: any) => {
                     e.target.onerror = null;
-                    e.target.src = item;
                   }}
                   onLoad={() => setLoading(false)}
                   alt={`Background image`}
