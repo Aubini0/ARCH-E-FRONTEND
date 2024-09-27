@@ -3,6 +3,7 @@ import { CoffeeIcon } from "@/components/icons/CoffeeIcon";
 import React, { useState } from "react";
 import TabCountTime from "./TabCountTime";
 import useLocalStorage from "use-local-storage";
+import Draggable from "react-draggable";
 
 const style = {
   border: {
@@ -178,55 +179,57 @@ const StopWatch = () => {
   };
 
   return (
-    <div className="absolute bottom-[16rem]" style={style.border as React.CSSProperties}>
-      <div style={style.container as React.CSSProperties}>
-        <div style={style.clock as React.CSSProperties}>
-          <div style={style.tabs as React.CSSProperties}>
-            <div onClick={() => handleClickTab(1)} style={isTab === 1 ? style.tabActive : (style.tab as React.CSSProperties)}>
-              <div style={{ color: isTab === 1 ? "#fff" : "#848585" }}>
-                <ClockIcon />
+    <Draggable defaultPosition={{ x: 0, y: 0 }} scale={1}>
+      <div className="cursor-grab absolute bottom-[16rem]" style={style.border as React.CSSProperties}>
+        <div style={style.container as React.CSSProperties}>
+          <div style={style.clock as React.CSSProperties}>
+            <div style={style.tabs as React.CSSProperties}>
+              <div onClick={() => handleClickTab(1)} style={isTab === 1 ? style.tabActive : (style.tab as React.CSSProperties)}>
+                <div style={{ color: isTab === 1 ? "#fff" : "#848585" }}>
+                  <ClockIcon />
+                </div>
+                <p style={isTab === 1 ? style.pActive : (style.p as React.CSSProperties)}>Ongoing</p>
               </div>
-              <p style={isTab === 1 ? style.pActive : (style.p as React.CSSProperties)}>Ongoing</p>
-            </div>
-            <div onClick={() => handleClickTab(2)} style={isTab === 2 ? style.tabActive : (style.tab as React.CSSProperties)}>
-              <div style={{ color: isTab === 2 ? "#fff" : "#848585" }}>
-                <CoffeeIcon />
+              <div onClick={() => handleClickTab(2)} style={isTab === 2 ? style.tabActive : (style.tab as React.CSSProperties)}>
+                <div style={{ color: isTab === 2 ? "#fff" : "#848585" }}>
+                  <CoffeeIcon />
+                </div>
+                <p style={isTab === 2 ? style.pActive : (style.p as React.CSSProperties)}>Break</p>
               </div>
-              <p style={isTab === 2 ? style.pActive : (style.p as React.CSSProperties)}>Break</p>
             </div>
-          </div>
-          <div>
-            {
-              <TabCountTime
-                startTimeRef={startTimeRef}
-                running={running}
-                setRunning={setRunning}
-                time={time}
-                setTime={setTime}
-                onShowSetting={() => setIsShowSetting(!isShowSetting)}
-                handleReset={handleReset}
-              />
-            }
+            <div>
+              {
+                <TabCountTime
+                  startTimeRef={startTimeRef}
+                  running={running}
+                  setRunning={setRunning}
+                  time={time}
+                  setTime={setTime}
+                  onShowSetting={() => setIsShowSetting(!isShowSetting)}
+                  handleReset={handleReset}
+                />
+              }
+            </div>
           </div>
         </div>
+        {isShowSetting ? (
+          <>
+            <div style={style.clockView as React.CSSProperties}>
+              <div style={style.hours as React.CSSProperties}>
+                <div style={style.text as React.CSSProperties}>Minutes</div>
+                <input max={59} onChange={(e) => handleSaveTimer(e?.target?.value, "minutes")} value={jsonLocalTime[isTab - 1]?.minutes} type="number" style={style.number as React.CSSProperties} />
+              </div>
+              <div style={style.hours as React.CSSProperties}>
+                <div style={style.text as React.CSSProperties}>Seconds</div>
+                <input onChange={(e) => handleSaveTimer(e?.target?.value, "seconds")} max={59} type="number" value={jsonLocalTime[isTab - 1]?.seconds} style={style.number as React.CSSProperties} />
+              </div>
+            </div>
+          </>
+        ) : (
+          <></>
+        )}
       </div>
-      {isShowSetting ? (
-        <>
-          <div style={style.clockView as React.CSSProperties}>
-            <div style={style.hours as React.CSSProperties}>
-              <div style={style.text as React.CSSProperties}>Minutes</div>
-              <input max={59} onChange={(e) => handleSaveTimer(e?.target?.value, "minutes")} value={jsonLocalTime[isTab - 1]?.minutes} type="number" style={style.number as React.CSSProperties} />
-            </div>
-            <div style={style.hours as React.CSSProperties}>
-              <div style={style.text as React.CSSProperties}>Seconds</div>
-              <input onChange={(e) => handleSaveTimer(e?.target?.value, "seconds")} max={59} type="number" value={jsonLocalTime[isTab - 1]?.seconds} style={style.number as React.CSSProperties} />
-            </div>
-          </div>
-        </>
-      ) : (
-        <></>
-      )}
-    </div>
+    </Draggable>
   );
 };
 

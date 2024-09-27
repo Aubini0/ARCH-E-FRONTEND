@@ -140,7 +140,7 @@ const Home = () => {
     // <ContextMenu>
     // <ContextMenuTrigger asChild>
     <div {...getRootProps()} style={{ backgroundSize: "cover" }} className={cn(styles.homeMain)}>
-      <div className="h-[50rem] w-full dark:bg-grid-small-white [mask-image:radial-gradient(40vw_circle_at_center,white,transparent)] bg-grid-small-black"></div>
+      <div className="h-full absolute w-full dark:bg-grid-small-white [mask-image:radial-gradient(40vw_circle_at_center,white,transparent)] bg-grid-small-black"></div>
       <div>
         <input {...getInputProps()} type="file" className="hidden" />
         <Header />
