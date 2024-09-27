@@ -3,7 +3,7 @@ import DesktopOnly from "@/components/shared/DesktopOnly";
 import Modals from "@/components/shared/Modals";
 import { ThemeProvider } from "@/components/shared/ThemeProvider";
 import { Toaster } from "@/components/ui/toaster";
-import { comicSans, inter, montserrat, onest, poppins } from "@/fonts/google";
+import { comicSans, inter, montserrat, onest, poppins, kalam } from "@/fonts/google";
 import useDeviceIndicator from "@/hooks/useDeviceIndicator";
 import { cn } from "@/lib/utils";
 import { store } from "@/store";
@@ -40,7 +40,7 @@ export default function App({ Component, pageProps }: AppProps) {
                 <DesktopOnly />
               ) : (
                 <>
-                  <div suppressHydrationWarning className={cn(onest.variable, montserrat.variable, comicSans.variable, inter.variable, poppins.variable)}>
+                  <div suppressHydrationWarning className={cn(onest.variable, montserrat.variable, comicSans.variable, inter.variable, poppins.variable, kalam.variable)}>
                     <Component {...pageProps} />
                   </div>
                   <Modals />

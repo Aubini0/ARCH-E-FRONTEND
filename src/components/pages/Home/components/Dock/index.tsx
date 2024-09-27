@@ -37,6 +37,7 @@ const data = [
     title: "Search",
     icon: <Search className="text-white" />,
     href: "/arche-chat",
+    isLast: false
   },
   // {
   //   title: "File Management",
@@ -48,12 +49,12 @@ const data = [
   //   icon: <Folder className="text-white" />,
   //   href: "/shared-files",
   // },
-  {
-    title: "Background",
-    icon: <Images size={40} className="text-white" />,
-    href: "/background",
-    isLast: true,
-  },
+  // {
+  //   title: "Background",
+  //   icon: <Images size={40} className="text-white" />,
+  //   href: "/background",
+  //   isLast: true,
+  // },
 ];
 
 export function HomeDock({ setHomePageBg, setHideTimer, addNote, setTasksWindowOpen }: Props) {
