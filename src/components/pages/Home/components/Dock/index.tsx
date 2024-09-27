@@ -77,7 +77,7 @@ export function HomeDock({ setHomePageBg, setHideTimer, addNote, setTasksWindowO
   };
   return (
     <div style={{ zoom: "67%", zIndex: 1 }} className="absolute bottom-[16px] left-1/2 max-w-full -translate-x-1/2">
-      <Dock className="items-end relative gap-[24px] bg-[#191919]">
+      <Dock className="items-end relative gap-[24px] border-[2px] border-[#2D2D2D] bg-[#191919]">
         {data.map((item, idx) => {
           return (
             <div key={idx} onClick={() => handleClick(item?.href)} className={`relative ${item?.isLast ? "pb-2 flex" : "pb-4"}`}>

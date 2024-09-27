@@ -9,6 +9,7 @@ const style = {
     flexDirection: "column",
     alignItems: "flex-start",
     borderRadius: "24px",
+    border: "1px solid #2D2D2D",
     background: "#18181B",
     marginTop: "2px",
   },

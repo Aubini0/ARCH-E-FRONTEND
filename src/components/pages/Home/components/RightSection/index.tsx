@@ -27,7 +27,7 @@ const RightSection: React.FC<Props> = ({}) => {
       <div style={{backdropFilter: "blur(5px)"}} className="rounded-full">
         {auth && <InviteSection />}
         {!auth && (
-          <Button onClick={() => router.push("/auth/login")} className="text-base mt-5 mr-5 w-[130px]">
+          <Button onClick={() => router.push("/auth/login")} className="text-base mt-5 border border-[#2D2D2D] mr-5 w-[130px]">
             Login
           </Button>
         )}
