@@ -13,7 +13,6 @@ import { ContextMenu, ContextMenuContent, ContextMenuItem, ContextMenuTrigger } 
 import { useCreateNote, useDeleteNote, useGetNotes, useUpdateNote } from "@/hooks/api/notes";
 import { ICreateNote, INote } from "@/types/common";
 import TasksList from "@/components/shared/TasksList";
-import MinimalTiptapEditor from "@/components/ui/tiptap-text-editor";
 import { Input } from "@/components/ui/input";
 import { IoCloudUploadOutline, IoSearch } from "react-icons/io5";
 import { FiSearch } from "react-icons/fi";
@@ -22,7 +21,6 @@ import { MdCloudUpload } from "react-icons/md";
 import DesktopFiles from "@/components/shared/DesktopFiles";
 import DesktopFilesContextProvider from "@/context/DesktopFilesContext";
 import ZoomableComponent from "@/components/pages/Home/components/zoomable/zoomable";
-import MinimizeClock from "@/components/pages/Home/components/minimizeClock";
 
 const scaleFactor = 1;
 
@@ -147,35 +145,38 @@ const Home = () => {
 
   return (
     <DesktopFilesContextProvider>
-      <div {...getRootProps()} style={{ background: `url(${background})`, backgroundSize: "cover" }} className={cn(styles.homeMain)}>
+      <div {...getRootProps()} style={{ backgroundSize: "cover" }} className={cn(styles.homeMain)}>
+        <div className="h-full absolute w-full dark:bg-grid-small-white [mask-image:radial-gradient(40vw_circle_at_center,white,transparent)] bg-grid-small-black"></div>
         <div>
           <input {...getInputProps()} type="file" className="hidden" />
           <Header />
-          <form
-            onSubmit={(e) => {
-              e.preventDefault();
-              router.push(`/arche-chat?passed_query=${encodeURIComponent(searchText)}`);
-            }}
-            className="fixed top-[50px] left-[50%] translate-x-[-50%] translate-y-[-50%] rounded-full"
-          >
-            <Input
-              placeholder="Ask me a question..."
-              inputContainerClassName="w-[500px] h-[40px] dark:!bg-secondary/30 rounded-full"
-              value={searchText}
-              onChange={(e) => setSearchText(e.target.value)}
-              className="!text-white dark:!text-white dark:placeholder:!text-white"
-              inputSuffix={<FiSearch />}
-            />
-          </form>
+          <div style={{ zIndex: 1 }} className="fixed top-[50px] left-[50%] translate-x-[-50%] translate-y-[-50%]">
+            <form
+              onSubmit={(e) => {
+                e.preventDefault();
+                router.push(`/arche-chat?passed_query=${encodeURIComponent(searchText)}`);
+              }}
+              className="fixed top-[50px] left-[50%] translate-x-[-50%] translate-y-[-50%] rounded-full"
+            >
+              <Input
+                placeholder="Ask me a question..."
+                inputContainerClassName="w-[500px] h-[40px] dark:!bg-secondary/30 rounded-full"
+                value={searchText}
+                onChange={(e) => setSearchText(e.target.value)}
+                className="!text-white dark:!text-white dark:placeholder:!text-white placeholder:text-white"
+                inputSuffix={<FiSearch />}
+              />
+            </form>
+          </div>
+          <DateTimeSection hideTimer={hideTimer} />
+          <RightSection />
+          <HomeDock setTasksWindowOpen={setTasksWindowOpen} addNote={addNote} setHideTimer={setHideTimer} setHomePageBg={setHomePageBg} />
+          <ZoomableComponent>
+            <DesktopFiles setUploadFn={setUploadFileFn} />
+            <Notes status={notesStatus} handlePositionChange={handlePositionChange} handleUpdateNoteOnServer={handleUpdateNoteOnServer} handleDeleteNote={handleDeleteNote} notes={notes} />
+            {tasksWindowOpen && <TasksList />}
+          </ZoomableComponent>
         </div>
-        <DateTimeSection hideTimer={hideTimer} />
-        <RightSection />
-        <HomeDock setTasksWindowOpen={setTasksWindowOpen} addNote={addNote} setHideTimer={setHideTimer} setHomePageBg={setHomePageBg} />
-        <ZoomableComponent>
-          <DesktopFiles setUploadFn={setUploadFileFn} />
-          <Notes status={notesStatus} handlePositionChange={handlePositionChange} handleUpdateNoteOnServer={handleUpdateNoteOnServer} handleDeleteNote={handleDeleteNote} notes={notes} />
-          {tasksWindowOpen && <TasksList />}
-        </ZoomableComponent>
       </div>
     </DesktopFilesContextProvider>
   );

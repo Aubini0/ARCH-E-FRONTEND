@@ -34,6 +34,7 @@ interface calType {
 
 const MinimizeClock: React.FC<Props> = ({ onClick }) => {
   const [date, setDate] = useState<dateType | null>();
+  const [mount, setMount] = useState(false);
   const [calendarData, setCalendarData] = useState<calType | null>();
 
   const month = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
@@ -78,24 +79,31 @@ const MinimizeClock: React.FC<Props> = ({ onClick }) => {
       clearInterval(timer);
     };
   }, []);
+  useEffect(() => {
+    setMount(true);
+  }, []);
   return (
     <div onClick={onClick} style={{ ...(style.container as React.CSSProperties), zoom: "67%", zIndex: 1 }}>
       <div style={{ backdropFilter: "blur(5px)" }} className="rounded-full">
         <div
-          className="text-white cursor-pointer hover:bg-[#27272a] dark:!bg-secondary/30 bg-secondary/30 flex gap-2 justify-center font-semibold items-center"
+          className="text-white border border-[#2D2D2D] cursor-pointer hover:bg-[#27272a] dark:!bg-secondary/30 bg-secondary/30 flex gap-2 justify-center font-semibold items-center"
           style={style.container2 as React.CSSProperties}
         >
-          <div>
-            {`
+          {mount && (
+            <>
+              <div>
+                {`
            ${calendarData?.dayName}
            ${calendarData?.mounthName}
            ${calendarData?.dayNumber}`}
-          </div>
-          <div>
-            {`${date?.hours} :
+              </div>
+              <div>
+                {`${date?.hours} :
         ${date?.minutes}
         ${date?.ampm?.toUpperCase()}`}
-          </div>
+              </div>
+            </>
+          )}
         </div>
       </div>
     </div>

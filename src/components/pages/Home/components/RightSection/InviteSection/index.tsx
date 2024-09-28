@@ -51,7 +51,7 @@ const InviteSection: React.FC<Props> = ({}) => {
 
   return (
     <>
-      <div className="text-white dark:!bg-secondary/30 bg-secondary/30" style={style.container as React.CSSProperties}>
+      <div className="text-white border border-[#2D2D2D] dark:!bg-secondary/30 bg-secondary/30" style={style.container as React.CSSProperties}>
         <Dialog open={editProfileOpen} onOpenChange={setEditProfileOpen}>
           <DialogTrigger asChild>
             {!user?.profilePic ? (

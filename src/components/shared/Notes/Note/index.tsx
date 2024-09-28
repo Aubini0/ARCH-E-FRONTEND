@@ -67,7 +67,7 @@ const Note: FC<INote> = ({ handlePositionChange, note, handleDeleteNote, handleU
         }}
         tabIndex={0}
         // className="__notes_drag absolute w-[275px] bg-[#FDF7BB] border border-[#D1D1D0] h-[275px] p-5 cursor-grab"
-        className="__notes_drag absolute w-[235px] bg-[#FDF7BB] border border-[#D1D1D0] h-[260px] cursor-grab rounded-[24px]"
+        className="__notes_drag absolute w-[235px] bg-gradient-to-b from-yellow-100 to-yellow-300 border border-[#D1D1D0] h-[260px] cursor-grab rounded-[24px]"
         style={{ zoom: "100%", zIndex: note.zIndex }}
       >
         {mode === "view" && (

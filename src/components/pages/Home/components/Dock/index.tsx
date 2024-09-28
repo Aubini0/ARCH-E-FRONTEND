@@ -45,6 +45,7 @@ const data = [
     title: "Search",
     icon: <Search className="text-white" />,
     href: "/arche-chat",
+    isLast: false
   },
   // {
   //   title: "File Management",
@@ -56,12 +57,12 @@ const data = [
   //   icon: <Folder className="text-white" />,
   //   href: "/shared-files",
   // },
-  {
-    title: "Background",
-    icon: <Images size={40} className="text-white" />,
-    href: "/background",
-    isLast: true,
-  },
+  // {
+  //   title: "Background",
+  //   icon: <Images size={40} className="text-white" />,
+  //   href: "/background",
+  //   isLast: true,
+  // },
 ];
 
 export function HomeDock({ setHomePageBg, setHideTimer, addNote, setTasksWindowOpen, handleUploadFile }: Props) {
@@ -87,7 +88,7 @@ export function HomeDock({ setHomePageBg, setHideTimer, addNote, setTasksWindowO
   };
   return (
     <div style={{ zoom: "67%", zIndex: 1 }} className="absolute bottom-[16px] left-1/2 max-w-full -translate-x-1/2">
-      <Dock className="items-end relative gap-[24px] bg-[#191919]">
+      <Dock className="items-end relative gap-[24px] border-[2px] border-[#2D2D2D] bg-[#191919]">
         {data.map((item, idx) => {
           return (
             <div key={idx} onClick={() => handleClick(item?.href)} className={`relative ${item?.isLast ? "pb-2 flex" : "pb-4"}`}>

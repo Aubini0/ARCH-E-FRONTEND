@@ -141,7 +141,7 @@ const TasksList = () => {
         }}
         defaultPosition={value}
       >
-        <div className="bg-dark-background rounded-xl w-[300px] h-[345px] overflow-hidden cursor-grab">
+        <div className="bg-dark-background border border-[#2D2D2D] rounded-xl w-[300px] h-[345px] overflow-hidden cursor-grab">
           {mode === "view" && (
             <>
               <div className="py-5 flex items-center justify-between px-5">
