@@ -65,6 +65,7 @@ const DesktopFilesContextProvider: FC<IDesktopFilesContextProvider> = ({ childre
       position_y: position?.y || 0,
       position_z: 1,
       user_id: "",
+      rotation: 0,
     };
     setFiles((pv) => [...pv, obj]);
   };
