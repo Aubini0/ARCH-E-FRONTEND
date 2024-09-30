@@ -43,6 +43,7 @@ const DesktopFile: FC<IDesktopFile> = ({ file, i }) => {
         target={`.file-${i + 1}`}
         rotatable={clicked}
         draggable={true}
+        className={`desktop-file ${!clicked ? "inactive" : ""}`}
         clickable={clicked}
         throttleDrag={0}
         onDrag={({ target, beforeDelta, beforeDist, left, top, right, bottom, delta, dist, transform, clientX, clientY }: OnDrag) => {
