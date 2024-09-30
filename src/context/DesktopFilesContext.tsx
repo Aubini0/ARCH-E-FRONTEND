@@ -73,7 +73,6 @@ const DesktopFilesContextProvider: FC<IDesktopFilesContextProvider> = ({ childre
   const { open } = useDropzone({
     accept: {
       "image/*": [],
-      "video/*": [],
     },
     noClick: true,
     onDrop,
