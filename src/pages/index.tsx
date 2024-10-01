@@ -77,6 +77,7 @@ const Home = () => {
     onDrop(acceptedFiles, fileRejections, event) {},
     noClick: true,
   });
+  const [timerPosition, setTimerPosition] = React.useState({ x: 0, y: 0 });
 
   const addNote = async () => {
     try {
@@ -163,7 +164,7 @@ const Home = () => {
             />
           </form>
         </div>
-        <DateTimeSection hideTimer={hideTimer} />
+        <DateTimeSection timerPosition={timerPosition} setTimerPosition={setTimerPosition} hideTimer={hideTimer} />
         <RightSection />
         <HomeDock setTasksWindowOpen={setTasksWindowOpen} addNote={addNote} setHideTimer={setHideTimer} setHomePageBg={setHomePageBg} />
         <ZoomableComponent>
