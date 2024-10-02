@@ -1,6 +1,6 @@
 import { FileMetadata } from "@/types/common";
 import { createContext, useContext } from "react";
-import { useGetFiles, useUploadFile } from "@/hooks/api/files";
+import { useDeleteFile, useGetFiles, useUploadFile } from "@/hooks/api/files";
 import { getNextGridPosition } from "@/lib/utils";
 import React, { FC, useState } from "react";
 import { useDropzone } from "react-dropzone";
@@ -9,11 +9,13 @@ import { MdCloudUpload } from "react-icons/md";
 interface IDesktopFilesContext {
   open: () => void;
   files: FileMetadata[];
+  handleDeleteFile: (id: string) => Promise<void>;
 }
 
 const DesktopFilesContext = createContext<IDesktopFilesContext>({
   open: () => {},
   files: [],
+  handleDeleteFile: async () => {},
 });
 
 interface IDesktopFilesContextProvider {
@@ -23,6 +25,7 @@ interface IDesktopFilesContextProvider {
 const DesktopFilesContextProvider: FC<IDesktopFilesContextProvider> = ({ children }) => {
   const { mutateAsync: uploadFileMutateAsync } = useUploadFile();
   const [files, setFiles] = useState<FileMetadata[]>([]);
+  const { mutateAsync: deleteFileMutateAsync } = useDeleteFile();
 
   const {} = useGetFiles({
     queryKey: "desktop-files",
@@ -55,7 +58,8 @@ const DesktopFilesContextProvider: FC<IDesktopFilesContextProvider> = ({ childre
 
     const url = res.data.file_url;
     const obj: FileMetadata = {
-      _id: "",
+      // @ts-ignore
+      _id: res.data.file_id,
       file_url: url,
       file_server_path: "",
       createdAt: new Date().toJSON(),
@@ -71,6 +75,16 @@ const DesktopFilesContextProvider: FC<IDesktopFilesContextProvider> = ({ childre
     setFiles((pv) => [...pv, obj]);
   };
 
+  const handleDeleteFile = async (id: string) => {
+    try {
+      const newFiles = files.filter((f) => f._id !== id);
+      setFiles(newFiles);
+      await deleteFileMutateAsync(id);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const { open } = useDropzone({
     accept: {
       "image/*": [],
@@ -79,7 +93,7 @@ const DesktopFilesContextProvider: FC<IDesktopFilesContextProvider> = ({ childre
     onDrop,
     multiple: false,
   });
-  return <DesktopFilesContext.Provider value={{ files, open }}>{children}</DesktopFilesContext.Provider>;
+  return <DesktopFilesContext.Provider value={{ files, open, handleDeleteFile }}>{children}</DesktopFilesContext.Provider>;
 };
 
 export default DesktopFilesContextProvider;

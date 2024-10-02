@@ -45,3 +45,15 @@ export const useUpdateFile = (
 
   return mutation;
 };
+
+export const useDeleteFile = (props?: UseMutationOptions<APIResponse<any>, AxiosError<APIError>, string>): UseMutationResult<APIResponse<any>, AxiosError<APIError>, string> => {
+  const mutation = useMutation<APIResponse<any>, AxiosError<APIError>, string>({
+    ...props,
+    mutationFn: async (query) => {
+      const response = await http.delete(`/file-management/delete/file?file_id=${query}`);
+      return response.data;
+    },
+  });
+
+  return mutation;
+};
