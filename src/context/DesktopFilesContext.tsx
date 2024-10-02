@@ -25,6 +25,7 @@ const DesktopFilesContextProvider: FC<IDesktopFilesContextProvider> = ({ childre
   const [files, setFiles] = useState<FileMetadata[]>([]);
 
   const {} = useGetFiles({
+    queryKey: "desktop-files",
     refetchOnMount: true,
     refetchOnWindowFocus: false,
     refetchOnReconnect: false,
