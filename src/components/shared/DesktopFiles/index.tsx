@@ -23,7 +23,7 @@ interface IDesktopFiles {
 const DesktopFiles: FC<IDesktopFiles> = ({ setUploadFn }) => {
   const { files } = useDesktopFiles();
   return (
-    <div className="fixed left-[45vh] top-[100px]">
+    <div className="fixed left-[45vh] z-[11] top-[100px]">
       {files.map((file, i) => {
         return <DesktopFile file={file} i={i} />;
       })}
