@@ -81,6 +81,7 @@ const Home = () => {
     onDrop(acceptedFiles, fileRejections, event) {},
     noClick: true,
   });
+  const [timerPosition, setTimerPosition] = React.useState({ x: 0, y: 0 });
 
   const addNote = async () => {
     try {
@@ -168,15 +169,14 @@ const Home = () => {
               />
             </form>
           </div>
-          <DateTimeSection hideTimer={hideTimer} />
-          <RightSection />
-          <HomeDock setTasksWindowOpen={setTasksWindowOpen} addNote={addNote} setHideTimer={setHideTimer} setHomePageBg={setHomePageBg} />
-          <ZoomableComponent>
-            <DesktopFiles setUploadFn={setUploadFileFn} />
-            <Notes status={notesStatus} handlePositionChange={handlePositionChange} handleUpdateNoteOnServer={handleUpdateNoteOnServer} handleDeleteNote={handleDeleteNote} notes={notes} />
-            {tasksWindowOpen && <TasksList />}
-          </ZoomableComponent>
         </div>
+        <DateTimeSection timerPosition={timerPosition} setTimerPosition={setTimerPosition} hideTimer={hideTimer} />
+        <RightSection />
+        <HomeDock setTasksWindowOpen={setTasksWindowOpen} addNote={addNote} setHideTimer={setHideTimer} setHomePageBg={setHomePageBg} />
+        <ZoomableComponent>
+          <Notes status={notesStatus} handlePositionChange={handlePositionChange} handleUpdateNoteOnServer={handleUpdateNoteOnServer} handleDeleteNote={handleDeleteNote} notes={notes} />
+          {tasksWindowOpen && <TasksList />}
+        </ZoomableComponent>
       </div>
     </DesktopFilesContextProvider>
   );
