@@ -91,9 +91,9 @@ const DesktopFile: FC<IDesktopFile> = ({ file, i }) => {
               e.stopPropagation();
               handleDeleteFile(file._id);
             }}
-            className="absolute z-5 __note_delete cursor-pointer top-3 right-3"
+            className="absolute z-5 p-2 bg-black rounded-full cursor-pointer top-1 right-1"
           >
-            <TfiTrash className="text-red-500 text-xl" />
+            <TfiTrash className="text-red-500 text-lg" />
           </div>
         )}
       </div>
