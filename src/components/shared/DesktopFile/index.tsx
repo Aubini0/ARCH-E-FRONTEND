@@ -61,6 +61,7 @@ const DesktopFile: FC<IDesktopFile> = ({ file, i }) => {
             y: posAttr.top,
           });
         }}
+        origin={false}
         throttleRotate={0}
         onRotateStart={({ target, clientX, clientY }) => {
           console.log("onRotateStart", target);
