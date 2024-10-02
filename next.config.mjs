@@ -3,6 +3,7 @@ const nextConfig = {
   reactStrictMode: false,
   images: {
     domains: ["i.pravatar.cc", "nextui.org", "i.ytimg.com", "www.google.com", "images.unsplash.com", "api.arche.social"],
+    unoptimized: true
   },
   transpilePackages: [
     "antd",

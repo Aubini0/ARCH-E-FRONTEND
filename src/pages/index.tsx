@@ -174,6 +174,7 @@ const Home = () => {
         <RightSection />
         <HomeDock setTasksWindowOpen={setTasksWindowOpen} addNote={addNote} setHideTimer={setHideTimer} setHomePageBg={setHomePageBg} />
         <ZoomableComponent>
+          <DesktopFiles setUploadFn={setUploadFileFn} />
           <Notes status={notesStatus} handlePositionChange={handlePositionChange} handleUpdateNoteOnServer={handleUpdateNoteOnServer} handleDeleteNote={handleDeleteNote} notes={notes} />
           {tasksWindowOpen && <TasksList />}
         </ZoomableComponent>
