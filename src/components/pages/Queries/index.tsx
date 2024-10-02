@@ -249,12 +249,12 @@ const Queries: FC<IQueries> = ({ session_id }) => {
         if (data.clear) {
           updatedQueries[currentQueryIndex].completed = true;
 
-          if (passedQuery) {
-            const url = new URL(`${window.location.origin}${router.asPath}`);
-            router.replace(url);
-          }
           if (!auth) {
             localStorage.setItem("queries", JSON.stringify(updatedQueries));
+          }
+          if (passedQuery) {
+            const url = new URL(`${window.location.origin}${window.location.pathname}`);
+            router.replace(url);
           }
         }
         if (data.web_links) {

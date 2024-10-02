@@ -9,14 +9,17 @@ import withAuth from "@/hoc/WithAuth";
 import Notes from "@/components/shared/Notes";
 import { useDropzone } from "react-dropzone";
 import { cn } from "@/lib/utils";
-import { ContextMenu, ContextMenuTrigger } from "@/components/ui/context-menu";
+import { ContextMenu, ContextMenuContent, ContextMenuItem, ContextMenuTrigger } from "@/components/ui/context-menu";
 import { useCreateNote, useDeleteNote, useGetNotes, useUpdateNote } from "@/hooks/api/notes";
 import { ICreateNote, INote } from "@/types/common";
 import TasksList from "@/components/shared/TasksList";
 import { Input } from "@/components/ui/input";
-import { IoSearch } from "react-icons/io5";
+import { IoCloudUploadOutline, IoSearch } from "react-icons/io5";
 import { FiSearch } from "react-icons/fi";
 import { useRouter } from "next/router";
+import { MdCloudUpload } from "react-icons/md";
+import DesktopFiles from "@/components/shared/DesktopFiles";
+import DesktopFilesContextProvider from "@/context/DesktopFilesContext";
 import ZoomableComponent from "@/components/pages/Home/components/zoomable/zoomable";
 
 const scaleFactor = 1;
@@ -38,6 +41,7 @@ const Home = () => {
   const [notes, setNotes] = useState(defaultNotes);
   const [maxZIndex, setMaxZIndex] = useState(0); // To keep track of the highest zIndex
   const router = useRouter();
+  const [uploadFileFn, setUploadFileFn] = useState<any>();
 
   const [fullScreen, setFullScreen] = useState(false);
 
@@ -137,32 +141,34 @@ const Home = () => {
     const bg = homePageBg ? homePageBg : "/home-background.png";
     setBackground(bg);
   }, [homePageBg]);
+
+  console.log(uploadFileFn);
+
   return (
-    // <ContextMenu>
-    // <ContextMenuTrigger asChild>
-    <div {...getRootProps()} style={{ backgroundSize: "cover" }} className={cn(styles.homeMain)}>
-      <div className="h-full absolute w-full dark:bg-grid-small-white [mask-image:radial-gradient(40vw_circle_at_center,white,transparent)] bg-grid-small-black"></div>
-      <div>
-        <input {...getInputProps()} type="file" className="hidden" />
-        <Header />
-        <div style={{ zIndex: 1 }} className="fixed top-[50px] left-[50%] translate-x-[-50%] translate-y-[-50%]">
-          <form
-            onSubmit={(e) => {
-              e.preventDefault();
-              router.push(`/arche-chat?passed_query=${encodeURIComponent(searchText)}`);
-            }}
-            style={{ backdropFilter: "blur(5px)" }}
-            className="rounded-full"
-          >
-            <Input
-              placeholder="Ask me a question..."
-              inputContainerClassName="w-[500px] h-[40px] dark:!bg-secondary/30 rounded-full"
-              value={searchText}
-              onChange={(e) => setSearchText(e.target.value)}
-              className="!text-white dark:!text-white dark:placeholder:!text-white placeholder:text-white"
-              inputSuffix={<FiSearch />}
-            />
-          </form>
+    <DesktopFilesContextProvider>
+      <div {...getRootProps()} style={{ backgroundSize: "cover" }} className={cn(styles.homeMain)}>
+        <div className="h-full absolute w-full dark:bg-grid-small-white [mask-image:radial-gradient(40vw_circle_at_center,white,transparent)] bg-grid-small-black"></div>
+        <div>
+          <input {...getInputProps()} type="file" className="hidden" />
+          <Header />
+          <div style={{ zIndex: 1 }} className="fixed top-[50px] left-[50%] translate-x-[-50%] translate-y-[-50%]">
+            <form
+              onSubmit={(e) => {
+                e.preventDefault();
+                router.push(`/arche-chat?passed_query=${encodeURIComponent(searchText)}`);
+              }}
+              className="fixed top-[50px] left-[50%] translate-x-[-50%] translate-y-[-50%] rounded-full"
+            >
+              <Input
+                placeholder="Ask me a question..."
+                inputContainerClassName="w-[500px] h-[40px] dark:!bg-secondary/30 rounded-full"
+                value={searchText}
+                onChange={(e) => setSearchText(e.target.value)}
+                className="!text-white dark:!text-white dark:placeholder:!text-white placeholder:text-white"
+                inputSuffix={<FiSearch />}
+              />
+            </form>
+          </div>
         </div>
         <DateTimeSection timerPosition={timerPosition} setTimerPosition={setTimerPosition} hideTimer={hideTimer} />
         <RightSection />
@@ -172,9 +178,7 @@ const Home = () => {
           {tasksWindowOpen && <TasksList />}
         </ZoomableComponent>
       </div>
-    </div>
-    // </ContextMenuTrigger>
-    // </ContextMenu>
+    </DesktopFilesContextProvider>
   );
 };
 

@@ -252,3 +252,49 @@ export function createDateObjectFromTimeString(timeStr: string) {
 
   return currentDate;
 }
+
+export function getNextGridPosition(allocatedPositions: { x: number; y: number }[], tolerance = 5) {
+  const rows = 10; // 4 rows
+  const cols = 4; // 10 columns
+  const itemSize = 260; // Size of each grid item in pixels
+  const gap = 12; // Gap between grid items in pixels
+  const boxSize = itemSize + gap; // Total size including the gap
+
+  // Initialize grid positions (initially false = unoccupied)
+  const grid = Array(rows)
+    .fill(null)
+    .map(() => Array(cols).fill(false));
+
+  // Helper function to check if a position is within tolerance of the grid
+  function isCloseToGrid(x: number, y: number, xIndex: number, yIndex: number) {
+    const gridX = xIndex * boxSize;
+    const gridY = yIndex * boxSize;
+    return Math.abs(x - gridX) <= tolerance && Math.abs(y - gridY) <= tolerance;
+  }
+
+  // Mark allocated positions as occupied if they are close to a grid slot
+  allocatedPositions.forEach((pos) => {
+    for (let y = 0; y < rows; y++) {
+      for (let x = 0; x < cols; x++) {
+        if (isCloseToGrid(pos.x, pos.y, x, y)) {
+          grid[y][x] = true; // Mark as occupied if close
+        }
+      }
+    }
+  });
+
+  // Find the next available position in the grid
+  for (let y = 0; y < rows; y++) {
+    for (let x = 0; x < cols; x++) {
+      if (!grid[y][x]) {
+        return {
+          x: x * boxSize,
+          y: y * boxSize,
+        };
+      }
+    }
+  }
+
+  // If all positions are occupied
+  return null;
+}
