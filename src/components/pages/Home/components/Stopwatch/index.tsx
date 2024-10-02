@@ -192,7 +192,7 @@ const StopWatch = ({ timerPosition, setTimerPosition }: Props) => {
       }}
       scale={1}
     >
-      <div className="cursor-grab absolute bottom-[16rem] " style={style.border as React.CSSProperties}>
+      <div className="cursor-grab absolute top-[35rem] " style={style.border as React.CSSProperties}>
         <div style={style.container as React.CSSProperties}>
           <div style={style.clock as React.CSSProperties}>
             <div style={style.tabs as React.CSSProperties}>
