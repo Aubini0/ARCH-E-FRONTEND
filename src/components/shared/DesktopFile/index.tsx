@@ -1,9 +1,11 @@
-import { useUpdateFile, useUploadFile } from "@/hooks/api/files";
+import { useDesktopFiles } from "@/context/DesktopFilesContext";
+import { useDeleteFile, useUpdateFile, useUploadFile } from "@/hooks/api/files";
 import { cn } from "@/lib/utils";
 import { FileMetadata } from "@/types/common";
 import { useClickAway } from "@uidotdev/usehooks";
 import Image from "next/image";
 import React, { FC, useState } from "react";
+import { TfiTrash } from "react-icons/tfi";
 import Moveable, { OnDrag, OnRotate } from "react-moveable";
 
 interface IDesktopFile {
@@ -13,6 +15,8 @@ interface IDesktopFile {
 const DesktopFile: FC<IDesktopFile> = ({ file, i }) => {
   const [posAttr, setPosAttr] = useState({ left: file.position_x, top: file.position_y, rotate: file.rotation });
   const [clicked, setClicked] = useState(false);
+
+  const { handleDeleteFile } = useDesktopFiles();
 
   const { mutateAsync } = useUpdateFile();
 
@@ -80,6 +84,18 @@ const DesktopFile: FC<IDesktopFile> = ({ file, i }) => {
       >
         <Image src={file.file_url} fill alt="file" className="object-cover w-full h-full" quality={100} />
         <div className="absolute top-0 left-0 right-0 bottom-0 opacity-0 group-hover:opacity-100 flex items-center justify-center gap-3"></div>
+
+        {clicked && (
+          <div
+            onMouseDown={(e) => {
+              e.stopPropagation();
+              handleDeleteFile(file._id);
+            }}
+            className="absolute z-5 __note_delete cursor-pointer top-3 right-3"
+          >
+            <TfiTrash className="text-red-500 text-xl" />
+          </div>
+        )}
       </div>
     </>
   );

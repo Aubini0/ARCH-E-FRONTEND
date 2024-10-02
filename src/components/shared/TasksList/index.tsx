@@ -35,6 +35,7 @@ const TasksList = () => {
   const [taskText, setTaskText] = useState("");
 
   const { refetch, status } = useGetTasks({
+    queryKey: "tasks",
     onSuccess: (d) => {
       setTasks(d.data.tasks);
     },
