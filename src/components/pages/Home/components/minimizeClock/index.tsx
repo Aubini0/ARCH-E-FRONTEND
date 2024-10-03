@@ -83,7 +83,7 @@ const MinimizeClock: React.FC<Props> = ({ onClick }) => {
     setMount(true);
   }, []);
   return (
-    <div onClick={onClick} style={{ ...(style.container as React.CSSProperties), zoom: "67%", zIndex: 1 }}>
+    <div onClick={onClick} style={{ ...(style.container as React.CSSProperties), zoom: "67%", zIndex: 99 }}>
       <div style={{ backdropFilter: "blur(5px)" }} className="rounded-full">
         <div
           className="text-white border border-[#2D2D2D] cursor-pointer hover:bg-[#27272a] dark:!bg-secondary/30 bg-secondary/30 flex gap-2 justify-center font-semibold items-center"

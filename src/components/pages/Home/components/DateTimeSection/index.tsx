@@ -57,7 +57,7 @@ const DateTimeSection = ({ hideTimer }: { hideTimer: string }) => {
   return (
     <>
       <MinimizeClock onClick={() => setMinimizeClock(!minimizeClock)} />
-      <div style={{ ...(style.container as React.CSSProperties), zoom: "67%" }}>
+      <div style={{ ...(style.container as React.CSSProperties), zoom: "67%", zIndex: 99 }}>
         {minimizeClock && (
           <>
             {/* <div>
@@ -69,7 +69,7 @@ const DateTimeSection = ({ hideTimer }: { hideTimer: string }) => {
           </>
         )}
         {hideTimer != "true" && (
-          <div style={{ zIndex: 1 }}>
+          <div style={{ zIndex: 99 }}>
             <StopWatch />
           </div>
         )}
