@@ -131,7 +131,7 @@ const TasksList = () => {
   };
 
   return (
-    <div className="fixed top-0 left-0 w-0 h-0">
+    <div className="fixed top-0 z-[99] left-0 w-0 h-0">
       <Draggable
         onDrag={(e, ui) => {
           setPosition({ x: position.x + ui.deltaX, y: position.y + ui.deltaY });
