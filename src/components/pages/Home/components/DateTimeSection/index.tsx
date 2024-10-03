@@ -50,8 +50,12 @@ const style = {
     cursor: "pointer",
   },
 };
-
-const DateTimeSection = ({ hideTimer }: { hideTimer: string }) => {
+interface Props {
+  hideTimer: string;
+  setTimerPosition: (data: { x: number; y: number }) => void;
+  timerPosition: { x: number; y: number };
+}
+const DateTimeSection = ({ hideTimer, timerPosition, setTimerPosition }: Props) => {
   const [minimizeClock, setMinimizeClock] = useLocalStorage("minize_clock", true);
 
   return (
@@ -70,7 +74,7 @@ const DateTimeSection = ({ hideTimer }: { hideTimer: string }) => {
         )}
         {hideTimer != "true" && (
           <div style={{ zIndex: 99 }}>
-            <StopWatch />
+            <StopWatch timerPosition={timerPosition} setTimerPosition={setTimerPosition} />
           </div>
         )}
       </div>

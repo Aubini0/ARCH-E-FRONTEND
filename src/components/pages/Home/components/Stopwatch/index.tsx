@@ -18,7 +18,7 @@ const style = {
     flexDirection: "column",
     alignItems: "flex-start",
     border: "1px solid #2D2D2D",
-    borderRadius: '16px',
+    borderRadius: "16px",
     gap: "8px",
     flex: "1 0 0",
   },
@@ -128,8 +128,11 @@ const style = {
     letterSpacing: "-0.252px",
   },
 };
-
-const StopWatch = () => {
+interface Props {
+  setTimerPosition: (data: { x: number; y: number }) => void;
+  timerPosition: { x: number; y: number };
+}
+const StopWatch = ({ timerPosition, setTimerPosition }: Props) => {
   const [isTab, setIsTab] = useState(1);
   const [isShowSetting, setIsShowSetting] = useState(false);
   const [localSavedTime, setLocalSavedTime] = useLocalStorage("local_saved_time", '[{"minutes": "10", "seconds": "00"}, {"minutes": "10", "seconds": "00"}]');
@@ -182,8 +185,14 @@ const StopWatch = () => {
   };
 
   return (
-    <Draggable defaultPosition={{ x: 0, y: 0 }} scale={1}>
-      <div className="cursor-grab absolute bottom-[16rem] " style={style.border as React.CSSProperties}>
+    <Draggable
+      position={timerPosition}
+      onDrag={(e, ui) => {
+        setTimerPosition({ x: timerPosition?.x + ui.deltaX, y: timerPosition?.y + ui.deltaY });
+      }}
+      scale={1}
+    >
+      <div className="cursor-grab absolute top-[35rem] " style={style.border as React.CSSProperties}>
         <div style={style.container as React.CSSProperties}>
           <div style={style.clock as React.CSSProperties}>
             <div style={style.tabs as React.CSSProperties}>
