@@ -86,7 +86,7 @@ const Task: React.FC<ITask> = ({ text, index, setEditingTask, _id, is_done, time
                 <CiSettings />
               </div>
             </DropdownMenuTrigger>
-            <DropdownMenuContent>
+            <DropdownMenuContent portal={true}>
               <DropdownMenuItem
                 onClick={() => {
                   setEditingTask(_id);
