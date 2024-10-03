@@ -45,7 +45,7 @@ const data = [
     title: "Search",
     icon: <Search className="text-white" />,
     href: "/arche-chat",
-    isLast: false
+    isLast: false,
   },
   // {
   //   title: "File Management",
@@ -87,7 +87,7 @@ export function HomeDock({ setHomePageBg, setHideTimer, addNote, setTasksWindowO
     }
   };
   return (
-    <div style={{ zoom: "67%", zIndex: 1 }} className="absolute bottom-[16px] left-1/2 max-w-full -translate-x-1/2">
+    <div style={{ zoom: "67%", zIndex: 99 }} className="absolute bottom-[16px] left-1/2 max-w-full -translate-x-1/2">
       <Dock className="items-end relative gap-[24px] border-[2px] border-[#2D2D2D] bg-[#191919]">
         {data.map((item, idx) => {
           return (

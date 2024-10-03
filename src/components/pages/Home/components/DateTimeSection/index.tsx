@@ -52,7 +52,7 @@ const style = {
 };
 interface Props {
   hideTimer: string;
-  setTimerPosition: (data: {x: number, y: number}) => void;
+  setTimerPosition: (data: { x: number; y: number }) => void;
   timerPosition: { x: number; y: number };
 }
 const DateTimeSection = ({ hideTimer, timerPosition, setTimerPosition }: Props) => {
@@ -61,7 +61,7 @@ const DateTimeSection = ({ hideTimer, timerPosition, setTimerPosition }: Props) 
   return (
     <>
       <MinimizeClock onClick={() => setMinimizeClock(!minimizeClock)} />
-      <div style={{ ...(style.container as React.CSSProperties), zoom: "67%" }}>
+      <div style={{ ...(style.container as React.CSSProperties), zoom: "67%", zIndex: 99 }}>
         {minimizeClock && (
           <>
             {/* <div>
@@ -73,7 +73,7 @@ const DateTimeSection = ({ hideTimer, timerPosition, setTimerPosition }: Props) 
           </>
         )}
         {hideTimer != "true" && (
-          <div style={{ zIndex: 1 }}>
+          <div style={{ zIndex: 99 }}>
             <StopWatch timerPosition={timerPosition} setTimerPosition={setTimerPosition} />
           </div>
         )}

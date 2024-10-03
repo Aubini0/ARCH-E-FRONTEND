@@ -151,7 +151,7 @@ const Home = () => {
         <div>
           <input {...getInputProps()} type="file" className="hidden" />
           <Header />
-          <div style={{ zIndex: 1 }} className="fixed top-[50px] left-[50%] translate-x-[-50%] translate-y-[-50%]">
+          <div style={{ zIndex: 99 }} className="fixed top-[50px] left-[50%] translate-x-[-50%] translate-y-[-50%]">
             <form
               onSubmit={(e) => {
                 e.preventDefault();
