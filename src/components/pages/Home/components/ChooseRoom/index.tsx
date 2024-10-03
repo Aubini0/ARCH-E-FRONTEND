@@ -1,4 +1,5 @@
 import { ArrowTopIcon } from "@/components/icons/ArrowTopIcon";
+import { useAppSelector } from "@/store/hooks";
 import React, { useState } from "react";
 
 const style = {
@@ -60,13 +61,14 @@ const style = {
 interface Props {}
 
 const ChooseRoom: React.FC<Props> = () => {
+  const { user } = useAppSelector((state) => state.auth);
   const [isShow, setIsShow] = useState(true);
   return (
     <div className="chooseRoom" style={style.container as React.CSSProperties}>
       <div style={style.label as React.CSSProperties}>🏡 Your rooms:</div>
       <div style={{ ...style.dropdown, background: isShow ? "#27272A" : "" } as React.CSSProperties}>
         <div className="chooseRoom_item" onClick={() => setIsShow(!isShow)} style={style.input as React.CSSProperties}>
-          <div style={style.input_text}>Aubin’s Room</div>
+          <div style={style.input_text}>{user?.full_name.split(" ")[0]}’s Room</div>
           {/* <div style={{transform: isShow ? '' : 'rotateX(150deg)'}}><ArrowTopIcon /></div> */}
         </div>
         {/* {isShow ? 
