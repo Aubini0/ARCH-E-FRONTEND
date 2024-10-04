@@ -24,6 +24,7 @@ import { FaCircleArrowRight } from "react-icons/fa6";
 import { Input } from "@/components/ui/input";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { FiSearch } from "react-icons/fi";
+import styles from "@/styles/home-styles.module.css";
 
 const forYouMobile = [
   {
@@ -379,13 +380,14 @@ const Queries: FC<IQueries> = ({ session_id }) => {
 
   return (
     <MainLayout
-      // style={{ background: `url(${backgroundImage})`, backgroundSize: "cover" }}
+      style={{ background: `url(${backgroundImage})`, backgroundSize: "cover" }}
       emailTrigger={false}
       header={false}
       bottomTab={auth}
-      className="font-onest hide-scrollbar max-h-screen min-h-screen h-full w-full overflow-hidden"
+      className={cn(styles.homeMain, "font-onest hide-scrollbar max-h-screen min-h-screen h-full w-full overflow-hidden")}
     >
-      <div className="h-full absolute w-full dark:bg-grid-small-white [mask-image:radial-gradient(40vw_circle_at_center,white,transparent)] bg-grid-small-black" />
+      {/* grid bg */}
+      {/* <div className="h-full absolute w-full dark:bg-grid-small-white [mask-image:radial-gradient(40vw_circle_at_center,white,transparent)] bg-grid-small-black" /> */}
       <div className="bg-transparent flex flex-col h-full w-full">
         <div className={cn("bg-transparent pb-3 relative w-full", !passedQuery && queries.length === 0 && "h-full")}>
           <TooltipProvider>
@@ -428,10 +430,10 @@ const Queries: FC<IQueries> = ({ session_id }) => {
           >
             <Input
               placeholder="Ask me a question..."
-              inputContainerClassName="w-full h-[40px] dark:bg-secondary rounded-full"
+              inputContainerClassName="w-full border-none h-[40px] dark:!bg-secondary/30 rounded-full"
               value={searchValue}
               onChange={(e) => setSearchValue(e.target.value)}
-              className="!text-white dark:!text-white dark:placeholder:!text-white placeholder:text-white"
+              className="!text-white dark:!text-white dark:placeholder:!text-white"
               inputSuffix={
                 <div
                   onClick={() => {
