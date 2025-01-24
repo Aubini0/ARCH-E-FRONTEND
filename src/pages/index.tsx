@@ -157,7 +157,7 @@ const Home = () => {
                 e.preventDefault();
                 router.push(`/arche-chat?passed_query=${encodeURIComponent(searchText)}`);
               }}
-              className="fixed top-[15px] left-[50%] translate-x-[-50%] translate-y-[-50%] rounded-full"
+              className="fixed top-[15px] left-[50%] translate-x-[-50%] translate-y-[-50%] rounded-full "
             >
               <Input
                 placeholder="Ask me a question..."
