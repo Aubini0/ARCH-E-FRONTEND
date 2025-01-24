@@ -72,11 +72,11 @@ const DateTimeSection = ({ hideTimer, timerPosition, setTimerPosition }: Props) 
             </div> */}
           </>
         )}
-        {hideTimer != "true" && (
+        {/* {hideTimer != "true" && (
           <div style={{ zIndex: 99 }}>
             <StopWatch timerPosition={timerPosition} setTimerPosition={setTimerPosition} />
           </div>
-        )}
+        )} */}
       </div>
     </>
   );

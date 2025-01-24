@@ -377,10 +377,10 @@ const Queries: FC<IQueries> = ({ session_id }) => {
   }, [passedQuery]);
 
   const [backgroundImage] = useLocalStorage("home_bg_image", "/backgroundImages/1.png");
-
+ 
   return (
     <MainLayout
-      style={{ background: `url(${backgroundImage})`, backgroundSize: "cover" }}
+      style={{ background: `url(${"/home-background.png"})`, backgroundSize: "cover" }}
       emailTrigger={false}
       header={false}
       bottomTab={auth}
@@ -390,7 +390,7 @@ const Queries: FC<IQueries> = ({ session_id }) => {
       {/* <div className="h-full absolute w-full dark:bg-grid-small-white [mask-image:radial-gradient(40vw_circle_at_center,white,transparent)] bg-grid-small-black" /> */}
       <div className="bg-transparent flex flex-col h-full w-full">
         <div className={cn("bg-transparent pb-3 relative w-full", !passedQuery && queries.length === 0 && "h-full")}>
-          <TooltipProvider>
+          {/* <TooltipProvider>
             <Tooltip>
               <TooltipTrigger className={"block !border-none absolute right-28 top-1 h-full duration-300"}>
                 <div
@@ -404,7 +404,7 @@ const Queries: FC<IQueries> = ({ session_id }) => {
                 <p>New Search</p>
               </TooltipContent>
             </Tooltip>
-          </TooltipProvider>
+          </TooltipProvider> */}
           <TooltipProvider>
             <Tooltip>
               <TooltipTrigger className={"block !border-none absolute right-12 top-1 h-full duration-300"}>
@@ -426,7 +426,7 @@ const Queries: FC<IQueries> = ({ session_id }) => {
               fetchBot(searchValue);
               setSearchValue("");
             }}
-            className="lg:max-w-[500px] mt-[30px] mb-2 mx-auto px-0 max-w-full w-full"
+            className="lg:max-w-[700px] mt-[30px] mb-2 mx-auto px-0 max-w-full w-full"
           >
             <Input
               placeholder="Ask me a question..."
@@ -443,7 +443,7 @@ const Queries: FC<IQueries> = ({ session_id }) => {
                     }
                   }}
                 >
-                  <FiSearch />
+                  {/* <FiSearch /> */}
                 </div>
               }
             />
