@@ -13,12 +13,13 @@ import Image from "next/image";
 const style = {
   container: {
     display: "flex",
-    padding: "8px 8px 8px 20px",
+    padding: "8px 8px 8px 8px",
     alignItems: "center",
     gap: "16px",
     borderRadius: "40px",
-    margin: "20.5px 20px 0 0",
-    minWidth: "320px",
+    margin: "20.5px 0 0 0",
+    marginRight: "10px",
+    minWidth: "150px",
   },
   left: {
     display: "flex",
@@ -51,16 +52,17 @@ const InviteSection: React.FC<Props> = ({}) => {
 
   return (
     <>
-      <div className="text-white border border-[#2D2D2D] dark:!bg-secondary/30 bg-secondary/30" style={style.container as React.CSSProperties}>
+    {/* text-white border border-[#2D2D2D] dark:!bg-secondary/30 bg-secondary/30 */}
+      <div style={style.container as React.CSSProperties}>
         <Dialog open={editProfileOpen} onOpenChange={setEditProfileOpen}>
           <DialogTrigger asChild>
             {!user?.profilePic ? (
-              <Avatar className="cursor-pointer">
+              <Avatar className="cursor-pointer w-[50px] h-[50px]">
                 <AvatarImage src={image} alt={user?.full_name} />
                 <AvatarFallback className="flex items-center justify-center w-full h-full text-lg bg-secondary">{user?.full_name[0]}</AvatarFallback>
               </Avatar>
             ) : (
-              <Image src={`${image}?dummy=${Math.random()}`} alt={user.full_name} width={36} height={36} unoptimized className="object-cover cursor-pointer rounded-full w-[36px] h-[36px]" />
+              <Image src={`${image}?dummy=${Math.random()}`} alt={user.full_name} width={50} height={50} unoptimized className="object-cover cursor-pointer rounded-full w-[36px] h-[36px]" />
             )}
           </DialogTrigger>
           {/*  */}
@@ -68,17 +70,17 @@ const InviteSection: React.FC<Props> = ({}) => {
             <EditProfileModal handleClose={() => setEditProfileOpen(false)} />
           </DialogContent>
         </Dialog>
-        <div className="cursor-pointer" onClick={() => setIsShow(!isShow)} style={style.left as React.CSSProperties}>
+        {/* <div className="cursor-pointer" onClick={() => setIsShow(!isShow)} style={style.left as React.CSSProperties}>
           <div className="whitespace-nowrap">{user?.full_name.split(" ")[0]}’s Room</div>
           <div style={{ transform: isShow ? "" : "rotateX(150deg)" }}>
             <ArrowTopIcon />
           </div>
-        </div>
-        <div onClick={toggle} className="text-white cursor-pointer text-3xl">
+        </div> */}
+        {/* <div onClick={toggle} className="text-white cursor-pointer text-3xl">
           {!fullscreen ? <RiFullscreenFill /> : <RiFullscreenExitFill />}
-        </div>
+        </div> */}
       </div>
-      {isShow ? <ChooseRoom /> : <></>}
+      {/* {isShow ? <ChooseRoom /> : <></>} */}
     </>
   );
 };

@@ -86,19 +86,19 @@ const Login: FC<ILogin> = ({ onLogin, handleGoToSignUp }) => {
   };
 
   return (
-    <div className="flex md:min-w-[900px] my-5 gap-24">
-      <div className="flex-1 mt-auto mb-5 relative aspect-square w-fit h-fit rounded-3xl overflow-hidden">
+    <div className="flex md:min-w-[350px] my-5 gap-24">
+      {/* <div className="flex-1 mt-auto mb-5 relative aspect-square w-fit h-fit rounded-3xl overflow-hidden">
         <Image src={"/images/auth-banner.png"} fill alt="auth banner" className="object-cover" />
-      </div>
+      </div> */}
       <div
         className={cn(
           "text-black flex-1 flex flex-col justify-center bg-white border border-gray-200 dark:border-transparent dark:bg-dark-background dark:text-white w-full md:w-[400px] rounded-3xl font-poppins py-10"
         )}
       >
-        <div className="flex flex-col items-center justify-center mb-4">
+        {/* <div className="flex flex-col items-center justify-center mb-4">
           <Image onClick={() => router.push("/")} src={theme === "dark" ? "/images/logo.png" : "/images/logo-light.png"} alt="Logo Image" width={50} height={50} className="cursor-pointer" />
           <h4 className="font-medium font-poppins text-[20px] mt-4">Welcome To Arche</h4>
-        </div>
+        </div> */}
         <div className="px-10">
           <form className="space-y-4" onSubmit={handleSubmit(onSubmit)}>
             <div>
