@@ -31,10 +31,10 @@ const ConversationPage = () => {
         </div>
         <div className="flex items-center justify-center mt-5 fixed bottom-[60px] w-full max-w-[250px]">
           <div className="flex items-center justify-center pointer-events-none">
-            <Lottie
+            {/* <Lottie
               animationData={voiceAnimation}
               className="w-[300px] h-[150px] object-cover"
-            />
+            /> */}
           </div>
         </div>
 
